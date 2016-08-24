@@ -1,3 +1,9 @@
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/hypeJunction/hypeDiscovery/compare/2.0.0...v2.0.1) (2016-08-24)
+
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/hypeJunction/hypeDiscovery/compare/v1.0.0...v2.0.0) (2016-08-24)
 
