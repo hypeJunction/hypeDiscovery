@@ -4,20 +4,20 @@ namespace hypeJunction\Discovery;
 
 $entity = elgg_extract('entity', $vars);
 
-if (is_discoverable($entity)) {
-	echo elgg_view('framework/discovery/buttonbank', $vars);
-}
+echo elgg_view_menu('discovery_share', [
+	'entity' => $entity,
+	'class' => 'discovery-buttonbank elgg-menu-hz',
+	'sort_by' => 'priority',
+]);
 
 $permalink = get_entity_permalink($entity);
 
 if ($permalink) {
-	echo '<div>';
-	echo '<label>' . elgg_echo('discovery:entity:permalink') . '</label>';
-	echo elgg_view('input/text', array(
+	echo elgg_view_input('text', array(
 		'value' => $permalink,
+		'label' => elgg_echo('discovery:entity:permalink'),
 	));
-	echo '</div>';
-
+	
 	if (is_embeddable($entity)) {
 		$response = elgg_trigger_plugin_hook('export:entity', 'oembed', array(
 			'origin' => $permalink,
@@ -26,13 +26,11 @@ if ($permalink) {
 			'maxheight' => elgg_extract('maxheight', $vars, 480),
 		));
 
-		if ($response['html']) {
-			echo '<div>';
-			echo '<label>' . elgg_echo('discovery:entity:embed_code') . '</label>';
-			echo elgg_view('input/text', array(
+		if (!empty($response['html'])) {
+			echo elgg_view_input('text', array(
 				'value' => $response['html'],
+				'label' => elgg_echo('discovery:entity:embed_code'),
 			));
-			echo '</div>';
 		}
 	}
 }

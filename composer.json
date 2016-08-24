@@ -1,17 +1,29 @@
 {
-	"name" : "hypeJunction/hypeDiscovery",
-	"type" : "elgg-plugin",
-	"description" : "Enhanced social presence and discovery of Elgg content in the social eco-system.",
-	"homepage" : "http://hypejunction.com",
-	"keywords" : [ "open graph", "twitter cards", "facebook", "oembed", "discovery" ],
+	"name": "hypejunction/hypediscovery",
+	"type": "elgg-plugin",
+	"description": "Enhanced social presence and discovery of Elgg content in the social eco-system.",
+	"homepage": "http://hypejunction.com",
+	"keywords": [
+		"elgg", "plugin", "open graph", "twitter cards", "facebook", "oembed", "discovery"
+	],
+	"license": "GPL-2.0",
 	"authors": [
 		{
 			"name": "Ismayil Khayredinov",
-			"email": "ismayil.khayredinov@gmail.com"
+			"email": "info@hypejunction.com"
 		}
 	],
-	"license" : "GNU GPL 2",
 	"require": {
-		"composer/installers": ">=1.0.8"
+		"php": ">=5.5",
+		"composer/installers": "~1.0",
+		"mrclay/elgg-url-sniffer": "~2.0"
+	},
+	"autoload": {
+		"psr-0": {
+			"hypeJunction/": "classes/hypeJunction/"
+		}
+	},
+	"extra": {
+		"installer-name": "hypeDiscovery"
 	}
 }

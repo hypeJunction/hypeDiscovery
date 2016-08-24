@@ -2,38 +2,28 @@
 
 namespace hypeJunction\Discovery;
 
+elgg_load_css('oembed.css');
+
 $entity = elgg_extract('entity', $vars);
 
 if (!elgg_instanceof($entity)) {
-	return false;
-}
-
-$type = $entity->getType();
-$subtype = $entity->getSubtype();
-
-if (elgg_view_exists("$type/$subtype", 'oembed')) {
-	echo elgg_view("$type/$subtype", array(
-		'full_view' => true
-	));
 	return;
 }
 
-$icon = elgg_view('framework/discovery/icon', array(
-	'entity' => $entity,
-	'size' => '_og',
-	'img_class' => 'elgg-photo'
-		));
+$type = $entity->getType();
+$subtype = $entity->getSubtype() ? : 'default';
 
-$summary = elgg_view('object/elements/summary', array(
-	'entity' => $entity,
-	'metadata' => false,
-	'tags' => false,
-	'title' => elgg_view('output/url', array(
-		'text' => get_discovery_title($entity),
-		'href' => get_entity_permalink($entity),
-		'is_trusted' => true,
-	)),
-	'content' => get_discovery_description($entity)
-		));
+$views = [
+	"$type/$subtype",
+	"$type/default",
+];
 
-echo elgg_view_image_block($icon, $summary);
+foreach ($views as $view) {
+	if (elgg_view_exists($view, 'oembed')) {
+		echo elgg_view($view, array(
+			'entity' => $entity,
+			'full_view' => true,
+		), false, false, 'oembed');
+	}
+}
+

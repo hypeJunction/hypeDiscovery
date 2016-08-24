@@ -18,7 +18,7 @@ $english = array(
 	'discovery:settings:embed_type_subtype_pairs' => 'Content that can be embedded on other sites',
 
 	'discovery:settings:providers' => 'Outbound',
-	'discovery:settings:providers:help' => 'Please which providers can be used for outbound sharing',
+	'discovery:settings:providers:help' => 'Select which providers can be used for outbound sharing',
 	
 	/**
 	 * PROVIDERS

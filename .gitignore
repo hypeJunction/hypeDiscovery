@@ -3,7 +3,12 @@
 .htaccess
 robots.txt
 /nbproject/
-composer.lock
-/sass/
-config.rb
 /.sass-cache/
+/node_modules/
+/build/
+/mod/
+/releases/
+/vendor/
+Gemfile.lock
+/tests/tmp/
+coverage.clover

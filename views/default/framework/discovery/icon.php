@@ -1,8 +1,7 @@
 <?php
 
-namespace hypeJunction\Discovery;
-
 $entity = elgg_extract('entity', $vars);
+/* @var $entity \ElggEntity */
 
 if (!elgg_instanceof($entity)) {
 	return;
@@ -10,30 +9,29 @@ if (!elgg_instanceof($entity)) {
 
 $class = elgg_extract('img_class', $vars, '');
 
-if (isset($entity->name)) {
-	$title = $entity->name;
-} else {
-	$title = $entity->title;
-}
-$title = htmlspecialchars($title, ENT_QUOTES, 'UTF-8', false);
+$title = htmlspecialchars($entity->getDisplayName(), ENT_QUOTES, 'UTF-8', false);
 
 $url = $entity->getURL();
 if (isset($vars['href'])) {
 	$url = $vars['href'];
 }
 
-$icon_sizes = elgg_get_config('og_icon_sizes');
-$size = $vars['size'];
+$size = elgg_extract('size', $vars, 'medium');
+$og_sizes = [
+	'_og' => 'small',
+	'_og_large' => 'medium',
+	'_og_high' => 'large'
+];
 
-if (!isset($vars['width'])) {
-	$vars['width'] = $size == '_og' ? $icon_sizes[$size]['w'] : null;
-}
-if (!isset($vars['height'])) {
-	$vars['height'] = $size == '_og' ? $icon_sizes[$size]['h'] : null;
+if (isset($og_sizes[$size])) {
+	$size = $og_sizes[$size];
 }
 
 $img_params = array(
-	'src' => $entity->getIconURL($vars['size']),
+	'src' => $entity->getIconURL([
+		'size' => $size,
+		'type' => 'open_graph_image',
+	]),
 	'alt' => $title,
 );
 

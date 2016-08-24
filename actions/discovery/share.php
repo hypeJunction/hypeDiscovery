@@ -19,7 +19,7 @@ if (!is_discoverable($entity)) {
 	$forward_url = elgg_trigger_plugin_hook('entity:share', $entity->getType(), array(
 		'provider' => $provider,
 		'entity' => $entity,
-		'referrer' => $referred,
+		'referrer' => $referrer,
 			), $forward_url);
 }
 
