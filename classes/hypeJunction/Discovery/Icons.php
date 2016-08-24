@@ -56,7 +56,11 @@ class Icons {
 				'medium' => 'large',
 				'large' => 'master',
 			];
-			$icon = $entity->getIcon($sizes[$size]);
+			if ($entity->hasIcon($sizes[$size])) {
+				$icon = $entity->getIcon($sizes[$size]);
+			} else {
+				$icon = elgg_get_site_entity()->getIcon($size, 'open_graph_image');
+			}
 		} else {
 			$icon = $entity->getIcon($size, 'open_graph_image');
 		}
