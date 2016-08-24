@@ -1,3 +1,13 @@
+<a name="2.0.2"></a>
+## [2.0.2](https://github.com/hypeJunction/hypeDiscovery/compare/2.0.1...v2.0.2) (2016-08-24)
+
+
+### Bug Fixes
+
+* **icons:** default to site image if no icon found ([65e64ba](https://github.com/hypeJunction/hypeDiscovery/commit/65e64ba))
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/hypeJunction/hypeDiscovery/compare/2.0.0...v2.0.1) (2016-08-24)
 
