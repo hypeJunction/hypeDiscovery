@@ -30,7 +30,7 @@ class Menus {
 				'text' => $text,
 				'href' => "opengraph/edit/$entity->guid",
 				'title' => elgg_echo('discovery:edit'),
-				'class' => 'elgg-lightbox',
+				'link_class' => 'elgg-lightbox',
 				'data-colorbox-opts' => json_encode([
 					'maxWidth' => '600px',
 				]),
@@ -53,7 +53,7 @@ class Menus {
 				'text' => $text,
 				'href' => "opengraph/share/$entity->guid",
 				'title' => elgg_echo('discovery:entity:share'),
-				'class' => 'elgg-lightbox',
+				'link_class' => 'elgg-lightbox',
 				'data-colorbox-opts' => json_encode([
 					'maxWidth' => '600px',
 				]),
