@@ -65,18 +65,27 @@ class Discovery {
 			$metatags['og:title'] = $params['title'];
 		}
 
-		foreach ($metatags as $property => $tags) {
-			if (empty($tags)) {
-				continue;
-			}
+		if (!empty($metatags) && is_array($metatags)) {
+			foreach ($metatags as $name => $content) {
+				if (!$content) {
+					continue;
+				}
+				$name_parts = explode(':', $name);
+				$namespace = array_shift($name_parts);
 
-			$tags = (array) $tags;
-
-			foreach ($tags as $content) {
-				$return['metas'][] = array(
-					'property' => $property,
-					'content' => $content
-				);
+				$ogp = array('og', 'fb', 'article', 'profile', 'book', 'music', 'video', 'profile', 'website');
+				if (in_array($namespace, $ogp)) {
+					// OGP tags use 'property=""' attribute
+					$return['metas'][$name] = [
+						'property' => $name,
+						'content' => $content,
+					];
+				} else {
+					$return['metas'][$name] = [
+						'name' => $name,
+						'content' => $content,
+					];
+				}
 			}
 		}
 
