@@ -17,6 +17,7 @@ if (is_discoverable_type($entity)) {
 			1 => elgg_echo('option:yes'),
 		),
 		'label' => elgg_echo('discovery:og:discoverable'),
+		'help' => elgg_echo('discovery:og:discoverable:help'),
 	));
 }
 
@@ -29,6 +30,7 @@ if (is_embeddable_type($entity)) {
 			1 => elgg_echo('option:yes'),
 		),
 		'label' => elgg_echo('discovery:og:embeddable'),
+		'help' => elgg_echo('discovery:og:embeddable:help'),
 	));
 }
 
@@ -36,6 +38,7 @@ echo elgg_view_input('file', array(
 	'name' => 'og_image',
 	'value' => $entity->hasIcon('large', 'open_graph_image'),
 	'label' => elgg_echo('discovery:og:image'),
+	'help' => elgg_echo('discovery:og:site_image:help'),
 ));
 
 echo elgg_view('framework/discovery/icon', array(
@@ -46,20 +49,23 @@ echo elgg_view('framework/discovery/icon', array(
 
 echo elgg_view_input('text', array(
 	'name' => 'og_title',
-	'value' => get_discovery_title($entity),
+	'value' => $entity->og_title,
 	'label' => elgg_echo('discovery:og:title'),
+	'help' => elgg_echo('discovery:og:title:help'),
 ));
 
 echo elgg_view_input('text', array(
 	'name' => 'og_description',
-	'value' => get_discovery_description($entity),
+	'value' => $entity->og_description,
 	'label' => elgg_echo('discovery:og:description'),
+	'help' => elgg_echo('discovery:og:description:help'),
 ));
 
 echo elgg_view_input('tags', array(
 	'name' => 'og_keywords',
-	'value' => get_discovery_keywords($entity),
+	'value' => $entity->og_keywords,
 	'label' => elgg_echo('discovery:og:keywords'),
+	'help' => elgg_echo('discovery:og:keywords:help'),
 ));
 
 echo elgg_view_input('hidden', array(

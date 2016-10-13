@@ -26,10 +26,6 @@ function is_discoverable($entity) {
 		return false;
 	}
 
-	if ($entity->canEdit()) {
-		return true;
-	}
-
 	if (isset($entity->discoverable)) {
 		return (bool) $entity->discoverable;
 	}
@@ -421,16 +417,13 @@ function get_discovery_title($entity) {
 		$entity = elgg_get_site_entity();
 	}
 
-	if (isset($entity->og_title)) {
+	if (!empty($entity->og_title)) {
 		$title = $entity->og_title;
 	} else {
 		$title = $entity->getDisplayName();
 	}
 
-	return elgg_view('output/excerpt', [
-		'text' => $title,
-		'num_chars' => 70,
-	], false, false, 'default');
+	return $title;
 }
 
 /**
@@ -444,15 +437,15 @@ function get_discovery_description($entity) {
 		$entity = elgg_get_site_entity();
 	}
 
-	if (isset($entity->og_description)) {
+	if (!empty($entity->og_description)) {
 		$description = $entity->og_description;
-	} else if (isset($entity->description)) {
+	} else if (!empty($entity->description)) {
 		$description = $entity->description;
 	}
 
 	return elgg_view('output/excerpt', [
 		'text' => $description,
-		'num_chars' => 150,
+		'num_chars' => elgg_get_plugin_setting('excerpt_description', 'hypeDiscovery', 250),
 	], false, false, 'default');
 }
 

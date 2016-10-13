@@ -32,7 +32,7 @@ $english = array(
 	/**
 	 * UI
 	 */
-	'discovery:og:help' => 'Use this form to improve how your content appears on social sites when shared. For best results, upload an image that\'s larger than 1200x630 pixels. For optimum results, your image should not be smaller than 600 x 315px',
+	'discovery:og:help' => 'Use this form to improve how your content appears on social sites when shared.',
 	'discovery:share' => 'Share on %s',
 	'discovery:entity:settings' => 'Content discovery',
 	'discovery:entity:share' => 'Share',
@@ -45,10 +45,15 @@ $english = array(
 	'discovery:og:description' => 'Site Description',
 	'discovery:og:image' => 'Content Image',
 	'discovery:og:title' => 'Title',
+	'discovery:og:title:help' => 'Leave empty to use content title/name',
 	'discovery:og:description' => 'Description',
+	'discovery:og:description:help' => 'Leave empty to use content an excerpt of the content body',
 	'discovery:og:keywords' => 'Keywords',
+	'discovery:og:keywords:help' => 'Leave empty to use content tags',
 	'discovery:og:discoverable' => 'Enable discovery',
+	'discovery:og:discoverable:help' => 'If enabled, other users will be allowed to share this content on other sites. If content visibility/access level does not allow users to see the full page, they will only see a preview with details your provide below (or using excerpts from the content body)',
 	'discovery:og:embeddable' => 'Allow embedding',
+	'discovery:og:embeddable:help' => 'If allowed, other users will be allowed to embed this content on other sites. When embedded, a special content summary card will be shown',
 	'discovery:fb:app_id' => 'Facebook App ID',
 	'discovery:twitter:site' => 'Twitter Site Account (e.g. @hypeJunction)',
 	'discovery:edit' => 'Edit discovery settings',
@@ -64,6 +69,9 @@ $english = array(
 	'discovery:og_image:size:_og_high' => 'the high resolution',
 	'discovery:site:success' => 'Discovery details for your site have been updated',
 	'discovery:site:error' => 'Discovery details for your site failed to update',
+
+	'discovery:login_for_more' => '%s or %s to see full content',
+	
 );
 
 add_translation('en', $english);

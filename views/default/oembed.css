@@ -61,7 +61,7 @@
 .elgg-oembed-byline a {
     color: rgba(255, 255, 255, 0.6);
     margin: 0;
-    display: block;
+    display: inline-block;
 }
 
 .elgg-oembed-description {

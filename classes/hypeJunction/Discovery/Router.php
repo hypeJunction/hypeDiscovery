@@ -22,7 +22,7 @@ class Router {
 			$guid = array_shift($segments);
 			set_input('uh', $referrer_hash);
 		}
-		
+
 		switch ($viewtype) {
 			case 'image' :
 				// BC router
@@ -35,11 +35,63 @@ class Router {
 				return;
 
 			default :
+
+				switch ($viewtype) {
+					case 'json+oembed' :
+					case 'json oembed' :
+						$viewtype = 'json';
+						break;
+
+					case 'xml+oembed' :
+					case 'xml oembed' :
+						$viewtype = 'xml';
+						break;
+				}
+
+				if (!elgg_is_registered_viewtype($viewtype)) {
+					$viewtype = 'default';
+				}
+
+				elgg_set_viewtype($viewtype);
+				
+				if (!$guid || !elgg_entity_exists($guid)) {
+					return false;
+				}
+
+				$ia = elgg_set_ignore_access();
+				$entity = get_entity($guid);
+
+				if (!has_access_to_entity($entity) && !is_discoverable($entity)) {
+					elgg_set_ignore_access($ia);
+					return false;
+				}
+				
+				$forward_url = false;
+				
+				$is_walled = elgg_get_config('walled_garden') && !elgg_is_logged_in();
+				if (has_access_to_entity($entity) && $viewtype == 'default' && !$is_walled) {
+					$forward_url = $entity->getURL();
+				}
+
+				$forward_url = elgg_trigger_plugin_hook('entity:referred', $entity->getType(), array(
+					'entity' => $entity,
+					'user_hash' => $referrer_hash,
+					'referrer' => $_SERVER['HTTP_REFERER'],
+				), $forward_url);
+
+				if ($forward_url) {
+					elgg_set_ignore_access($ia);
+					forward($forward_url);
+				}
+
 				echo elgg_view_resource('permalink', [
 					'viewtype' => $viewtype,
 					'user_hash' => $referrer_hash,
 					'guid' => $guid,
+					'entity' => $entity,
 				]);
+				
+				elgg_set_ignore_access($ia);
 				return true;
 		}
 
@@ -180,6 +232,6 @@ class Router {
 		]);
 
 		forward($permalink);
-
 	}
+
 }

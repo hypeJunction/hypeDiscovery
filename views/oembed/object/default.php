@@ -23,6 +23,7 @@ $background = $entity->getIconURL([
 	'type' => 'open_graph_image',
 ]);
 
+$byline = '';
 $owner = $entity->getOwnerEntity();
 if (is_discoverable($owner)) {
 	$owner_icon = $owner->getIconURL([
@@ -31,6 +32,12 @@ if (is_discoverable($owner)) {
 	]);
 	$owner_name = $owner->getDisplayName();
 	$owner_url = $owner->getURL();
+	$owner_link = elgg_view('output/url', [
+		'text' => $owner_name,
+		'href' => $owner_url,
+	], false, false, 'default');
+
+	$byline = elgg_echo('byline', [$owner_link]);
 }
 
 $url = get_entity_permalink($entity);
@@ -42,6 +49,7 @@ $icon = elgg_view('framework/discovery/icon', array(
 	'size' => '_og',
 	'img_class' => 'elgg-photo'
 ));
+
 ?>
 <div class="elgg-oembed-card" style="background-image:url(<?= $background ?>)">
 	<div class="elgg-oembed-attributes">
@@ -56,7 +64,7 @@ $icon = elgg_view('framework/discovery/icon', array(
 			?>
 			<img class="elgg-oembed-owner-icon" src="<?= $owner_icon ?>" />
 			<div class="elgg-oembed-byline">
-				<a href="<?= $owner_url ?>" /><?= $owner_name ?></a>
+				<?= $byline ?>
 			</div>
 			<?php
 		}

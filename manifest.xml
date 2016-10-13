@@ -19,4 +19,9 @@
 		<version>2.2</version>
 	</requires>
 
+	<suggests>
+		<type>plugin</type>
+		<name>data_views</name>
+	</suggests>
+	
 </plugin_manifest>

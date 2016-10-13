@@ -14,3 +14,9 @@
 .elgg-menu-entity .webicon {
   margin: 0;
 }
+
+.elgg-form-discovery-edit img {
+	max-width: 300px;
+	margin: 0 auto;
+	display: block;
+}
