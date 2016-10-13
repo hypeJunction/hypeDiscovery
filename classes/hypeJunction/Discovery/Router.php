@@ -53,7 +53,7 @@ class Router {
 				}
 
 				elgg_set_viewtype($viewtype);
-				
+
 				if (!$guid || !elgg_entity_exists($guid)) {
 					return false;
 				}
@@ -65,9 +65,34 @@ class Router {
 					elgg_set_ignore_access($ia);
 					return false;
 				}
-				
+
+				elgg_register_plugin_hook_handler('head', 'page', function($hook, $type, $return) use ($entity) {
+					if (isset($return['links']['canonical'])) {
+						return;
+					}
+
+					if (elgg_is_active_plugin('hypeSeo')) {
+						$svc = \hypeJunction\Seo\RewriteService::getInstance();
+						$data = $svc->getRewriteRulesFromGUID($entity->getURL());
+						if (isset($data['sef_path'])) {
+							$return['links']['canonical'] = [
+								'href' => elgg_normalize_url($data['sef_path']),
+								'rel' => 'canonical',
+							];
+							return $return;
+						}
+					}
+
+					$return['links']['canonical'] = [
+						'href' => $entity->getURL(),
+						'rel' => 'canonical',
+					];
+
+					return $return;
+				});
+
 				$forward_url = false;
-				
+
 				$is_walled = elgg_get_config('walled_garden') && !elgg_is_logged_in();
 				if (has_access_to_entity($entity) && $viewtype == 'default' && !$is_walled) {
 					$forward_url = $entity->getURL();
@@ -90,7 +115,7 @@ class Router {
 					'guid' => $guid,
 					'entity' => $entity,
 				]);
-				
+
 				elgg_set_ignore_access($ia);
 				return true;
 		}
