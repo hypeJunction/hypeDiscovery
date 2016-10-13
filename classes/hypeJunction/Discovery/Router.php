@@ -12,21 +12,33 @@ class Router {
 	 */
 	public static function permalinkHandler($segments) {
 
-		switch ($segments[0]) {
+		$viewtype = array_shift($segments);
+		$referrer_hash = array_shift($segments);
+		if (!preg_match('/^[a-f0-9]{32}$/i', $referrer_hash)) {
+			// The hash was moved into URL query parameters
+			$guid = $referrer_hash;
+			$referrer_hash = get_input('uh');
+		} else {
+			$guid = array_shift($segments);
+			set_input('uh', $referrer_hash);
+		}
+		
+		switch ($viewtype) {
 			case 'image' :
 				// BC router
+				$size = array_shift($segments);
 				$ia = elgg_set_ignore_access(true);
-				$entity = get_entity($segments[1]);
-				$url = forward($entity->getIconURL($segments[2]));
+				$entity = get_entity($guid);
+				$url = $entity->getIconURL($size);
 				elgg_set_ignore_access($ia);
 				forward($url);
 				return;
 
 			default :
 				echo elgg_view_resource('permalink', [
-					'viewtype' => $segments[0],
-					'user_hash' => $segments[1],
-					'guid' => $segments[2],
+					'viewtype' => $viewtype,
+					'user_hash' => $referrer_hash,
+					'guid' => $guid,
 				]);
 				return true;
 		}

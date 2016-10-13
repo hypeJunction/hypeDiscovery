@@ -243,12 +243,14 @@ function get_entity_permalink($entity, $viewtype = 'default') {
 	$segments = array(
 		'permalink',
 		$viewtype,
-		$user_hash,
 		$entity->guid,
 		$title
 	);
 
-	return elgg_normalize_url(implode('/', $segments));
+	$url = elgg_normalize_url(implode('/', $segments));
+	return elgg_http_add_url_query_elements($url, [
+		'uh' => $user_hash,
+	]);
 }
 
 /**
@@ -326,13 +328,19 @@ function get_user_hash($guid) {
 
 	$user = get_entity($guid);
 	if (!$user) {
-		$_SESSION['discovery_hash'] = md5(time() . generate_random_cleartext_password());
-	}
-
-	$hash = $user->discovery_permanent_hash;
-	if (!$hash) {
-		$hash = md5($user->guid . time() . generate_random_cleartext_password());
-		create_metadata($user->guid, 'discovery_permanent_hash', $hash, '', $user->guid, ACCESS_PUBLIC);
+		$session = elgg_get_session();
+		if ($session->get('discovery_hash')) {
+			$hash = $session->get('discovery_hash');
+		} else if (get_input('uh')) {
+			$hash = get_input('uh');
+			$session->set('discovery_hash', $hash);
+		}
+	} else {
+		$hash = $user->discovery_permanent_hash;
+		if (!$hash) {
+			$hash = md5($user->guid . time() . generate_random_cleartext_password());
+			create_metadata($user->guid, 'discovery_permanent_hash', $hash, '', $user->guid, ACCESS_PUBLIC);
+		}
 	}
 
 	return $hash;
