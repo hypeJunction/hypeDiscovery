@@ -20,6 +20,9 @@ elgg_register_event_handler('init', 'system', function() {
 	elgg_register_page_handler('permalink', [Router::class, 'permalinkHandler']);
 	elgg_register_page_handler('opengraph', [Router::class, 'opengraphHandler']);
 	elgg_register_plugin_hook_handler('public_pages', 'walled_garden', [Router::class, 'publicPages']);
+	elgg_register_plugin_hook_handler('forward', 'login', [Router::class, 'redirectErrorToPermalink']);
+	elgg_register_plugin_hook_handler('forward', '403', [Router::class, 'redirectErrorToPermalink']);
+	elgg_register_plugin_hook_handler('forward', '404', [Router::class, 'redirectErrorToPermalink']);
 
 	elgg_register_action('hypeDiscovery/settings/save', __DIR__ . '/actions/settings/save.php');
 	elgg_register_action('discovery/site', __DIR__ . '/actions/discovery/site.php', 'admin');

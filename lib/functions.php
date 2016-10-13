@@ -395,6 +395,7 @@ function get_oembed_response($entity, $format = 'json', $maxwidth = 0, $maxheigh
 function get_discovery_metatags($url) {
 
 	$ia = elgg_set_ignore_access(true);
+
 	$entity = get_entity_from_url($url);
 
 	$metatags = elgg_trigger_plugin_hook('metatags', 'discovery', [
@@ -402,6 +403,8 @@ function get_discovery_metatags($url) {
 		'url' => $url,
 	], []);
 
+	elgg_set_ignore_access($ia);
+	
 	return $metatags;
 }
 

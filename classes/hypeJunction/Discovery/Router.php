@@ -259,4 +259,26 @@ class Router {
 		forward($permalink);
 	}
 
+	/**
+	 * Redirect to entity permalink instead of an error page if entity is discoverable
+	 *
+	 * @param string $hook   "forward"
+	 * @param string $type   "403"|"404"
+	 * @param array  $return Forward URL
+	 * @param array  $params Hook params
+	 * @return array
+	 */
+	public static function redirectErrorToPermalink($hook, $type, $return, $params) {
+		
+		$ia = elgg_set_ignore_access(true);
+		$entity = get_entity_from_url(current_page_url());
+		
+		if (is_discoverable($entity)) {
+			$return = get_entity_permalink($entity);
+		}
+
+		elgg_set_ignore_access($ia);
+
+		return $return;
+	}
 }
