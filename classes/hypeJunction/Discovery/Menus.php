@@ -18,7 +18,7 @@ class Menus {
 	public static function entityMenuSetup($hook, $type, $return, $params) {
 
 		$entity = elgg_extract('entity', $params);
-		
+
 		if ($entity->canEdit() && is_discoverable_type($entity)) {
 			if (elgg_is_active_plugin('menus_api')) {
 				$text = elgg_echo('discovery:edit');
@@ -89,16 +89,22 @@ class Menus {
 			return;
 		}
 
-		foreach ($providers as $provider) {
-			$return[] = ElggMenuItem::factory(array(
-				'name' => "discovery:$provider",
-				'text' =>elgg_format_element('span', ['class' => "webicon $provider small"]),
-				'href' => get_share_action_url($provider, $entity->guid, current_page_url()),
-				'is_action' => true,
-				'title' => elgg_echo('discovery:share', array(elgg_echo("discovery:provider:$provider"))),
-				'item_class' => 'svg',
-			));
-		}
+		$text = elgg_view_icon('share');
+		$return[] = ElggMenuItem::factory(array(
+			'name' => 'discovery:share',
+			'text' => $text,
+			'href' => "opengraph/share/$entity->guid",
+			'title' => elgg_echo('discovery:entity:share'),
+			'link_class' => 'elgg-lightbox',
+			'data-colorbox-opts' => json_encode([
+				'maxWidth' => '600px',
+			]),
+			'data' => [
+				'icon' => 'share',
+			],
+			'priority' => 700,
+			'deps' => ['elgg/lightbox'],
+		));
 
 		return $return;
 	}
