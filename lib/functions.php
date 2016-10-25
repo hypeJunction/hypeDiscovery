@@ -453,10 +453,26 @@ function get_discovery_description($entity) {
 }
 
 /**
+ * Get discoverable icon object
+ *
+ * @param ElggEntity $entity
+ * @return \ElggIcon|false
+ */
+function get_discovery_icon($entity) {
+	foreach (['open_graph_image', 'cover', 'icon'] as $type) {
+		$icon = $entity->getIcon('large', $type);
+		if ($icon->exists()) {
+			return $icon;
+		}
+	}
+	return false;
+}
+
+/**
  * Get discoverable image URL
  *
  * @param ElggEntity $entity
- * @return string
+ * @return string|void
  */
 function get_discovery_image_url($entity) {
 
@@ -464,11 +480,9 @@ function get_discovery_image_url($entity) {
 		$entity = elgg_get_site_entity();
 	}
 
-	foreach (['open_graph_image', 'cover', 'icon'] as $type) {
-		$icon = $entity->getIcon('large', $type);
-		if ($icon->exists()) {
-			return elgg_get_inline_url($icon);
-		}
+	$icon = get_discovery_icon($entity);
+	if ($icon) {
+		return elgg_get_inline_url($icon);
 	}
 }
 
