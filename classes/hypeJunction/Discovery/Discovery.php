@@ -19,7 +19,9 @@ class Discovery {
 
 		$ia = elgg_set_ignore_access(true);
 
-		$entity = get_entity_from_url(current_page_url());
+		$segments = _elgg_services()->request->getUrlSegments();
+		$url = elgg_normalize_url(implode('/', $segments));
+		$entity = get_entity_from_url($url);
 
 		if (is_embeddable($entity)) {
 			$return['links']['json+oembed'] = array(
@@ -55,7 +57,9 @@ class Discovery {
 	 */
 	public static function prepareMetas($hook, $type, $return, $params) {
 
-		$metatags = get_discovery_metatags(current_page_url());
+		$segments = _elgg_services()->request->getUrlSegments();
+		$url = elgg_normalize_url(implode('/', $segments));
+		$metatags = get_discovery_metatags($url);
 
 		if (empty($metatags)) {
 			return;

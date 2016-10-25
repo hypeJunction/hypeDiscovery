@@ -271,7 +271,10 @@ class Router {
 	public static function redirectErrorToPermalink($hook, $type, $return, $params) {
 		
 		$ia = elgg_set_ignore_access(true);
-		$entity = get_entity_from_url(current_page_url());
+
+		$segments = _elgg_services()->request->getUrlSegments();
+		$url = elgg_normalize_url(implode('/', $segments));
+		$entity = get_entity_from_url($url);
 		
 		if (is_discoverable($entity)) {
 			$return = get_entity_permalink($entity);

@@ -141,7 +141,9 @@ function get_share_action_url($provider, $guid = 0, $referrer = '') {
 function get_provider_url($provider, $entity = null, $referrer = '') {
 
 	if (!elgg_instanceof($entity)) {
-		$permalink = ($referrer) ? $referrer : current_page_url();
+		$segments = _elgg_services()->request->getUrlSegments();
+		$url = elgg_normalize_url(implode('/', $segments));
+		$permalink = ($referrer) ? $referrer : $url;
 		$guid = get_guid_from_url($permalink);
 		if ($guid) {
 			$entity = get_entity($guid);
