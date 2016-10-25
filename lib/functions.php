@@ -464,25 +464,11 @@ function get_discovery_image_url($entity) {
 		$entity = elgg_get_site_entity();
 	}
 
-	if ($entity->hasIcon('large', 'open_graph_image')) {
-		return $entity->getIconURL([
-			'size' => 'large',
-			'type' => 'open_graph_image',
-		]);
-	}
-
-	if ($entity->hasIcon('large', 'cover')) {
-		return $entity->getIconURL([
-			'size' => 'large',
-			'type' => 'cover',
-		]);
-	}
-
-	if ($entity->hasIcon('large', 'icon')) {
-		return $entity->getIconURL([
-			'size' => 'large',
-			'type' => 'icon',
-		]);
+	foreach (['open_graph_image', 'cover', 'icon'] as $type) {
+		$icon = $entity->getIcon('large', $type);
+		if ($icon->exists()) {
+			return elgg_get_inline_url($icon);
+		}
 	}
 }
 
