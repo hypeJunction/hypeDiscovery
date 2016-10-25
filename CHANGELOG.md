@@ -1,3 +1,17 @@
+<a name="2.1.2"></a>
+## [2.1.2](https://github.com/hypeJunction/hypeDiscovery/compare/2.1.1...v2.1.2) (2016-10-25)
+
+
+### Bug Fixes
+
+* **og:** do a better job at resolving open graph images ([1e99b00](https://github.com/hypeJunction/hypeDiscovery/commit/1e99b00))
+* **og:** do a better job at resolving open graph images ([8ac878f](https://github.com/hypeJunction/hypeDiscovery/commit/8ac878f))
+* **og:** do a better job at resolving open graph images ([295835e](https://github.com/hypeJunction/hypeDiscovery/commit/295835e))
+* **sharer:** allow sharing any URL from extras menu ([69e0c28](https://github.com/hypeJunction/hypeDiscovery/commit/69e0c28))
+* **sniff:** sniff current route rather than current url ([6a44390](https://github.com/hypeJunction/hypeDiscovery/commit/6a44390))
+
+
+
 <a name="2.1.1"></a>
 ## [2.1.1](https://github.com/hypeJunction/hypeDiscovery/compare/2.1.0...v2.1.1) (2016-10-14)
 
