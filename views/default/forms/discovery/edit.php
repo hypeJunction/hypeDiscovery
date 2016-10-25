@@ -41,11 +41,14 @@ echo elgg_view_input('file', array(
 	'help' => elgg_echo('discovery:og:site_image:help'),
 ));
 
-echo elgg_view('framework/discovery/icon', array(
-	'entity' => $entity,
-	'size' => 'medium',
-	'img_class' => 'elgg-photo elgg-field',
-));
+foreach (['open_graph_image', 'cover', 'icon'] as $type) {
+	if ($entity->hasIcon('large', $type)) {
+		echo elgg_view('output/img', [
+			'src' => $entity->getIconURL('large', $type),
+			'class' => 'elgg-photo elgg-field',
+		]);
+	}
+}
 
 echo elgg_view_input('text', array(
 	'name' => 'og_title',
