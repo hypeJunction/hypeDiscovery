@@ -55,7 +55,7 @@ function is_discoverable_type($entity = null, $type = '', $subtype = '') {
 
 	if (elgg_instanceof($entity)) {
 		$type = $entity->getType();
-		$subtype = $entity->getSubtype() ? : 'default';
+		$subtype = $entity->getSubtype() ?: 'default';
 	}
 
 	if (!in_array("$type::$subtype", get_discoverable_type_subtype_pairs())) {
@@ -104,7 +104,7 @@ function is_embeddable_type($entity = null, $type = '', $subtype = '') {
 
 	if (elgg_instanceof($entity)) {
 		$type = $entity->getType();
-		$subtype = $entity->getSubtype() ? : 'default';
+		$subtype = $entity->getSubtype() ?: 'default';
 	}
 
 	if (!in_array("$type::$subtype", get_embeddable_type_subtype_pairs())) {
@@ -236,16 +236,21 @@ function get_entity_permalink($entity, $viewtype = 'default') {
 	$user_guid = elgg_get_logged_in_user_guid();
 	$user_hash = get_user_hash($user_guid);
 
-	$title = elgg_get_friendly_title(get_discovery_title($entity));
+	$url = $entity->getVolatileData('discovery:share_url');
+	
+	if (!$url) {
+		$title = elgg_get_friendly_title(get_discovery_title($entity));
 
-	$segments = array(
-		'permalink',
-		$viewtype,
-		$entity->guid,
-		$title
-	);
+		$segments = array(
+			'permalink',
+			$viewtype,
+			$entity->guid,
+			$title
+		);
 
-	$url = elgg_normalize_url(implode('/', $segments));
+		$url = elgg_normalize_url(implode('/', $segments));
+	}
+
 	return elgg_http_add_url_query_elements($url, [
 		'uh' => $user_hash,
 	]);
@@ -288,7 +293,7 @@ function get_guid_from_url($url) {
 function get_entity_from_url($url) {
 	$guid = get_guid_from_url($url);
 	$entity = get_entity($guid);
-	return $entity ? : elgg_get_site_entity();
+	return $entity ?: elgg_get_site_entity();
 }
 
 /**
@@ -403,10 +408,10 @@ function get_discovery_metatags($url) {
 	$metatags = elgg_trigger_plugin_hook('metatags', 'discovery', [
 		'entity' => $entity,
 		'url' => $url,
-	], []);
+			], []);
 
 	elgg_set_ignore_access($ia);
-	
+
 	return $metatags;
 }
 
@@ -451,7 +456,7 @@ function get_discovery_description($entity) {
 	return elgg_view('output/excerpt', [
 		'text' => $description,
 		'num_chars' => elgg_get_plugin_setting('excerpt_description', 'hypeDiscovery', 250),
-	], false, false, 'default');
+			], false, false, 'default');
 }
 
 /**

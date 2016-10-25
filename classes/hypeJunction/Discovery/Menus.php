@@ -82,9 +82,6 @@ class Menus {
 		$segments = _elgg_services()->request->getUrlSegments();
 		$url = elgg_normalize_url(implode('/', $segments));
 		$entity = get_entity_from_url($url);
-		if (!is_discoverable($entity)) {
-			return;
-		}
 
 		$providers = get_discovery_providers();
 		if (empty($providers)) {
@@ -95,7 +92,9 @@ class Menus {
 		$return[] = ElggMenuItem::factory(array(
 			'name' => 'discovery:share',
 			'text' => $text,
-			'href' => "opengraph/share/$entity->guid",
+			'href' => elgg_http_add_url_query_elements("opengraph/share/$entity->guid", [
+				'share_url' => $entity instanceof \ElggSite ? current_page_url() : '',
+			]),
 			'title' => elgg_echo('discovery:entity:share'),
 			'link_class' => 'elgg-lightbox',
 			'data-colorbox-opts' => json_encode([

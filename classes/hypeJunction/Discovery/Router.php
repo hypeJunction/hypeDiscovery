@@ -158,9 +158,12 @@ class Router {
 					return false;
 				}
 
+				$share_url = get_input('share_url');
+				$entity->setVolatileData('discovery:share_url', $share_url);
+
 				$title = elgg_echo('discovery:entity:share');
 				$content = elgg_view('forms/discovery/share', array(
-					'entity' => $entity
+					'entity' => $entity,
 				));
 				$sidebar = false;
 				$filter = false;
