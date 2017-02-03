@@ -16,7 +16,7 @@
 	"require": {
 		"php": ">=5.5",
 		"composer/installers": "~1.0",
-		"mrclay/elgg-url-sniffer": "~2.0"
+		"mrclay/elgg-url-sniffer": "~3.0"
 	},
 	"autoload": {
 		"psr-0": {

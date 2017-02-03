@@ -3,8 +3,9 @@
 namespace hypeJunction\Discovery;
 
 use ElggEntity;
+use ElggIcon;
 use ElggUser;
-use UFCOE\Elgg\Url;
+use UFCOE\Elgg\SiteUrl;
 
 /**
  * Check if the entity can be discovered from a remote resource
@@ -237,7 +238,7 @@ function get_entity_permalink($entity, $viewtype = 'default') {
 	$user_hash = get_user_hash($user_guid);
 
 	$url = $entity->getVolatileData('discovery:share_url');
-	
+
 	if (!$url) {
 		$title = elgg_get_friendly_title(get_discovery_title($entity));
 
@@ -264,21 +265,29 @@ function get_entity_permalink($entity, $viewtype = 'default') {
  */
 function get_guid_from_url($url) {
 
-	$info = (new Url())->analyze($url);
+	$site_url = new SiteUrl(elgg_get_site_url());
 
-	if (!$info->in_site) {
+	$path = $site_url->getSitePath($url);
+	if (!$path) {
 		return false;
 	}
 
-	if ($info->guid) {
-		return $info->guid;
-	} else if ($info->username) {
-		$user = get_user_by_username($info->username);
+	$guid = $path->getGuid();
+	if ($guid) {
+		return $guid;
+	}
+
+	$username = $path->getUsername();
+	if ($username) {
+		$user = get_user_by_username($username);
 		if ($user) {
 			return $user->guid;
 		}
-	} else if ($info->contianer_guid) {
-		return $info->container_guid;
+	}
+
+	$container_guid = $path->getContainerGuid();
+	if ($container_guid) {
+		return $container_guid;
 	}
 
 	return false;
@@ -463,7 +472,7 @@ function get_discovery_description($entity) {
  * Get discoverable icon object
  *
  * @param ElggEntity $entity
- * @return \ElggIcon|false
+ * @return ElggIcon|false
  */
 function get_discovery_icon($entity) {
 	foreach (['open_graph_image', 'cover', 'icon'] as $type) {
