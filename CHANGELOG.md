@@ -1,3 +1,13 @@
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/hypeJunction/hypeDiscovery/compare/2.1.2...v2.2.0) (2017-02-03)
+
+
+### Features
+
+* **deps:** update to latest version of elgg-url-sniffer ([782916a](https://github.com/hypeJunction/hypeDiscovery/commit/782916a))
+
+
+
 <a name="2.1.2"></a>
 ## [2.1.2](https://github.com/hypeJunction/hypeDiscovery/compare/2.1.1...v2.1.2) (2016-10-25)
 
