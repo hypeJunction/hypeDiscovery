@@ -5,21 +5,30 @@ namespace hypeJunction\Discovery;
 $provider = get_input('provider');
 $guid = get_input('guid');
 $referrer = get_input('referrer');
+$share_url = get_input('share_url');
 
 $ia = elgg_set_ignore_access(true);
 
-$entity = get_entity($guid);
-
 $forward_url = REFERRER;
 
-if (!is_discoverable($entity)) {
-	$error = true;
+if ($guid) {
+	$entity = get_entity($guid);
+	if (!is_discoverable($entity)) {
+		$error = true;
+	} else {
+		$forward_url = get_provider_url($provider, $entity, $referrer);
+		$forward_url = elgg_trigger_plugin_hook('entity:share', $entity->getType(), array(
+			'provider' => $provider,
+			'entity' => $entity,
+			'referrer' => $referrer,
+				), $forward_url);
+	}
 } else {
-	$forward_url = get_provider_url($provider, $entity, $referrer);
-	$forward_url = elgg_trigger_plugin_hook('entity:share', $entity->getType(), array(
+	$forward_url = get_provider_url($provider, null, $referrer, $share_url);
+	$forward_url = elgg_trigger_plugin_hook('share', 'url', array(
 		'provider' => $provider,
-		'entity' => $entity,
 		'referrer' => $referrer,
+		'share_url' => $share_url,
 			), $forward_url);
 }
 

@@ -118,50 +118,63 @@ function is_embeddable_type($entity = null, $type = '', $subtype = '') {
 /**
  * Construct a share action URL
  * 
- * @param string  $provider Social media provider
- * @param integer $guid     Entity guid
- * @param string  $referrer Referring URL
+ * @param string  $provider  Social media provider
+ * @param integer $guid      Entity guid
+ * @param string  $referrer  Referring URL
+ * @param string  $share_url URL to share
  * @return string
  */
-function get_share_action_url($provider, $guid = 0, $referrer = '') {
+function get_share_action_url($provider, $guid = 0, $referrer = '', $share_url = '') {
 	$base_url = elgg_normalize_url('action/discovery/share');
 	return elgg_http_add_url_query_elements($base_url, array(
 		'provider' => $provider,
 		'guid' => $guid,
-		'referrer' => $referrer
+		'referrer' => $referrer,
+		'share_url' => $share_url,
 	));
 }
 
 /**
  * Construct sharing endpoint URL for a provider
  *
- * @param string     $provider Social media provider
- * @param ElggEntity $entity   Entity
+ * @param string     $provider  Social media provider
+ * @param ElggEntity $entity    Entity
+ * @param string     $referrer  Referrer URL
+ * @param string     $share_url URL to share
  * @return string|false
  */
-function get_provider_url($provider, $entity = null, $referrer = '') {
-
-	if (!elgg_instanceof($entity)) {
-		$segments = _elgg_services()->request->getUrlSegments();
-		$url = elgg_normalize_url(implode('/', $segments));
-		$permalink = ($referrer) ? $referrer : $url;
-		$guid = get_guid_from_url($permalink);
-		if ($guid) {
-			$entity = get_entity($guid);
-		}
-	}
-
-	if (!is_discoverable($entity)) {
-		return false;
-	}
+function get_provider_url($provider, $entity = null, $referrer = '', $share_url = '') {
 
 	$site = elgg_get_site_entity();
 
-	$shared_url = get_entity_permalink($entity);
-	$title = get_discovery_title($entity);
-	$description = get_discovery_description($entity);
-	$tags = $entity->tags;
-	$owner = $entity->getOwnerEntity();
+	if (!$entity && $share_url) {
+		$title = '';
+		$tags = '';
+		$description = '';
+		$media = '';
+	} else {
+		if (!elgg_instanceof($entity)) {
+			$segments = _elgg_services()->request->getUrlSegments();
+			$url = elgg_normalize_url(implode('/', $segments));
+			$permalink = ($referrer) ? $referrer : $url;
+			$guid = get_guid_from_url($permalink);
+			if ($guid) {
+				$entity = get_entity($guid);
+			}
+		}
+
+		if (!is_discoverable($entity)) {
+			return false;
+		}
+
+		$share_url = get_entity_permalink($entity);
+		$title = get_discovery_title($entity);
+		$description = get_discovery_description($entity);
+		$tags = $entity->tags;
+		$owner = $entity->getOwnerEntity();
+		$via = ($owner->twitter) ? $owner->twitter : $site->twitter_site;
+		$media = get_discovery_image_url($entity);
+	}
 
 	$elements = array();
 
@@ -170,16 +183,15 @@ function get_provider_url($provider, $entity = null, $referrer = '') {
 		case 'facebook' :
 			$base_url = "https://www.facebook.com/sharer/sharer.php";
 			$elements = array(
-				'u' => $shared_url,
+				'u' => $share_url,
 				't' => $title,
 			);
 			break;
 
 		case 'twitter' :
 			$base_url = "https://twitter.com/intent/tweet";
-			$via = ($owner->twitter) ? $owner->twitter : $site->twitter_site;
 			$elements = array(
-				'url' => $shared_url,
+				'url' => $share_url,
 				'hashtags' => (is_array($tags)) ? implode(',', $tags) : $tags,
 				'via' => ($via) ? str_replace('@', '', $via) : false,
 			);
@@ -189,7 +201,7 @@ function get_provider_url($provider, $entity = null, $referrer = '') {
 			$base_url = "http://www.linkedin.com/shareArticle";
 			$elements = array(
 				'mini' => true,
-				'url' => $shared_url,
+				'url' => $share_url,
 				'title' => $title,
 				'source' => $site->og_site_name,
 				'summary' => $description,
@@ -199,8 +211,8 @@ function get_provider_url($provider, $entity = null, $referrer = '') {
 		case 'pinterest' :
 			$base_url = "https://pinterest.com/pin/create/button/?url";
 			$elements = array(
-				'url' => $shared_url,
-				'media' => get_discovery_image_url($entity),
+				'url' => $share_url,
+				'media' => $media,
 				'description' => $title,
 			);
 			break;
@@ -208,7 +220,7 @@ function get_provider_url($provider, $entity = null, $referrer = '') {
 		case 'googleplus' :
 			$base_url = 'https://plus.google.com/share';
 			$elements = array(
-				'url' => $shared_url,
+				'url' => $share_url,
 				'title' => $title,
 				'summary' => $description,
 			);
@@ -219,7 +231,7 @@ function get_provider_url($provider, $entity = null, $referrer = '') {
 		return elgg_http_add_url_query_elements($base_url, $elements);
 	}
 
-	return $shared_url;
+	return $share_url;
 }
 
 /**

@@ -2,7 +2,9 @@
 
 namespace hypeJunction\Discovery;
 
+use ElggEntity;
 use ElggMenuItem;
+use ElggSite;
 
 class Menus {
 
@@ -26,19 +28,19 @@ class Menus {
 				$text = elgg_view_icon('eye');
 			}
 			$return[] = ElggMenuItem::factory(array(
-				'name' => 'discovery:edit',
-				'text' => $text,
-				'href' => "opengraph/edit/$entity->guid",
-				'title' => elgg_echo('discovery:edit'),
-				'link_class' => 'elgg-lightbox',
-				'data-colorbox-opts' => json_encode([
-					'maxWidth' => '600px',
-				]),
-				'data' => [
-					'icon' => 'eye',
-				],
-				'priority' => 700,
-				'deps' => ['elgg/lightbox'],
+						'name' => 'discovery:edit',
+						'text' => $text,
+						'href' => "opengraph/edit/$entity->guid",
+						'title' => elgg_echo('discovery:edit'),
+						'link_class' => 'elgg-lightbox',
+						'data-colorbox-opts' => json_encode([
+							'maxWidth' => '600px',
+						]),
+						'data' => [
+							'icon' => 'eye',
+						],
+						'priority' => 700,
+						'deps' => ['elgg/lightbox'],
 			));
 		}
 
@@ -49,19 +51,19 @@ class Menus {
 				$text = elgg_view_icon('share');
 			}
 			$return[] = ElggMenuItem::factory(array(
-				'name' => 'discovery:share',
-				'text' => $text,
-				'href' => "opengraph/share/$entity->guid",
-				'title' => elgg_echo('discovery:entity:share'),
-				'link_class' => 'elgg-lightbox',
-				'data-colorbox-opts' => json_encode([
-					'maxWidth' => '600px',
-				]),
-				'data' => [
-					'icon' => 'share',
-				],
-				'priority' => 700,
-				'deps' => ['elgg/lightbox'],
+						'name' => 'discovery:share',
+						'text' => $text,
+						'href' => "opengraph/share/$entity->guid",
+						'title' => elgg_echo('discovery:entity:share'),
+						'link_class' => 'elgg-lightbox',
+						'data-colorbox-opts' => json_encode([
+							'maxWidth' => '600px',
+						]),
+						'data' => [
+							'icon' => 'share',
+						],
+						'priority' => 700,
+						'deps' => ['elgg/lightbox'],
 			));
 		}
 
@@ -80,9 +82,13 @@ class Menus {
 	public static function extrasMenuSetup($hook, $type, $return, $params) {
 
 		$segments = _elgg_services()->request->getUrlSegments();
-		$url = elgg_normalize_url(implode('/', $segments));
-		$entity = get_entity_from_url($url);
-
+		$share_url = elgg_normalize_url(implode('/', $segments));
+		$entity = get_entity_from_url($share_url);
+		$guid = $entity->guid;
+		if ($entity instanceof ElggSite) {
+			$guid = '';
+		}
+		
 		$providers = get_discovery_providers();
 		if (empty($providers)) {
 			return;
@@ -90,21 +96,21 @@ class Menus {
 
 		$text = elgg_view_icon('share');
 		$return[] = ElggMenuItem::factory(array(
-			'name' => 'discovery:share',
-			'text' => $text,
-			'href' => elgg_http_add_url_query_elements("opengraph/share/$entity->guid", [
-				'share_url' => $entity instanceof \ElggSite ? current_page_url() : '',
-			]),
-			'title' => elgg_echo('discovery:entity:share'),
-			'link_class' => 'elgg-lightbox',
-			'data-colorbox-opts' => json_encode([
-				'maxWidth' => '600px',
-			]),
-			'data' => [
-				'icon' => 'share',
-			],
-			'priority' => 700,
-			'deps' => ['elgg/lightbox'],
+					'name' => 'discovery:share',
+					'text' => $text,
+					'href' => elgg_http_add_url_query_elements("opengraph/share/$guid", [
+						'share_url' => $share_url,
+					]),
+					'title' => elgg_echo('discovery:entity:share'),
+					'link_class' => 'elgg-lightbox',
+					'data-colorbox-opts' => json_encode([
+						'maxWidth' => '600px',
+					]),
+					'data' => [
+						'icon' => 'share',
+					],
+					'priority' => 700,
+					'deps' => ['elgg/lightbox'],
 		));
 
 		return $return;
@@ -121,25 +127,30 @@ class Menus {
 	 */
 	public static function shareMenuSetup($hook, $type, $return, $params) {
 
-		$entity = elgg_extract('entity', $params);
-		if (!is_discoverable($entity)) {
-			return;
-		}
-
 		$providers = get_discovery_providers();
 		if (empty($providers)) {
 			return;
 		}
 
+		$share_url = elgg_extract('share_url', $params);
+
+		$entity = elgg_extract('entity', $params);
+		if ($entity instanceof ElggEntity) {
+			$share_url = $entity->getVolatileData('discovery:share_url') ?: $entity->getURL();
+			if (!is_discoverable($entity)) {
+				return;
+			}
+		}
+
 		foreach ($providers as $provider) {
 			$return[] = ElggMenuItem::factory(array(
-				'name' => "discovery:$provider",
-				'text' => elgg_format_element('span', ['class' => "webicon $provider"]),
-				'href' => get_share_action_url($provider, $entity->guid, current_page_url()),
-				'is_action' => true,
-				'item_class' => 'svg',
-				'title' => elgg_echo('discovery:share', array(elgg_echo("discovery:provider:$provider"))),
-				'target' => '_blank',
+						'name' => "discovery:$provider",
+						'text' => elgg_format_element('span', ['class' => "webicon $provider"]),
+						'href' => get_share_action_url($provider, $entity->guid, current_page_url(), $share_url),
+						'is_action' => true,
+						'item_class' => 'svg',
+						'title' => elgg_echo('discovery:share', array(elgg_echo("discovery:provider:$provider"))),
+						'target' => '_blank',
 			));
 		}
 

@@ -2,15 +2,22 @@
 
 namespace hypeJunction\Discovery;
 
+use ElggEntity;
+
 $entity = elgg_extract('entity', $vars);
+$share_url = elgg_extract('share_url', $vars);
 
 echo elgg_view_menu('discovery_share', [
 	'entity' => $entity,
+	'share_url' => $share_url,
 	'class' => 'discovery-buttonbank elgg-menu-hz',
 	'sort_by' => 'priority',
 ]);
 
-$permalink = get_entity_permalink($entity);
+$permalink = '';
+if ($entity instanceof ElggEntity) {
+	$permalink = get_entity_permalink($entity);
+}
 
 if ($permalink) {
 	echo elgg_view_input('text', array(

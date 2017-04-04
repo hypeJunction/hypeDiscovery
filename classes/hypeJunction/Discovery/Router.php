@@ -102,7 +102,7 @@ class Router {
 					'entity' => $entity,
 					'user_hash' => $referrer_hash,
 					'referrer' => $_SERVER['HTTP_REFERER'],
-				), $forward_url);
+						), $forward_url);
 
 				if ($forward_url) {
 					elgg_set_ignore_access($ia);
@@ -151,20 +151,30 @@ class Router {
 				break;
 
 			case 'share' :
-				$guid = $segments[1];
-				$entity = get_entity($guid);
 
-				if (!$entity) {
-					return false;
-				}
-
+				$entity = null;
 				$share_url = get_input('share_url');
-				$entity->setVolatileData('discovery:share_url', $share_url);
+
+				$guid = $segments[1];
+				if ($guid) {
+					$entity = get_entity($guid);
+					if (!$entity) {
+						return false;
+					}
+
+					if (!$share_url) {
+						$share_url = $entity->getURL();
+					}
+					
+					$entity->setVolatileData('discovery:share_url', $share_url);
+				}
 
 				$title = elgg_echo('discovery:entity:share');
 				$content = elgg_view('forms/discovery/share', array(
 					'entity' => $entity,
+					'share_url' => $share_url,
 				));
+
 				$sidebar = false;
 				$filter = false;
 				break;
@@ -272,13 +282,13 @@ class Router {
 	 * @return array
 	 */
 	public static function redirectErrorToPermalink($hook, $type, $return, $params) {
-		
+
 		$ia = elgg_set_ignore_access(true);
 
 		$segments = _elgg_services()->request->getUrlSegments();
 		$url = elgg_normalize_url(implode('/', $segments));
 		$entity = get_entity_from_url($url);
-		
+
 		if (is_discoverable($entity)) {
 			$return = get_entity_permalink($entity);
 		}
@@ -287,4 +297,5 @@ class Router {
 
 		return $return;
 	}
+
 }
