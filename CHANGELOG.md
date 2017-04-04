@@ -1,3 +1,14 @@
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/hypeJunction/hypeDiscovery/compare/2.2.0...v2.3.0) (2017-04-04)
+
+
+### Features
+
+* **cards:** allow scraper cards to be shared externally ([97e7a75](https://github.com/hypeJunction/hypeDiscovery/commit/97e7a75))
+* **share:** allow any URL to be shared externally ([0edd9b6](https://github.com/hypeJunction/hypeDiscovery/commit/0edd9b6))
+
+
+
 <a name="2.2.0"></a>
 # [2.2.0](https://github.com/hypeJunction/hypeDiscovery/compare/2.1.2...v2.2.0) (2017-02-03)
 
