@@ -152,6 +152,7 @@ function get_provider_url($provider, $entity = null, $referrer = '', $share_url 
 		$tags = '';
 		$description = '';
 		$media = '';
+		$via = $site->twitter_site;
 	} else {
 		if (!elgg_instanceof($entity)) {
 			$segments = _elgg_services()->request->getUrlSegments();
@@ -193,7 +194,7 @@ function get_provider_url($provider, $entity = null, $referrer = '', $share_url 
 			$elements = array(
 				'url' => $share_url,
 				'hashtags' => (is_array($tags)) ? implode(',', $tags) : $tags,
-				'via' => ($via) ? str_replace('@', '', $via) : false,
+				'via' => ($via) ? str_replace('@', '', $via) : '',
 			);
 			break;
 

@@ -32,6 +32,7 @@ elgg_register_event_handler('init', 'system', function() {
 	elgg_register_plugin_hook_handler('register', 'menu:entity', [Menus::class, 'entityMenuSetup']);
 	elgg_register_plugin_hook_handler('register', 'menu:extras', [Menus::class, 'extrasMenuSetup']);
 	elgg_register_plugin_hook_handler('register', 'menu:discovery_share', [Menus::class, 'shareMenuSetup']);
+	elgg_register_plugin_hook_handler('register', 'menu:scraper:card', [Menus::class, 'setupCardMenu']);
 
 	elgg_register_plugin_hook_handler('entity:icon:url', 'all', [Icons::class, 'entityIconURL']); // BC
 	elgg_register_plugin_hook_handler('entity:open_graph_image:file', 'all', [Icons::class, 'entityOpenGraphImageFile']);

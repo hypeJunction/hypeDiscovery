@@ -38,6 +38,7 @@ $english = array(
 	'discovery:entity:share' => 'Share',
 	'discovery:entity:permalink' => 'Permalink',
 	'discovery:entity:embed_code' => 'Embed Code',
+	'discovery:share_url' => 'URL',
 	'discovery:og:site_image' => 'Site Image',
 	'discovery:og:site_image:help' => 'For best results, upload an image that\'s larger than 1200x630 pixels. For optimum results, your image should not be smaller than 600 x 315px',
 	'discovery:og:site_name' => 'Site Name',

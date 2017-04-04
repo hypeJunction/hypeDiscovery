@@ -88,7 +88,7 @@ class Menus {
 		if ($entity instanceof ElggSite) {
 			$guid = '';
 		}
-		
+
 		$providers = get_discovery_providers();
 		if (empty($providers)) {
 			return;
@@ -153,6 +153,48 @@ class Menus {
 						'target' => '_blank',
 			));
 		}
+
+		return $return;
+	}
+
+	/**
+	 * Setup menu
+	 *
+	 * @param string         $hook   "register"
+	 * @param string         $type   "menu:scraper:card"
+	 * @param ElggMenuItem[] $return Menu
+	 * @param array          $params Hook params
+	 * @return ElggMenuItem[]
+	 */
+	public static function setupCardMenu($hook, $type, $return, $params) {
+
+		$user = elgg_get_logged_in_user_entity();
+		if (!$user) {
+			return;
+		}
+
+		$href = elgg_extract('href', $params);
+		if (!$href) {
+			return;
+		}
+
+		$return[] = ElggMenuItem::factory(array(
+					'name' => 'discovery:share',
+					'text' => elgg_view_icon('share-alt-square'),
+					'href' => elgg_http_add_url_query_elements("opengraph/share", [
+						'share_url' => $href,
+					]),
+					'title' => elgg_echo('discovery:entity:share'),
+					'link_class' => 'elgg-lightbox',
+					'data-colorbox-opts' => json_encode([
+						'maxWidth' => '600px',
+					]),
+					'data' => [
+						'icon' => 'share',
+					],
+					'priority' => 700,
+					'deps' => ['elgg/lightbox'],
+		));
 
 		return $return;
 	}

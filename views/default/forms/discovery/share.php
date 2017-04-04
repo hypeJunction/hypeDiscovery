@@ -14,15 +14,18 @@ echo elgg_view_menu('discovery_share', [
 	'sort_by' => 'priority',
 ]);
 
-$permalink = '';
 if ($entity instanceof ElggEntity) {
 	$permalink = get_entity_permalink($entity);
+	$label = elgg_echo('discovery:entity:permalink');
+} else {
+	$permalink = $share_url;
+	$label = elgg_echo('discovery:share_url');
 }
 
 if ($permalink) {
 	echo elgg_view_input('text', array(
 		'value' => $permalink,
-		'label' => elgg_echo('discovery:entity:permalink'),
+		'label' => $label,
 	));
 	
 	if (is_embeddable($entity)) {
