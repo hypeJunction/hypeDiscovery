@@ -1,3 +1,15 @@
+<a name="2.3.1"></a>
+## [2.3.1](https://github.com/hypeJunction/hypeDiscovery/compare/2.3.0...v2.3.1) (2017-04-21)
+
+
+### Bug Fixes
+
+* **discovery:** improve appearance of public entities ([a772052](https://github.com/hypeJunction/hypeDiscovery/commit/a772052))
+* **discovery:** improve public profile display ([8b459c4](https://github.com/hypeJunction/hypeDiscovery/commit/8b459c4))
+* **share:** use permalinks when in walled garden mode ([1ca5355](https://github.com/hypeJunction/hypeDiscovery/commit/1ca5355))
+
+
+
 <a name="2.3.0"></a>
 # [2.3.0](https://github.com/hypeJunction/hypeDiscovery/compare/2.2.0...v2.3.0) (2017-04-04)
 
