@@ -27,6 +27,10 @@ if (isset($og_sizes[$size])) {
 	$size = $og_sizes[$size];
 }
 
+if (!$entity->hasIcon($size, 'open_graph_image')) {
+	return;
+}
+
 $img_params = array(
 	'src' => $entity->getIconURL([
 		'size' => $size,
