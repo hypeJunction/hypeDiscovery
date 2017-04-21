@@ -14,6 +14,7 @@ $subtype = $entity->getSubtype() ? : 'default';
 
 if (elgg_view_exists("framework/discovery/public/$type/$subtype")) {
 	echo elgg_view("framework/discovery/public/$type/$subtype", $vars);
+	return;
 }
 
 $title = get_discovery_title($entity);
@@ -22,7 +23,7 @@ $owner_icon = '';
 $subtitle = '';
 
 $owner = $entity->getOwnerEntity();
-if (is_discoverable($owner) && !$owner instanceof ElggSite) {
+if (is_discoverable($owner) && !$owner instanceof \ElggSite) {
 	$owner_name = get_discovery_title($owner);
 	$owner_url = get_entity_permalink($owner);
 	$owner_link = elgg_view('output/url', [
@@ -77,6 +78,9 @@ $content .= elgg_format_element('div', [
 	'class' => 'elgg-output',
 ], $image . $more);
 
+$content = elgg_format_element('div', [
+	'class' => 'discovery-content',
+], $content);
 
 echo elgg_view('object/elements/full', [
 	'entity' => $entity,
