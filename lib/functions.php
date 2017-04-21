@@ -252,7 +252,7 @@ function get_entity_permalink($entity, $viewtype = 'default') {
 
 	$url = $entity->getVolatileData('discovery:share_url');
 
-	if (!$url) {
+	if (!$url || elgg_get_config('walled_garden')) {
 		$title = elgg_get_friendly_title(get_discovery_title($entity));
 
 		$segments = array(
