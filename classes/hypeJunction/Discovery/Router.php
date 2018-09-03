@@ -109,6 +109,19 @@ class Router {
 					forward($forward_url);
 				}
 
+				if (elgg_get_plugin_setting('nocrawl', 'hypeDiscovery')) {
+					elgg_set_http_header('X-Robots-Tag: noindex', true);
+
+					elgg_register_plugin_hook_handler('head', 'page', function($hook, $type, $return) {
+						$return['metas'][] = [
+							'name' => 'robots',
+							'content' => 'noindex',
+						];
+
+						return $return;
+					});
+				}
+
 				echo elgg_view_resource('permalink', [
 					'viewtype' => $viewtype,
 					'user_hash' => $referrer_hash,

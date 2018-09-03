@@ -10,7 +10,10 @@ $english = array(
 	'admin:discovery:site' => 'Site Profile',
 
 	'discovery:settings:bypass_access' => 'Bypass access system',
-	'discovery:settings:bypass_access:help' => 'Bypass the access system to allow any content saved for "Logged in users" to be visible remotely. This will only expose the title, description and icon. This is helpful when your site is in a walled garden mode, but you would still like to generate traffic to your site',
+	'discovery:settings:bypass_access:help' => 'Bypass the access system to allow any content saved for "Logged in users" to be visible remotely. This will only expose the title, description and icon via metatags and generate a preview card on the page. This is helpful when your site is in a walled garden mode, but you would still like to generate traffic to your site via link shares',
+
+	'discovery:settings:nocrawl' => 'Disable crawling for bypass URLs',
+	'discovery:settings:nocrawl:help' => 'When the access system is bypassed, the quality of content on the preview pages may result in SEO penalties. You can disable crawling on these pages to not affect your SEO score',
 
 	'discovery:settings:discovery_type_subtype_pairs' => 'Conent that can be shared with the outside world',
 	'discovery:settings:discovery_type_subtype_pairs:help' => 'Note the Bypass access system setting and the effect it might have on privacy',
@@ -72,7 +75,8 @@ $english = array(
 	'discovery:site:error' => 'Discovery details for your site failed to update',
 
 	'discovery:login_for_more' => '%s or %s to see full content',
-	
+
+	''
 );
 
 add_translation('en', $english);

@@ -15,6 +15,17 @@ echo elgg_view_input('select', array(
 	'help' => elgg_echo('discovery:settings:bypass_access:help'),
 ));
 
+echo elgg_view_input('select', array(
+	'name' => 'params[nocrawl]',
+	'value' => $entity->nocrawl,
+	'options_values' => array(
+		false => elgg_echo('option:no'),
+		true => elgg_echo('option:yes')
+	),
+	'label' => elgg_echo('discovery:settings:nocrawl'),
+	'help' => elgg_echo('discovery:settings:nocrawl:help'),
+));
+
 $registered_entities = get_registered_entity_types();
 foreach ($registered_entities as $type => $subtypes) {
 	if (empty($subtypes)) {
