@@ -1,3 +1,13 @@
+<a name="2.3.2"></a>
+## [2.3.2](https://github.com/hypeJunction/hypeDiscovery/compare/2.3.1...v2.3.2) (2018-09-03)
+
+
+### Bug Fixes
+
+* **seo:** add option to disable crawling on preview pages ([fd1c1ff](https://github.com/hypeJunction/hypeDiscovery/commit/fd1c1ff))
+
+
+
 <a name="2.3.1"></a>
 ## [2.3.1](https://github.com/hypeJunction/hypeDiscovery/compare/2.3.0...v2.3.1) (2017-04-21)
 
