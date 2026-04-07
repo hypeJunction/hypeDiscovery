@@ -81,8 +81,7 @@ class Menus {
 	 */
 	public static function extrasMenuSetup($hook, $type, $return, $params) {
 
-		$segments = _elgg_services()->request->getUrlSegments();
-		$share_url = elgg_normalize_url(implode('/', $segments));
+		$share_url = current_page_url();
 		$entity = get_entity_from_url($share_url);
 		$guid = $entity->guid;
 		if ($entity instanceof ElggSite) {

@@ -6,7 +6,7 @@ elgg_load_css('oembed.css');
 
 $entity = elgg_extract('entity', $vars);
 
-if (!elgg_instanceof($entity)) {
+if (!$entity instanceof \ElggEntity) {
 	return;
 }
 

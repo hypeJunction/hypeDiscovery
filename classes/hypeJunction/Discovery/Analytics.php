@@ -14,7 +14,7 @@ class Analytics {
 	public static function saveTempUserHash($event, $type, $user) {
 
 		if (isset($_SESSION['discovery_hash'])) {
-			create_metadata($user->guid, 'discovery_temp_hash', $_SESSION['discovery_hash'], '', $user->guid, ACCESS_PUBLIC);
+			$user->discovery_temp_hash = $_SESSION['discovery_hash'];
 			unset($_SESSION['discovery_hash']);
 		}
 

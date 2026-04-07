@@ -9,7 +9,7 @@ if (!$entity) {
 
 $title = get_discovery_title($entity);
 
-$layout = elgg_view_layout('one_sidebar', [
+$layout = elgg_view_layout('default', [
 	'title' => $title,
 	'content' => elgg_view('framework/discovery/public', $vars),
 	'sidebar' => elgg_view('core/account/login_box'),

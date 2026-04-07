@@ -13,7 +13,7 @@ if ($site->save()) {
 
 	elgg_clear_sticky_form('discovery/site');
 
-	system_message(elgg_echo('discovery:site:success'));
+	elgg_register_success_message(elgg_echo('discovery:site:success'));
 } else {
-	register_error(elgg_echo('discovery:site:error'));
+	elgg_register_error_message(elgg_echo('discovery:site:error'));
 }

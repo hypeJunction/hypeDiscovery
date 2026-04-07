@@ -48,7 +48,8 @@ class Router {
 						break;
 				}
 
-				if (!elgg_is_registered_viewtype($viewtype)) {
+				$valid_viewtypes = ['default', 'json', 'xml', 'oembed'];
+				if (!in_array($viewtype, $valid_viewtypes)) {
 					$viewtype = 'default';
 				}
 
@@ -151,7 +152,7 @@ class Router {
 				$guid = $segments[1];
 				$entity = get_entity($guid);
 
-				if (!elgg_instanceof($entity) || !$entity->canEdit() || !is_discoverable_type($entity)) {
+				if (!$entity instanceof \ElggEntity || !$entity->canEdit() || !is_discoverable_type($entity)) {
 					return false;
 				}
 
@@ -197,7 +198,7 @@ class Router {
 			if (elgg_is_xhr()) {
 				echo $content;
 			} else {
-				$layout = elgg_view_layout('content', array(
+				$layout = elgg_view_layout('default', array(
 					'title' => $title,
 					'content' => $content,
 					'filter' => $filter,
@@ -298,8 +299,7 @@ class Router {
 
 		$ia = elgg_set_ignore_access(true);
 
-		$segments = _elgg_services()->request->getUrlSegments();
-		$url = elgg_normalize_url(implode('/', $segments));
+		$url = current_page_url();
 		$entity = get_entity_from_url($url);
 
 		if (is_discoverable($entity)) {

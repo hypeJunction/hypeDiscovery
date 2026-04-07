@@ -49,7 +49,7 @@ function is_discoverable($entity)
  */
 function is_discoverable_type($entity = null, $type = '', $subtype = '')
 {
-    if (elgg_instanceof($entity)) {
+    if ($entity instanceof ElggEntity) {
         $type = $entity->getType();
         $subtype = $entity->getSubtype() ?: 'default';
     }
@@ -66,10 +66,10 @@ function is_discoverable_type($entity = null, $type = '', $subtype = '')
  */
 function is_embeddable($entity)
 {
-    if (elgg_instanceof($entity, 'site')) {
+    if ($entity instanceof ElggSite) {
         return false;
     }
-    if (!elgg_instanceof($entity)) {
+    if (!$entity instanceof ElggEntity) {
         return false;
     }
     if (!is_embeddable_type($entity)) {
@@ -90,7 +90,7 @@ function is_embeddable($entity)
  */
 function is_embeddable_type($entity = null, $type = '', $subtype = '')
 {
-    if (elgg_instanceof($entity)) {
+    if ($entity instanceof ElggEntity) {
         $type = $entity->getType();
         $subtype = $entity->getSubtype() ?: 'default';
     }
@@ -132,9 +132,8 @@ function get_provider_url($provider, $entity = null, $referrer = '', $share_url 
         $media = '';
         $via = $site->twitter_site;
     } else {
-        if (!elgg_instanceof($entity)) {
-            $segments = _elgg_services()->request->getUrlSegments();
-            $url = elgg_normalize_url(implode('/', $segments));
+        if (!$entity instanceof ElggEntity) {
+            $url = current_page_url();
             $permalink = $referrer ? $referrer : $url;
             $guid = get_guid_from_url($permalink);
             if ($guid) {
@@ -188,7 +187,7 @@ function get_provider_url($provider, $entity = null, $referrer = '', $share_url 
  */
 function get_entity_permalink($entity, $viewtype = 'default')
 {
-    if (!elgg_instanceof($entity)) {
+    if (!$entity instanceof ElggEntity) {
         return current_page_url();
     }
     $user_guid = elgg_get_logged_in_user_guid();
@@ -277,8 +276,8 @@ function get_user_hash($guid)
     } else {
         $hash = $user->discovery_permanent_hash;
         if (!$hash) {
-            $hash = md5($user->guid . time() . generate_random_cleartext_password());
-            create_metadata($user->guid, 'discovery_permanent_hash', $hash, '', $user->guid, ACCESS_PUBLIC);
+            $hash = md5($user->guid . time() . elgg_generate_password());
+            $user->discovery_permanent_hash = $hash;
         }
     }
     return $hash;
@@ -333,7 +332,7 @@ function get_discovery_metatags($url)
  */
 function get_discovery_title($entity)
 {
-    if (!elgg_instanceof($entity) || !is_discoverable($entity)) {
+    if (!$entity instanceof ElggEntity || !is_discoverable($entity)) {
         $entity = elgg_get_site_entity();
     }
     if (!empty($entity->og_title)) {
@@ -350,7 +349,7 @@ function get_discovery_title($entity)
  */
 function get_discovery_description($entity)
 {
-    if (!elgg_instanceof($entity) || !is_discoverable($entity)) {
+    if (!$entity instanceof ElggEntity || !is_discoverable($entity)) {
         $entity = elgg_get_site_entity();
     }
     if (!empty($entity->og_description)) {
@@ -384,7 +383,7 @@ function get_discovery_icon($entity)
  */
 function get_discovery_image_url($entity)
 {
-    if (!elgg_instanceof($entity) || !is_discoverable($entity)) {
+    if (!$entity instanceof ElggEntity || !is_discoverable($entity)) {
         $entity = elgg_get_site_entity();
     }
     $icon = get_discovery_icon($entity);
@@ -400,7 +399,7 @@ function get_discovery_image_url($entity)
  */
 function get_discovery_keywords($entity)
 {
-    if (!elgg_instanceof($entity) || !is_discoverable($entity)) {
+    if (!$entity instanceof ElggEntity || !is_discoverable($entity)) {
         $entity = elgg_get_site_entity();
     }
     if (isset($entity->og_keywords)) {

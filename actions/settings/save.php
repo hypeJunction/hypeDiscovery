@@ -4,7 +4,7 @@ $params = get_input('params', array(), false); // don't filter the results so th
 $plugin = elgg_get_plugin_from_id('hypeDiscovery');
 
 if (!($plugin instanceof ElggPlugin)) {
-	register_error(elgg_echo('plugins:settings:save:fail', array('hypeDiscovery')));
+	elgg_register_error_message(elgg_echo('plugins:settings:save:fail', array('hypeDiscovery')));
 	forward(REFERER);
 }
 
@@ -18,11 +18,11 @@ foreach ($params as $k => $v) {
 	}
 	$result = $plugin->setSetting($k, $v);
 	if (!$result) {
-		register_error(elgg_echo('plugins:settings:save:fail', array($plugin_name)));
+		elgg_register_error_message(elgg_echo('plugins:settings:save:fail', array($plugin_name)));
 		forward(REFERER);
 		exit;
 	}
 }
 
-system_message(elgg_echo('plugins:settings:save:ok', array($plugin_name)));
+elgg_register_success_message(elgg_echo('plugins:settings:save:ok', array($plugin_name)));
 forward(REFERER);
