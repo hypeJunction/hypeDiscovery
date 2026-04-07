@@ -4,6 +4,7 @@ namespace hypeJunction\Discovery;
 
 use ElggEntity;
 use ElggIcon;
+use ElggSite;
 use ElggUser;
 use UFCOE\Elgg\SiteUrl;
 /**
@@ -14,10 +15,10 @@ use UFCOE\Elgg\SiteUrl;
  */
 function is_discoverable($entity)
 {
-    if (elgg_instanceof($entity, 'site')) {
+    if ($entity instanceof ElggSite) {
         return true;
     }
-    if (!elgg_instanceof($entity)) {
+    if (!$entity instanceof ElggEntity) {
         return false;
     }
     if (!is_discoverable_type($entity)) {
