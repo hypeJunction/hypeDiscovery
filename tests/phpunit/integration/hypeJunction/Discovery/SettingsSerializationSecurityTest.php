@@ -52,48 +52,44 @@ class SettingsSerializationSecurityTest extends IntegrationTestCase {
 		$this->assertSame([], get_discovery_providers());
 	}
 
-	public function testProvidersRoundTripsArrayValue(): void {
+	public function testProvidersRoundTripsJsonEncoded(): void {
+		$plugin = elgg_get_plugin_from_id('hypeDiscovery');
+		$providers = ['facebook', 'twitter', 'linkedin'];
+		$plugin->setSetting('providers', json_encode($providers));
+		$this->assertEquals($providers, get_discovery_providers());
+	}
+
+	public function testProvidersReadsLegacySerialized(): void {
 		$plugin = elgg_get_plugin_from_id('hypeDiscovery');
 		$providers = ['facebook', 'twitter', 'linkedin'];
 		$plugin->setSetting('providers', serialize($providers));
 		$this->assertEquals($providers, get_discovery_providers());
 	}
 
-	public function testDiscoverableTypePairsRoundTrip(): void {
+	public function testDiscoverableTypePairsRoundTripsJsonEncoded(): void {
 		$plugin = elgg_get_plugin_from_id('hypeDiscovery');
 		$pairs = ['object::blog', 'object::file', 'user::default'];
-		$plugin->setSetting('discovery_type_subtype_pairs', serialize($pairs));
+		$plugin->setSetting('discovery_type_subtype_pairs', json_encode($pairs));
 		$this->assertEquals($pairs, get_discoverable_type_subtype_pairs());
 	}
 
-	public function testEmbeddableTypePairsRoundTrip(): void {
+	public function testEmbeddableTypePairsRoundTripsJsonEncoded(): void {
 		$plugin = elgg_get_plugin_from_id('hypeDiscovery');
 		$pairs = ['object::blog'];
-		$plugin->setSetting('embed_type_subtype_pairs', serialize($pairs));
+		$plugin->setSetting('embed_type_subtype_pairs', json_encode($pairs));
 		$this->assertEquals($pairs, get_embeddable_type_subtype_pairs());
 	}
 
 	/**
-	 * SECURITY: if a serialized payload contains a PHP object with a magic
-	 * __wakeup or __destruct, unserialize() would instantiate it. This test
-	 * confirms that ONLY scalar/array payloads are stored by the legitimate
-	 * settings form flow — the current behavior is "pass settings through
-	 * serialize($v) if is_array($v)" which never writes objects.
-	 *
-	 * The migration should replace with json_encode/json_decode to make
-	 * the RCE vector impossible even under a hypothetical injection.
+	 * SECURITY: settings save now uses json_encode for arrays. A payload
+	 * containing a PHP object cannot be instantiated by json_decode.
 	 */
-	public function testPlainArrayOnlyStoredByCurrentSaveSemantic(): void {
-		// Simulate what actions/settings/save.php does for each POST value
+	public function testJsonEncodedPayloadHasNoObjectMarkers(): void {
 		$input = ['facebook', 'twitter'];
-		$stored = is_array($input) ? serialize($input) : $input;
-
-		// Must not contain object markers
-		$this->assertStringStartsWith('a:', $stored);
+		$stored = is_array($input) ? json_encode($input) : $input;
+		$this->assertStringStartsWith('[', $stored);
 		$this->assertStringNotContainsString('O:', $stored);
-
-		$out = unserialize($stored);
-		$this->assertSame($input, $out);
+		$this->assertSame($input, json_decode($stored, true));
 	}
 
 	/**

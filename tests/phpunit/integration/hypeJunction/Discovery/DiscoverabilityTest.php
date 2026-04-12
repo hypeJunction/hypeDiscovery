@@ -21,8 +21,8 @@ class DiscoverabilityTest extends IntegrationTestCase {
 		if ($plugin) {
 			$this->previous_discoverable = $plugin->getSetting('discovery_type_subtype_pairs');
 			$this->previous_embeddable = $plugin->getSetting('embed_type_subtype_pairs');
-			$plugin->setSetting('discovery_type_subtype_pairs', serialize(['object::blog']));
-			$plugin->setSetting('embed_type_subtype_pairs', serialize(['object::blog']));
+			$plugin->setSetting('discovery_type_subtype_pairs', json_encode(['object::blog']));
+			$plugin->setSetting('embed_type_subtype_pairs', json_encode(['object::blog']));
 		}
 	}
 

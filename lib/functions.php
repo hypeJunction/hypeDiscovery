@@ -414,8 +414,7 @@ function get_discovery_keywords($entity)
  */
 function get_discovery_providers()
 {
-    $providers = elgg_get_plugin_setting('providers', 'hypeDiscovery');
-    return $providers ? unserialize($providers) : [];
+    return _decode_setting_array(elgg_get_plugin_setting('providers', 'hypeDiscovery'));
 }
 /**
  * Returns configured discoverable type/subtype pairs
@@ -423,8 +422,7 @@ function get_discovery_providers()
  */
 function get_discoverable_type_subtype_pairs()
 {
-    $pairs = elgg_get_plugin_setting('discovery_type_subtype_pairs', 'hypeDiscovery');
-    return $pairs ? unserialize($pairs) : [];
+    return _decode_setting_array(elgg_get_plugin_setting('discovery_type_subtype_pairs', 'hypeDiscovery'));
 }
 /**
  * Returns configured embeddable type/subtype pairs
@@ -432,6 +430,23 @@ function get_discoverable_type_subtype_pairs()
  */
 function get_embeddable_type_subtype_pairs()
 {
-    $pairs = elgg_get_plugin_setting('embed_type_subtype_pairs', 'hypeDiscovery');
-    return $pairs ? unserialize($pairs) : [];
+    return _decode_setting_array(elgg_get_plugin_setting('embed_type_subtype_pairs', 'hypeDiscovery'));
+}
+/**
+ * Decode an array stored in a plugin setting. Prefers JSON, falls back to
+ * legacy serialize() with object instantiation disabled.
+ *
+ * @param string|null $raw Raw setting value
+ * @return array
+ */
+function _decode_setting_array($raw)
+{
+    if (!$raw) {
+        return [];
+    }
+    $decoded = json_decode($raw, true);
+    if (!is_array($decoded)) {
+        $decoded = @unserialize($raw, ['allowed_classes' => false]);
+    }
+    return is_array($decoded) ? $decoded : [];
 }
