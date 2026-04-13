@@ -1,10 +1,10 @@
 <?php
 
 $params = get_input('params', array(), false); // don't filter the results so that html inputs remain unchanged
-$plugin = elgg_get_plugin_from_id('hypeDiscovery');
+$plugin = elgg_get_plugin_from_id('hypediscovery');
 
 if (!($plugin instanceof ElggPlugin)) {
-	elgg_register_error_message(elgg_echo('plugins:settings:save:fail', array('hypeDiscovery')));
+	elgg_register_error_message(elgg_echo('plugins:settings:save:fail', array('hypediscovery')));
 	forward(REFERER);
 }
 

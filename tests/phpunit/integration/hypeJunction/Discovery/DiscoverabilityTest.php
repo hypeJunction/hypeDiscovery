@@ -17,7 +17,7 @@ class DiscoverabilityTest extends IntegrationTestCase {
 		}
 
 		// Configure plugin settings so "object::blog" is discoverable
-		$plugin = elgg_get_plugin_from_id('hypeDiscovery');
+		$plugin = elgg_get_plugin_from_id('hypediscovery');
 		if ($plugin) {
 			$this->previous_discoverable = $plugin->getSetting('discovery_type_subtype_pairs');
 			$this->previous_embeddable = $plugin->getSetting('embed_type_subtype_pairs');
@@ -27,7 +27,7 @@ class DiscoverabilityTest extends IntegrationTestCase {
 	}
 
 	public function down() {
-		$plugin = elgg_get_plugin_from_id('hypeDiscovery');
+		$plugin = elgg_get_plugin_from_id('hypediscovery');
 		if ($plugin) {
 			$plugin->setSetting('discovery_type_subtype_pairs', $this->previous_discoverable ?? '');
 			$plugin->setSetting('embed_type_subtype_pairs', $this->previous_embeddable ?? '');

@@ -20,14 +20,14 @@ class BootstrapTest extends IntegrationTestCase {
 	public function down() {}
 
 	public function testPluginLoadable(): void {
-		$plugin = elgg_get_plugin_from_id('hypeDiscovery');
+		$plugin = elgg_get_plugin_from_id('hypediscovery');
 		$this->assertNotNull($plugin, 'Plugin hypeDiscovery should be loadable');
 	}
 
 	public function testSettingsSaveActionRegistered(): void {
 		$this->assertTrue(
-			elgg_action_exists('hypeDiscovery/settings/save'),
-			'Action hypeDiscovery/settings/save should be registered'
+			elgg_action_exists('hypediscovery/settings/save'),
+			'Action hypediscovery/settings/save should be registered'
 		);
 	}
 
@@ -54,7 +54,7 @@ class BootstrapTest extends IntegrationTestCase {
 
 	public function testSettingsViewExists(): void {
 		$this->assertTrue(
-			elgg_view_exists('plugins/hypeDiscovery/settings'),
+			elgg_view_exists('plugins/hypediscovery/settings'),
 			'Plugin settings view should exist'
 		);
 	}

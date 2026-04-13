@@ -25,7 +25,7 @@ return [
     ],
 
     'actions' => [
-        'hypeDiscovery/settings/save' => [],
+        'hypediscovery/settings/save' => [],
         'discovery/site' => ['access' => 'admin'],
         'discovery/share' => ['access' => 'public'],
         'discovery/edit' => [],

@@ -31,7 +31,7 @@ function is_discoverable($entity)
         case ACCESS_PUBLIC:
             return true;
         case ACCESS_LOGGED_IN:
-            if (!elgg_get_plugin_setting('bypass_access', 'hypeDiscovery')) {
+            if (!elgg_get_plugin_setting('bypass_access', 'hypediscovery')) {
                 return false;
             }
             return true;
@@ -357,7 +357,7 @@ function get_discovery_description($entity)
     } else if (!empty($entity->description)) {
         $description = $entity->description;
     }
-    return elgg_view('output/excerpt', ['text' => $description, 'num_chars' => elgg_get_plugin_setting('excerpt_description', 'hypeDiscovery', 250)], false, false, 'default');
+    return elgg_view('output/excerpt', ['text' => $description, 'num_chars' => elgg_get_plugin_setting('excerpt_description', 'hypediscovery', 250)], false, false, 'default');
 }
 /**
  * Get discoverable icon object
@@ -414,7 +414,7 @@ function get_discovery_keywords($entity)
  */
 function get_discovery_providers()
 {
-    return _decode_setting_array(elgg_get_plugin_setting('providers', 'hypeDiscovery'));
+    return _decode_setting_array(elgg_get_plugin_setting('providers', 'hypediscovery'));
 }
 /**
  * Returns configured discoverable type/subtype pairs
@@ -422,7 +422,7 @@ function get_discovery_providers()
  */
 function get_discoverable_type_subtype_pairs()
 {
-    return _decode_setting_array(elgg_get_plugin_setting('discovery_type_subtype_pairs', 'hypeDiscovery'));
+    return _decode_setting_array(elgg_get_plugin_setting('discovery_type_subtype_pairs', 'hypediscovery'));
 }
 /**
  * Returns configured embeddable type/subtype pairs
@@ -430,7 +430,7 @@ function get_discoverable_type_subtype_pairs()
  */
 function get_embeddable_type_subtype_pairs()
 {
-    return _decode_setting_array(elgg_get_plugin_setting('embed_type_subtype_pairs', 'hypeDiscovery'));
+    return _decode_setting_array(elgg_get_plugin_setting('embed_type_subtype_pairs', 'hypediscovery'));
 }
 /**
  * Decode an array stored in a plugin setting. Prefers JSON, falls back to

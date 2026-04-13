@@ -110,7 +110,7 @@ class Router {
 					forward($forward_url);
 				}
 
-				if (elgg_get_plugin_setting('nocrawl', 'hypeDiscovery')) {
+				if (elgg_get_plugin_setting('nocrawl', 'hypediscovery')) {
 					elgg_set_http_header('X-Robots-Tag: noindex', true);
 
 					elgg_register_plugin_hook_handler('head', 'page', function($hook, $type, $return) {
