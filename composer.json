@@ -6,7 +6,7 @@
 	"keywords": [
 		"elgg", "plugin", "open graph", "twitter cards", "facebook", "oembed", "discovery"
 	],
-	"license": "GPL-2.0",
+	"license": "GPL-2.0-or-later",
 	"authors": [
 		{
 			"name": "Ismayil Khayredinov",
@@ -14,17 +14,20 @@
 		}
 	],
 	"require": {
-		"php": ">=5.5",
-		"composer/installers": "~1.0",
+		"php": ">=7.4",
+		"elgg/elgg": "^4.0",
+		"composer/installers": "^2.0",
 		"mrclay/elgg-url-sniffer": "~3.0"
 	},
 	"autoload": {
-		"psr-0": {
-			"hypeJunction/": "classes/hypeJunction/"
+		"psr-4": {
+			"hypeJunction\\Discovery\\": "classes/hypeJunction/Discovery/"
 		}
 	},
 	"extra": {
-		"installer-name": "hypeDiscovery"
+		"elgg-plugin": {
+			"id": "hypediscovery"
+		}
 	},
 	"config": {
 		"allow-plugins": {
