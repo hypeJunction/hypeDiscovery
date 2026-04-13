@@ -264,6 +264,7 @@ function get_user_from_hash($hash = '')
  */
 function get_user_hash($guid)
 {
+    $hash = '';
     $user = get_entity($guid);
     if (!$user) {
         $session = elgg_get_session();
@@ -280,7 +281,7 @@ function get_user_hash($guid)
             $user->discovery_permanent_hash = $hash;
         }
     }
-    return $hash;
+    return (string) $hash;
 }
 /**
  * Get oEmbed representation of the page
