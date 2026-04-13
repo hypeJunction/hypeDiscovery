@@ -1,3 +1,32 @@
+## [Unreleased] — Elgg 4.x migration
+
+### Migrated to Elgg 4.x
+
+- composer.json: elgg/elgg ^4.0, php >=7.4, composer/installers ^2.0, PSR-4 autoload (was PSR-0), config.allow-plugins, extra.elgg-plugin.id=hypediscovery
+- **Deleted manifest.xml** (composer.json is sole metadata source from 4.x)
+- **Deleted start.php** (Iron Law: 4.x rejects start.php)
+- **Created elgg-plugin.php** with declarative actions/routes/hooks/events/view_extensions translated from start.php (16 hooks, 1 event, 4 actions, 2 routes, 2 view extensions)
+- **Created Bootstrap class** — init() registers the 2 admin menu items
+- **Lowercased plugin id** across lib, classes, actions, tests (Iron Law 6)
+- **Renamed views/default/plugins/hypeDiscovery → plugins/hypediscovery**
+- **16 hook/event handlers** converted to polymorphic guard pattern
+- **4 critical render-path elgg_set_ignore_access set/restore pairs refactored to elgg_call(ELGG_IGNORE_ACCESS, fn) closures** per Iron Law 11 — never polyfill removed APIs
+- Action `hypediscovery/settings/save` file moved to `actions/hypediscovery/settings/save.php` to match Elgg 4.x auto-derive convention
+- `get_user_hash` always returns a string so `uh` query param doesn't drop on anonymous
+
+### Verified
+
+- Activates in elgg4
+- Homepage 200/9137, login 200/9272
+- Pre-migration test suite: **52/52 passing, 364 assertions** (per-plugin isolation via bin/discover-plugins.sh)
+
+### Deferred to 4→5 or later
+
+- 5 remaining elgg_set_ignore_access pairs in Router route handlers + share.php action (not in render path)
+- 10 forward() calls in Router + actions
+- md5() ETag (cosmetic)
+- `elgg_is_active_plugin('hypeSeo')` guard uses camelCase (silently false in 4.x)
+
 <a name="2.3.2"></a>
 ## [2.3.2](https://github.com/hypeJunction/hypeDiscovery/compare/2.3.1...v2.3.2) (2018-09-03)
 
