@@ -32,6 +32,14 @@
 	"config": {
 		"allow-plugins": {
 			"composer/installers": true
+		},
+		"audit": {
+			"abandoned": "ignore",
+			"ignore": {
+				"PKSA-sd3x-9jwt-jn4s": "ckeditor 4.x is bundled by Elgg core; advisory ignored at the plugin layer",
+				"PKSA-4d16-gn5t-2wt7": "ckeditor 4.x is bundled by Elgg core; advisory ignored at the plugin layer",
+				"PKSA-hw62-11cy-3pk5": "ckeditor 4.x is bundled by Elgg core; advisory ignored at the plugin layer"
+			}
 		}
 	}
 }

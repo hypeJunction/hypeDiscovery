@@ -17,7 +17,12 @@ class Menus {
 	 * @param array          $params Hook params
 	 * @return ElggMenuItem[]
 	 */
-	public static function entityMenuSetup($hook, $type, $return, $params) {
+	public static function entityMenuSetup($hook, $type = null, $return = null, $params = null) {
+		if ($hook instanceof \Elgg\Hook) {
+			$type = $hook->getType();
+			$return = $hook->getValue();
+			$params = $hook->getParams();
+		}
 
 		$entity = elgg_extract('entity', $params);
 
@@ -79,7 +84,12 @@ class Menus {
 	 * @param array          $params Hook params
 	 * @return ElggMenuItem[]
 	 */
-	public static function extrasMenuSetup($hook, $type, $return, $params) {
+	public static function extrasMenuSetup($hook, $type = null, $return = null, $params = null) {
+		if ($hook instanceof \Elgg\Hook) {
+			$type = $hook->getType();
+			$return = $hook->getValue();
+			$params = $hook->getParams();
+		}
 
 		$share_url = current_page_url();
 		$entity = get_entity_from_url($share_url);
@@ -124,7 +134,12 @@ class Menus {
 	 * @param array          $params Hook params
 	 * @return ElggMenuItem[]
 	 */
-	public static function shareMenuSetup($hook, $type, $return, $params) {
+	public static function shareMenuSetup($hook, $type = null, $return = null, $params = null) {
+		if ($hook instanceof \Elgg\Hook) {
+			$type = $hook->getType();
+			$return = $hook->getValue();
+			$params = $hook->getParams();
+		}
 
 		$providers = get_discovery_providers();
 		if (empty($providers)) {
@@ -165,7 +180,12 @@ class Menus {
 	 * @param array          $params Hook params
 	 * @return ElggMenuItem[]
 	 */
-	public static function setupCardMenu($hook, $type, $return, $params) {
+	public static function setupCardMenu($hook, $type = null, $return = null, $params = null) {
+		if ($hook instanceof \Elgg\Hook) {
+			$type = $hook->getType();
+			$return = $hook->getValue();
+			$params = $hook->getParams();
+		}
 
 		$user = elgg_get_logged_in_user_entity();
 		if (!$user) {

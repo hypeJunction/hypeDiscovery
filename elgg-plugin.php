@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/lib/functions.php';
+
 use hypeJunction\Discovery\Analytics;
 use hypeJunction\Discovery\Discovery;
 use hypeJunction\Discovery\Icons;

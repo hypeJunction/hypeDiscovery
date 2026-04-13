@@ -219,7 +219,10 @@ class Router {
 	 * @param array  $return Public pages
 	 * @return array
 	 */
-	public static function publicPages($hook, $type, $return) {
+	public static function publicPages($hook, $type = null, $return = null) {
+		if ($hook instanceof \Elgg\Hook) {
+			$return = $hook->getValue();
+		}
 		$return[] = 'permalink/.*';
 		$return[] = 'action/discovery/share';
 		return $return;
@@ -234,7 +237,12 @@ class Router {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function servicesRoute($hook, $type, $return, $params) {
+	public static function servicesRoute($hook, $type = null, $return = null, $params = null) {
+		if ($hook instanceof \Elgg\Hook) {
+			$type = $hook->getType();
+			$return = $hook->getValue();
+			$params = $hook->getParams();
+		}
 
 		if (!is_array($return)) {
 			return;
@@ -295,7 +303,12 @@ class Router {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function redirectErrorToPermalink($hook, $type, $return, $params) {
+	public static function redirectErrorToPermalink($hook, $type = null, $return = null, $params = null) {
+		if ($hook instanceof \Elgg\Hook) {
+			$type = $hook->getType();
+			$return = $hook->getValue();
+			$params = $hook->getParams();
+		}
 
 		$ia = elgg_set_ignore_access(true);
 

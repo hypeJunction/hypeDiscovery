@@ -15,7 +15,12 @@ class Icons {
 	 * @param array  $params Hook params
 	 * @return string
 	 */
-	public static function entityIconURL($hook, $type, $return, $params) {
+	public static function entityIconURL($hook, $type = null, $return = null, $params = null) {
+		if ($hook instanceof \Elgg\Hook) {
+			$type = $hook->getType();
+			$return = $hook->getValue();
+			$params = $hook->getParams();
+		}
 
 		$entity = elgg_extract('entity', $params);
 		$size = elgg_extract('size', $params);
@@ -43,7 +48,12 @@ class Icons {
 	 * @param array  $params Hook params
 	 * @return string
 	 */
-	public static function entityOpenGraphImageURL($hook, $type, $return, $params) {
+	public static function entityOpenGraphImageURL($hook, $type = null, $return = null, $params = null) {
+		if ($hook instanceof \Elgg\Hook) {
+			$type = $hook->getType();
+			$return = $hook->getValue();
+			$params = $hook->getParams();
+		}
 
 		$entity = elgg_extract('entity', $params);
 		/* @var $entity \ElggEntity */
@@ -77,7 +87,12 @@ class Icons {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function entityOpenGraphImageSizes($hook, $type, $return, $params) {
+	public static function entityOpenGraphImageSizes($hook, $type = null, $return = null, $params = null) {
+		if ($hook instanceof \Elgg\Hook) {
+			$type = $hook->getType();
+			$return = $hook->getValue();
+			$params = $hook->getParams();
+		}
 		$sizes = [
 			'large' => [
 				'w' => 1200,
@@ -111,7 +126,12 @@ class Icons {
 	 * @param array    $params Hook params
 	 * @return ElggIcon
 	 */
-	public static function entityOpenGraphImageFile($hook, $type, $return, $params) {
+	public static function entityOpenGraphImageFile($hook, $type = null, $return = null, $params = null) {
+		if ($hook instanceof \Elgg\Hook) {
+			$type = $hook->getType();
+			$return = $hook->getValue();
+			$params = $hook->getParams();
+		}
 
 		// mapping to old size config
 		$og_sizes = [

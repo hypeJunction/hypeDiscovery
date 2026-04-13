@@ -11,7 +11,11 @@ class Analytics {
 	 * @param string $type		Equals 'user'
 	 * @param ElggUser $user
 	 */
-	public static function saveTempUserHash($event, $type, $user) {
+	public static function saveTempUserHash($event, $type = null, $user = null) {
+		if ($event instanceof \Elgg\Event) {
+			$type = $event->getType();
+			$user = $event->getObject();
+		}
 
 		if (isset($_SESSION['discovery_hash'])) {
 			$user->discovery_temp_hash = $_SESSION['discovery_hash'];

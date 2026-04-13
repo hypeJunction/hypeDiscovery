@@ -13,7 +13,12 @@ class Discovery {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function prepareAlternateLinks($hook, $type, $return, $params) {
+	public static function prepareAlternateLinks($hook, $type = null, $return = null, $params = null) {
+		if ($hook instanceof \Elgg\Hook) {
+			$type = $hook->getType();
+			$return = $hook->getValue();
+			$params = $hook->getParams();
+		}
 
 		$title = elgg_extract('title', $params);
 
@@ -54,7 +59,12 @@ class Discovery {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function prepareMetas($hook, $type, $return, $params) {
+	public static function prepareMetas($hook, $type = null, $return = null, $params = null) {
+		if ($hook instanceof \Elgg\Hook) {
+			$type = $hook->getType();
+			$return = $hook->getValue();
+			$params = $hook->getParams();
+		}
 
 		$url = current_page_url();
 		$metatags = get_discovery_metatags($url);
@@ -103,7 +113,12 @@ class Discovery {
 	 * @param array  $params Hooks params
 	 * @return array
 	 */
-	public static function oEmbedExport($hook, $type, $return, $params) {
+	public static function oEmbedExport($hook, $type = null, $return = null, $params = null) {
+		if ($hook instanceof \Elgg\Hook) {
+			$type = $hook->getType();
+			$return = $hook->getValue();
+			$params = $hook->getParams();
+		}
 
 		$entity = elgg_extract('entity', $params);
 		$maxwidth = elgg_extract('maxwidth', $params);
@@ -146,7 +161,12 @@ class Discovery {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function graphExport($hook, $type, $return, $params) {
+	public static function graphExport($hook, $type = null, $return = null, $params = null) {
+		if ($hook instanceof \Elgg\Hook) {
+			$type = $hook->getType();
+			$return = $hook->getValue();
+			$params = $hook->getParams();
+		}
 
 		$entity = elgg_extract('entity', $params);
 		$url = elgg_extract('url', $params);
