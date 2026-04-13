@@ -22,32 +22,30 @@ class Discovery {
 
 		$title = elgg_extract('title', $params);
 
-		$ia = elgg_set_ignore_access(true);
+		return elgg_call(ELGG_IGNORE_ACCESS, function () use ($return, $title) {
+			$url = current_page_url();
+			$entity = get_entity_from_url($url);
 
-		$url = current_page_url();
-		$entity = get_entity_from_url($url);
-
-		if (is_embeddable($entity)) {
-			$return['links']['json+oembed'] = array(
-				'rel' => 'alternate',
-				'type' => 'application/json+oembed',
-				'href' => get_entity_permalink($entity, 'json+oembed'),
-				'title' => $title,
-			);
-
-			if (elgg_is_active_plugin('data_views')) {
-				$return['links']['xml+oembed'] = array(
+			if (is_embeddable($entity)) {
+				$return['links']['json+oembed'] = array(
 					'rel' => 'alternate',
-					'type' => 'application/xml+oembed',
-					'href' => get_entity_permalink($entity, 'xml+oembed'),
+					'type' => 'application/json+oembed',
+					'href' => get_entity_permalink($entity, 'json+oembed'),
 					'title' => $title,
 				);
+
+				if (elgg_is_active_plugin('data_views')) {
+					$return['links']['xml+oembed'] = array(
+						'rel' => 'alternate',
+						'type' => 'application/xml+oembed',
+						'href' => get_entity_permalink($entity, 'xml+oembed'),
+						'title' => $title,
+					);
+				}
 			}
-		}
 
-		elgg_set_ignore_access($ia);
-
-		return $return;
+			return $return;
+		});
 	}
 
 	/**

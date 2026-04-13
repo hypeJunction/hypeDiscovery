@@ -310,18 +310,16 @@ class Router {
 			$params = $hook->getParams();
 		}
 
-		$ia = elgg_set_ignore_access(true);
+		return elgg_call(ELGG_IGNORE_ACCESS, function () use ($return) {
+			$url = current_page_url();
+			$entity = get_entity_from_url($url);
 
-		$url = current_page_url();
-		$entity = get_entity_from_url($url);
+			if (is_discoverable($entity)) {
+				return get_entity_permalink($entity);
+			}
 
-		if (is_discoverable($entity)) {
-			$return = get_entity_permalink($entity);
-		}
-
-		elgg_set_ignore_access($ia);
-
-		return $return;
+			return $return;
+		});
 	}
 
 }

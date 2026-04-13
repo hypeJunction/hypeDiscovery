@@ -292,21 +292,21 @@ function get_user_hash($guid)
  */
 function get_oembed_response($entity, $format = 'json', $maxwidth = 0, $maxheight = 0)
 {
-    $ia = elgg_set_ignore_access(true);
-    if ($entity instanceof ElggEntity) {
-        $url = get_entity_permalink($entity, 'oembed');
-    } else if (is_string($entity)) {
-        $url = $entity;
-        $url = urldecode($url);
-        $entity = get_entity_from_url($url);
-    } else {
-        $url = current_page_url();
-        $entity = get_entity_from_url($url);
-    }
-    $params = ['origin' => $url, 'entity' => $entity, 'maxwidth' => $maxwidth, 'maxheight' => $maxheight];
-    $oembed = ['type' => 'link', 'version' => '1.0', 'title' => get_discovery_title($entity)];
-    $response = elgg_trigger_plugin_hook('export:entity', 'oembed', $params, $oembed);
-    elgg_set_ignore_access($ia);
+    $response = \elgg_call(ELGG_IGNORE_ACCESS, function () use ($entity, $maxwidth, $maxheight) {
+        if ($entity instanceof ElggEntity) {
+            $url = get_entity_permalink($entity, 'oembed');
+        } else if (is_string($entity)) {
+            $url = $entity;
+            $url = urldecode($url);
+            $entity = get_entity_from_url($url);
+        } else {
+            $url = current_page_url();
+            $entity = get_entity_from_url($url);
+        }
+        $params = ['origin' => $url, 'entity' => $entity, 'maxwidth' => $maxwidth, 'maxheight' => $maxheight];
+        $oembed = ['type' => 'link', 'version' => '1.0', 'title' => get_discovery_title($entity)];
+        return elgg_trigger_plugin_hook('export:entity', 'oembed', $params, $oembed);
+    });
     $response['format'] = $format;
     return $response;
 }
@@ -318,10 +318,10 @@ function get_oembed_response($entity, $format = 'json', $maxwidth = 0, $maxheigh
  */
 function get_discovery_metatags($url)
 {
-    $ia = elgg_set_ignore_access(true);
-    $entity = get_entity_from_url($url);
-    $metatags = elgg_trigger_plugin_hook('metatags', 'discovery', ['entity' => $entity, 'url' => $url], []);
-    elgg_set_ignore_access($ia);
+    $metatags = \elgg_call(ELGG_IGNORE_ACCESS, function () use ($url) {
+        $entity = get_entity_from_url($url);
+        return elgg_trigger_plugin_hook('metatags', 'discovery', ['entity' => $entity, 'url' => $url], []);
+    });
     return $metatags;
 }
 /**
