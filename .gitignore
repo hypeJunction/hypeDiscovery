@@ -12,4 +12,4 @@ robots.txt
 Gemfile.lock
 /tests/tmp/
 coverage.clover
-composer.lock
+composer.lockdocker/.env
