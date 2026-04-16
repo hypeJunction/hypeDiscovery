@@ -7,6 +7,7 @@ use hypeJunction\Discovery\Discovery;
 use hypeJunction\Discovery\Icons;
 use hypeJunction\Discovery\Menus;
 use hypeJunction\Discovery\Router;
+use hypeJunction\Discovery\Upgrades\EncodeSettingsAsJson;
 
 return [
     'plugin' => [
@@ -14,6 +15,10 @@ return [
         'activate_on_install' => false,
     ],
     'bootstrap' => \hypeJunction\Discovery\Bootstrap::class,
+
+    'upgrades' => [
+        EncodeSettingsAsJson::class,
+    ],
 
     'view_extensions' => [
         'elgg.css' => [
