@@ -133,7 +133,7 @@ function get_provider_url($provider, $entity = null, $referrer = '', $share_url 
         $via = $site->twitter_site;
     } else {
         if (!$entity instanceof ElggEntity) {
-            $url = current_page_url();
+            $url = elgg_get_current_url();
             $permalink = $referrer ? $referrer : $url;
             $guid = get_guid_from_url($permalink);
             if ($guid) {
@@ -188,7 +188,7 @@ function get_provider_url($provider, $entity = null, $referrer = '', $share_url 
 function get_entity_permalink($entity, $viewtype = 'default')
 {
     if (!$entity instanceof ElggEntity) {
-        return current_page_url();
+        return elgg_get_current_url();
     }
     $user_guid = elgg_get_logged_in_user_guid();
     $user_hash = get_user_hash($user_guid);
@@ -301,12 +301,12 @@ function get_oembed_response($entity, $format = 'json', $maxwidth = 0, $maxheigh
             $url = urldecode($url);
             $entity = get_entity_from_url($url);
         } else {
-            $url = current_page_url();
+            $url = elgg_get_current_url();
             $entity = get_entity_from_url($url);
         }
         $params = ['origin' => $url, 'entity' => $entity, 'maxwidth' => $maxwidth, 'maxheight' => $maxheight];
         $oembed = ['type' => 'link', 'version' => '1.0', 'title' => get_discovery_title($entity)];
-        return elgg_trigger_plugin_hook('export:entity', 'oembed', $params, $oembed);
+        return elgg_trigger_event_results('export:entity', 'oembed', $params, $oembed);
     });
     $response['format'] = $format;
     return $response;
@@ -321,7 +321,7 @@ function get_discovery_metatags($url)
 {
     $metatags = \elgg_call(ELGG_IGNORE_ACCESS, function () use ($url) {
         $entity = get_entity_from_url($url);
-        return elgg_trigger_plugin_hook('metatags', 'discovery', ['entity' => $entity, 'url' => $url], []);
+        return elgg_trigger_event_results('metatags', 'discovery', ['entity' => $entity, 'url' => $url], []);
     });
     return $metatags;
 }
@@ -353,6 +353,7 @@ function get_discovery_description($entity)
     if (!$entity instanceof ElggEntity || !is_discoverable($entity)) {
         $entity = elgg_get_site_entity();
     }
+    $description = '';
     if (!empty($entity->og_description)) {
         $description = $entity->og_description;
     } else if (!empty($entity->description)) {

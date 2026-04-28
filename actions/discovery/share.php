@@ -17,7 +17,7 @@ if ($guid) {
 		$error = true;
 	} else {
 		$forward_url = get_provider_url($provider, $entity, $referrer);
-		$forward_url = elgg_trigger_plugin_hook('entity:share', $entity->getType(), array(
+		$forward_url = elgg_trigger_event_results('entity:share', $entity->getType(), array(
 			'provider' => $provider,
 			'entity' => $entity,
 			'referrer' => $referrer,
@@ -25,7 +25,7 @@ if ($guid) {
 	}
 } else {
 	$forward_url = get_provider_url($provider, null, $referrer, $share_url);
-	$forward_url = elgg_trigger_plugin_hook('share', 'url', array(
+	$forward_url = elgg_trigger_event_results('share', 'url', array(
 		'provider' => $provider,
 		'referrer' => $referrer,
 		'share_url' => $share_url,

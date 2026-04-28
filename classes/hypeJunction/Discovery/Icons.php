@@ -15,12 +15,8 @@ class Icons {
 	 * @param array  $params Hook params
 	 * @return string
 	 */
-	public static function entityIconURL($hook, $type = null, $return = null, $params = null) {
-		if ($hook instanceof \Elgg\Hook) {
-			$type = $hook->getType();
-			$return = $hook->getValue();
-			$params = $hook->getParams();
-		}
+	public static function entityIconURL(\Elgg\Event $event) {
+		$params = $event->getParams();
 
 		$entity = elgg_extract('entity', $params);
 		$size = elgg_extract('size', $params);
@@ -48,12 +44,8 @@ class Icons {
 	 * @param array  $params Hook params
 	 * @return string
 	 */
-	public static function entityOpenGraphImageURL($hook, $type = null, $return = null, $params = null) {
-		if ($hook instanceof \Elgg\Hook) {
-			$type = $hook->getType();
-			$return = $hook->getValue();
-			$params = $hook->getParams();
-		}
+	public static function entityOpenGraphImageURL(\Elgg\Event $event) {
+		$params = $event->getParams();
 
 		$entity = elgg_extract('entity', $params);
 		/* @var $entity \ElggEntity */
@@ -87,12 +79,8 @@ class Icons {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function entityOpenGraphImageSizes($hook, $type = null, $return = null, $params = null) {
-		if ($hook instanceof \Elgg\Hook) {
-			$type = $hook->getType();
-			$return = $hook->getValue();
-			$params = $hook->getParams();
-		}
+	public static function entityOpenGraphImageSizes(\Elgg\Event $event) {
+		$return = $event->getValue();
 		$sizes = [
 			'large' => [
 				'w' => 1200,
@@ -126,12 +114,9 @@ class Icons {
 	 * @param array    $params Hook params
 	 * @return ElggIcon
 	 */
-	public static function entityOpenGraphImageFile($hook, $type = null, $return = null, $params = null) {
-		if ($hook instanceof \Elgg\Hook) {
-			$type = $hook->getType();
-			$return = $hook->getValue();
-			$params = $hook->getParams();
-		}
+	public static function entityOpenGraphImageFile(\Elgg\Event $event) {
+		$return = $event->getValue();
+		$params = $event->getParams();
 
 		// mapping to old size config
 		$og_sizes = [

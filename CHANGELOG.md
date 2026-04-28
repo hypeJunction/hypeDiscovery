@@ -1,3 +1,29 @@
+## [Unreleased] — Elgg 5.x migration
+
+### Breaking changes
+
+- Requires Elgg 5.x (`elgg/elgg: ^5.0`) and PHP 8.2+
+
+### Migration
+
+- `elgg-plugin.php`: `'hooks'` key renamed to `'events'` and merged with existing `'events'` key
+- Removed `require_once 'lib/functions.php'` side-effect from `elgg-plugin.php`; moved to `Bootstrap::load()`
+- All 16 hook handlers converted to `(\Elgg\Event $event)` signature; `\Elgg\Hook` compatibility shim removed
+- Inline closures in `Router::permalinkHandler()` converted to `\Elgg\Event $event` signature
+- `elgg_register_plugin_hook_handler()` → `elgg_register_event_handler()` (inline call sites in Router)
+- `elgg_trigger_plugin_hook()` → `elgg_trigger_event_results()` (lib/functions.php + actions/discovery/share.php)
+- `current_page_url()` removed in Elgg 5.x → `elgg_get_current_url()` (8 call sites across classes + lib)
+- `add_translation('en', $array)` in `languages/en.php` → `return $array;`
+- Docker stack upgraded: PHP 7.4 → 8.2, MySQL 5.7 → 8.0, Elgg 4.x → 5.x
+- `$description` initialized to empty string in `get_discovery_description()` (PHP 8.2 strict undefined variable)
+
+### Tests
+
+- `HooksTest`: added `makeEvent()` helper, updated all 5 handler calls to event-based, updated session API to `_elgg_services()->session_manager`, updated menu test to call handler directly
+- `elgg_trigger_plugin_hook()` → `elgg_trigger_event_results()` in test
+
+---
+
 ## [Unreleased] — Elgg 4.x migration
 
 ### Migrated to Elgg 4.x

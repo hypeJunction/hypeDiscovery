@@ -23,6 +23,7 @@ class Bootstrap extends DefaultPluginBootstrap
 {
     public function load(): void
     {
+        require_once __DIR__ . '/../../../lib/functions.php';
     }
 
     public function boot(): void

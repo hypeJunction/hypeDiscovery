@@ -67,7 +67,8 @@ class Router {
 					return false;
 				}
 
-				elgg_register_plugin_hook_handler('head', 'page', function($hook, $type, $return) use ($entity) {
+				elgg_register_event_handler('head', 'page', function(\Elgg\Event $event) use ($entity) {
+					$return = $event->getValue();
 					if (isset($return['links']['canonical'])) {
 						return;
 					}
@@ -99,7 +100,7 @@ class Router {
 					$forward_url = $entity->getURL();
 				}
 
-				$forward_url = elgg_trigger_plugin_hook('entity:referred', $entity->getType(), array(
+				$forward_url = elgg_trigger_event_results('entity:referred', $entity->getType(), array(
 					'entity' => $entity,
 					'user_hash' => $referrer_hash,
 					'referrer' => $_SERVER['HTTP_REFERER'],
@@ -113,7 +114,8 @@ class Router {
 				if (elgg_get_plugin_setting('nocrawl', 'hypediscovery')) {
 					elgg_set_http_header('X-Robots-Tag: noindex', true);
 
-					elgg_register_plugin_hook_handler('head', 'page', function($hook, $type, $return) {
+					elgg_register_event_handler('head', 'page', function(\Elgg\Event $event) {
+						$return = $event->getValue();
 						$return['metas'][] = [
 							'name' => 'robots',
 							'content' => 'noindex',
@@ -219,10 +221,8 @@ class Router {
 	 * @param array  $return Public pages
 	 * @return array
 	 */
-	public static function publicPages($hook, $type = null, $return = null) {
-		if ($hook instanceof \Elgg\Hook) {
-			$return = $hook->getValue();
-		}
+	public static function publicPages(\Elgg\Event $event) {
+		$return = $event->getValue();
 		$return[] = 'permalink/.*';
 		$return[] = 'action/discovery/share';
 		return $return;
@@ -237,12 +237,10 @@ class Router {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function servicesRoute($hook, $type = null, $return = null, $params = null) {
-		if ($hook instanceof \Elgg\Hook) {
-			$type = $hook->getType();
-			$return = $hook->getValue();
-			$params = $hook->getParams();
-		}
+	public static function servicesRoute(\Elgg\Event $event) {
+		$type = $event->getType();
+		$return = $event->getValue();
+		$params = $event->getParams();
 
 		if (!is_array($return)) {
 			return;
@@ -303,15 +301,11 @@ class Router {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function redirectErrorToPermalink($hook, $type = null, $return = null, $params = null) {
-		if ($hook instanceof \Elgg\Hook) {
-			$type = $hook->getType();
-			$return = $hook->getValue();
-			$params = $hook->getParams();
-		}
+	public static function redirectErrorToPermalink(\Elgg\Event $event) {
+		$return = $event->getValue();
 
 		return elgg_call(ELGG_IGNORE_ACCESS, function () use ($return) {
-			$url = current_page_url();
+			$url = elgg_get_current_url();
 			$entity = get_entity_from_url($url);
 
 			if (is_discoverable($entity)) {

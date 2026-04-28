@@ -1,8 +1,6 @@
 <?php
 
-namespace hypeJunction\Discovery;
-
-$english = array(
+return array(
 
 	'admin:discovery' => 'Discovery',
 	'menu:page:header:discovery' => 'Discovery',
@@ -79,4 +77,3 @@ $english = array(
 	''
 );
 
-add_translation('en', $english);

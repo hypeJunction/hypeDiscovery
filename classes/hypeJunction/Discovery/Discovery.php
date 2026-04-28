@@ -13,17 +13,14 @@ class Discovery {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function prepareAlternateLinks($hook, $type = null, $return = null, $params = null) {
-		if ($hook instanceof \Elgg\Hook) {
-			$type = $hook->getType();
-			$return = $hook->getValue();
-			$params = $hook->getParams();
-		}
+	public static function prepareAlternateLinks(\Elgg\Event $event) {
+		$return = $event->getValue();
+		$params = $event->getParams();
 
 		$title = elgg_extract('title', $params);
 
 		return elgg_call(ELGG_IGNORE_ACCESS, function () use ($return, $title) {
-			$url = current_page_url();
+			$url = elgg_get_current_url();
 			$entity = get_entity_from_url($url);
 
 			if (is_embeddable($entity)) {
@@ -57,14 +54,11 @@ class Discovery {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function prepareMetas($hook, $type = null, $return = null, $params = null) {
-		if ($hook instanceof \Elgg\Hook) {
-			$type = $hook->getType();
-			$return = $hook->getValue();
-			$params = $hook->getParams();
-		}
+	public static function prepareMetas(\Elgg\Event $event) {
+		$return = $event->getValue();
+		$params = $event->getParams();
 
-		$url = current_page_url();
+		$url = elgg_get_current_url();
 		$metatags = get_discovery_metatags($url);
 
 		if (empty($metatags)) {
@@ -111,12 +105,9 @@ class Discovery {
 	 * @param array  $params Hooks params
 	 * @return array
 	 */
-	public static function oEmbedExport($hook, $type = null, $return = null, $params = null) {
-		if ($hook instanceof \Elgg\Hook) {
-			$type = $hook->getType();
-			$return = $hook->getValue();
-			$params = $hook->getParams();
-		}
+	public static function oEmbedExport(\Elgg\Event $event) {
+		$return = $event->getValue();
+		$params = $event->getParams();
 
 		$entity = elgg_extract('entity', $params);
 		$maxwidth = elgg_extract('maxwidth', $params);
@@ -159,12 +150,9 @@ class Discovery {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function graphExport($hook, $type = null, $return = null, $params = null) {
-		if ($hook instanceof \Elgg\Hook) {
-			$type = $hook->getType();
-			$return = $hook->getValue();
-			$params = $hook->getParams();
-		}
+	public static function graphExport(\Elgg\Event $event) {
+		$return = $event->getValue();
+		$params = $event->getParams();
 
 		$entity = elgg_extract('entity', $params);
 		$url = elgg_extract('url', $params);

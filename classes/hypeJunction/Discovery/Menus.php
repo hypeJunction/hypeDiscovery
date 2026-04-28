@@ -17,12 +17,9 @@ class Menus {
 	 * @param array          $params Hook params
 	 * @return ElggMenuItem[]
 	 */
-	public static function entityMenuSetup($hook, $type = null, $return = null, $params = null) {
-		if ($hook instanceof \Elgg\Hook) {
-			$type = $hook->getType();
-			$return = $hook->getValue();
-			$params = $hook->getParams();
-		}
+	public static function entityMenuSetup(\Elgg\Event $event) {
+		$return = $event->getValue();
+		$params = $event->getParams();
 
 		$entity = elgg_extract('entity', $params);
 
@@ -84,14 +81,10 @@ class Menus {
 	 * @param array          $params Hook params
 	 * @return ElggMenuItem[]
 	 */
-	public static function extrasMenuSetup($hook, $type = null, $return = null, $params = null) {
-		if ($hook instanceof \Elgg\Hook) {
-			$type = $hook->getType();
-			$return = $hook->getValue();
-			$params = $hook->getParams();
-		}
+	public static function extrasMenuSetup(\Elgg\Event $event) {
+		$return = $event->getValue();
 
-		$share_url = current_page_url();
+		$share_url = elgg_get_current_url();
 		$entity = get_entity_from_url($share_url);
 		$guid = $entity->guid;
 		if ($entity instanceof ElggSite) {
@@ -134,12 +127,9 @@ class Menus {
 	 * @param array          $params Hook params
 	 * @return ElggMenuItem[]
 	 */
-	public static function shareMenuSetup($hook, $type = null, $return = null, $params = null) {
-		if ($hook instanceof \Elgg\Hook) {
-			$type = $hook->getType();
-			$return = $hook->getValue();
-			$params = $hook->getParams();
-		}
+	public static function shareMenuSetup(\Elgg\Event $event) {
+		$return = $event->getValue();
+		$params = $event->getParams();
 
 		$providers = get_discovery_providers();
 		if (empty($providers)) {
@@ -160,7 +150,7 @@ class Menus {
 			$return[] = ElggMenuItem::factory(array(
 						'name' => "discovery:$provider",
 						'text' => elgg_format_element('span', ['class' => "webicon $provider"]),
-						'href' => get_share_action_url($provider, $entity->guid, current_page_url(), $share_url),
+						'href' => get_share_action_url($provider, $entity->guid, elgg_get_current_url(), $share_url),
 						'is_action' => true,
 						'item_class' => 'svg',
 						'title' => elgg_echo('discovery:share', array(elgg_echo("discovery:provider:$provider"))),
@@ -180,12 +170,9 @@ class Menus {
 	 * @param array          $params Hook params
 	 * @return ElggMenuItem[]
 	 */
-	public static function setupCardMenu($hook, $type = null, $return = null, $params = null) {
-		if ($hook instanceof \Elgg\Hook) {
-			$type = $hook->getType();
-			$return = $hook->getValue();
-			$params = $hook->getParams();
-		}
+	public static function setupCardMenu(\Elgg\Event $event) {
+		$return = $event->getValue();
+		$params = $event->getParams();
 
 		$user = elgg_get_logged_in_user_entity();
 		if (!$user) {

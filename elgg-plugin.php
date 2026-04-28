@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . '/lib/functions.php';
-
 use hypeJunction\Discovery\Analytics;
 use hypeJunction\Discovery\Discovery;
 use hypeJunction\Discovery\Icons;
@@ -51,7 +49,7 @@ return [
         ],
     ],
 
-    'hooks' => [
+    'events' => [
         'public_pages' => [
             'walled_garden' => [
                 Router::class . '::publicPages' => [],
@@ -95,9 +93,6 @@ return [
         'route' => [
             'services' => [Router::class . '::servicesRoute' => []],
         ],
-    ],
-
-    'events' => [
         'login:after' => [
             'user' => [Analytics::class . '::saveTempUserHash' => []],
         ],
