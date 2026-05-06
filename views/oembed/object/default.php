@@ -44,11 +44,11 @@ $url = get_entity_permalink($entity);
 $title = get_discovery_title($entity);
 $description = elgg_get_excerpt(get_discovery_description($entity));
 
-$icon = elgg_view('framework/discovery/icon', array(
+$icon = elgg_view('framework/discovery/icon', [
 	'entity' => $entity,
 	'size' => '_og',
 	'img_class' => 'elgg-photo'
-));
+]);
 
 ?>
 <div class="elgg-oembed-card" style="background-image:url(<?= $background ?>)">

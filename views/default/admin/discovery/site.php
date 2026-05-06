@@ -9,6 +9,6 @@ if (is_array($sticky_values)) {
 	$vars = array_merge($vars, $sticky_values);
 }
 
-echo elgg_view_form('discovery/site', array(
+echo elgg_view_form('discovery/site', [
 	'enctype' => 'multipart/form-data',
-), $vars);
+], $vars);

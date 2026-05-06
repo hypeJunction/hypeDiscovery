@@ -3,9 +3,9 @@
 elgg_set_viewtype('default');
 
 // in case apache is configured to setifempty
-header("X-Frame-Options: ALLOWALL", true);
+header('X-Frame-Options: ALLOWALL', true);
 
-header("Content-type: text/html; charset=UTF-8");
+header('Content-type: text/html; charset=UTF-8');
 
 $lang = get_current_language();
 ?>

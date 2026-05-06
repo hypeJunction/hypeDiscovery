@@ -28,6 +28,7 @@ define(function (require) {
 				if (data.status >= 0) {
 					lightbox.close();
 				}
+
 				if (data.system_messages) {
 					elgg.register_error(data.system_messages.error);
 					elgg.system_message(data.system_messages.success);

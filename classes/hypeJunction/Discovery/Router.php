@@ -2,6 +2,9 @@
 
 namespace hypeJunction\Discovery;
 
+/**
+ * Router class.
+ */
 class Router {
 
 	/**
@@ -24,7 +27,7 @@ class Router {
 		}
 
 		switch ($viewtype) {
-			case 'image' :
+			case 'image':
 				// BC router
 				$size = array_shift($segments);
 				$ia = elgg_set_ignore_access(true);
@@ -34,16 +37,15 @@ class Router {
 				forward($url);
 				return;
 
-			default :
-
+			default:
 				switch ($viewtype) {
-					case 'json+oembed' :
-					case 'json oembed' :
+					case 'json+oembed':
+					case 'json oembed':
 						$viewtype = 'json';
 						break;
 
-					case 'xml+oembed' :
-					case 'xml oembed' :
+					case 'xml+oembed':
+					case 'xml oembed':
 						$viewtype = 'xml';
 						break;
 				}
@@ -100,11 +102,11 @@ class Router {
 					$forward_url = $entity->getURL();
 				}
 
-				$forward_url = elgg_trigger_event_results('entity:referred', $entity->getType(), array(
+				$forward_url = elgg_trigger_event_results('entity:referred', $entity->getType(), [
 					'entity' => $entity,
 					'user_hash' => $referrer_hash,
 					'referrer' => $_SERVER['HTTP_REFERER'],
-						), $forward_url);
+				], $forward_url);
 
 				if ($forward_url) {
 					elgg_set_ignore_access($ia);
@@ -142,15 +144,14 @@ class Router {
 	/**
 	 * Handle discovery
 	 *
-	 * @param array $segments
-	 * @param string $handler
+	 * @param array  $segments URL segments after the handler
+	 * @param string $handler  Page handler identifier
 	 * @return boolean
 	 */
 	public static function opengraphHandler($segments, $handler) {
 
 		switch ($segments[0]) {
-
-			case 'edit' :
+			case 'edit':
 				$guid = $segments[1];
 				$entity = get_entity($guid);
 
@@ -159,15 +160,14 @@ class Router {
 				}
 
 				$title = elgg_echo('discovery:entity:settings');
-				$content = elgg_view('framework/discovery/edit', array(
+				$content = elgg_view('framework/discovery/edit', [
 					'entity' => $entity
-				));
+				]);
 				$sidebar = false;
 				$filter = false;
 				break;
 
-			case 'share' :
-
+			case 'share':
 				$entity = null;
 				$share_url = get_input('share_url');
 
@@ -186,10 +186,10 @@ class Router {
 				}
 
 				$title = elgg_echo('discovery:entity:share');
-				$content = elgg_view('forms/discovery/share', array(
+				$content = elgg_view('forms/discovery/share', [
 					'entity' => $entity,
 					'share_url' => $share_url,
-				));
+				]);
 
 				$sidebar = false;
 				$filter = false;
@@ -200,25 +200,25 @@ class Router {
 			if (elgg_is_xhr()) {
 				echo $content;
 			} else {
-				$layout = elgg_view_layout('default', array(
+				$layout = elgg_view_layout('default', [
 					'title' => $title,
 					'content' => $content,
 					'filter' => $filter,
 					'sidebar' => $sidebar,
-				));
+				]);
 				echo elgg_view_page($title, $layout);
 			}
+
 			return true;
 		}
+
 		return false;
 	}
 
 	/**
 	 * Add discovery pages to public domain
 	 *
-	 * @param string $hook	 "public_pages"
-	 * @param string $type	 "walled_garden"
-	 * @param array  $return Public pages
+	 * @param \Elgg\Event $event "public_pages", "walled_garden"
 	 * @return array
 	 */
 	public static function publicPages(\Elgg\Event $event) {
@@ -230,11 +230,8 @@ class Router {
 
 	/**
 	 * Route old web services endpoint to the new one
-	 * 
-	 * @param string $hook   "route"
-	 * @param string $type   "services"
-	 * @param array  $return Route details
-	 * @param array  $params Hook params
+	 *
+	 * @param \Elgg\Event $event "route", "services"
 	 * @return array
 	 */
 	public static function servicesRoute(\Elgg\Event $event) {
@@ -295,10 +292,7 @@ class Router {
 	/**
 	 * Redirect to entity permalink instead of an error page if entity is discoverable
 	 *
-	 * @param string $hook   "forward"
-	 * @param string $type   "403"|"404"
-	 * @param array  $return Forward URL
-	 * @param array  $params Hook params
+	 * @param \Elgg\Event $event "forward", "403"|"404"
 	 * @return array
 	 */
 	public static function redirectErrorToPermalink(\Elgg\Event $event) {
@@ -315,5 +309,4 @@ class Router {
 			return $return;
 		});
 	}
-
 }

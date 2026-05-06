@@ -19,52 +19,32 @@ use Elgg\DefaultPluginBootstrap;
  * `elgg_register_css` was removed in 4.x and the oembed.css view at
  * views/default/oembed.css is auto-discovered by simplecache.
  */
-class Bootstrap extends DefaultPluginBootstrap
-{
-    public function load(): void
-    {
-        require_once __DIR__ . '/../../../lib/functions.php';
-    }
+class Bootstrap extends DefaultPluginBootstrap {
 
-    public function boot(): void
-    {
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function load(): void {
+		require_once __DIR__ . '/../../../lib/functions.php';
+	}
 
-    public function init(): void
-    {
-        \elgg_register_menu_item('page', [
-            'name' => 'discovery:settings',
-            'href' => 'admin/plugin_settings/hypediscovery',
-            'text' => \elgg_echo('admin:discovery:settings'),
-            'context' => 'admin',
-            'section' => 'discovery',
-        ]);
-        \elgg_register_menu_item('page', [
-            'name' => 'discovery:site',
-            'href' => 'admin/discovery/site',
-            'text' => \elgg_echo('admin:discovery:site'),
-            'context' => 'admin',
-            'section' => 'discovery',
-        ]);
-    }
-
-    public function ready(): void
-    {
-    }
-
-    public function shutdown(): void
-    {
-    }
-
-    public function activate(): void
-    {
-    }
-
-    public function deactivate(): void
-    {
-    }
-
-    public function upgrade(): void
-    {
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function init(): void {
+		\elgg_register_menu_item('page', [
+			'name' => 'discovery:settings',
+			'href' => 'admin/plugin_settings/hypediscovery',
+			'text' => \elgg_echo('admin:discovery:settings'),
+			'context' => 'admin',
+			'section' => 'discovery',
+		]);
+		\elgg_register_menu_item('page', [
+			'name' => 'discovery:site',
+			'href' => 'admin/discovery/site',
+			'text' => \elgg_echo('admin:discovery:site'),
+			'context' => 'admin',
+			'section' => 'discovery',
+		]);
+	}
 }

@@ -17,19 +17,19 @@ if ($guid) {
 		$error = true;
 	} else {
 		$forward_url = get_provider_url($provider, $entity, $referrer);
-		$forward_url = elgg_trigger_event_results('entity:share', $entity->getType(), array(
+		$forward_url = elgg_trigger_event_results('entity:share', $entity->getType(), [
 			'provider' => $provider,
 			'entity' => $entity,
 			'referrer' => $referrer,
-				), $forward_url);
+		], $forward_url);
 	}
 } else {
 	$forward_url = get_provider_url($provider, null, $referrer, $share_url);
-	$forward_url = elgg_trigger_event_results('share', 'url', array(
+	$forward_url = elgg_trigger_event_results('share', 'url', [
 		'provider' => $provider,
 		'referrer' => $referrer,
 		'share_url' => $share_url,
-			), $forward_url);
+	], $forward_url);
 }
 
 elgg_set_ignore_access($ia);

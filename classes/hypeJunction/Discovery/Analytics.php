@@ -2,14 +2,18 @@
 
 namespace hypeJunction\Discovery;
 
+/**
+ * Analytics class.
+ */
 class Analytics {
 
 	/**
 	 * Store temp user hash
 	 *
-	 * @param string $event		Equals 'login'
-	 * @param string $type		Equals 'user'
-	 * @param ElggUser $user
+	 * @param string|\Elgg\Event $event Event name 'login' or an Elgg\Event instance
+	 * @param string|null        $type  Event type, e.g. 'user' (legacy positional callers)
+	 * @param \ElggUser|null     $user  User entity (legacy positional callers)
+	 * @return bool
 	 */
 	public static function saveTempUserHash($event, $type = null, $user = null) {
 		if ($event instanceof \Elgg\Event) {
@@ -24,5 +28,4 @@ class Analytics {
 
 		return true;
 	}
-
 }

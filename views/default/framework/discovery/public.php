@@ -10,7 +10,7 @@ if (!$entity instanceof ElggEntity) {
 }
 
 $type = $entity->getType();
-$subtype = $entity->getSubtype() ? : 'default';
+$subtype = $entity->getSubtype() ?: 'default';
 
 if (elgg_view_exists("framework/discovery/public/$type/$subtype")) {
 	echo elgg_view("framework/discovery/public/$type/$subtype", $vars);
@@ -39,7 +39,7 @@ if (is_discoverable($owner) && !$owner instanceof \ElggSite) {
 		'alt' => $owner_name,
 	]);
 
-	$subtitle = elgg_echo('byline', array($owner_link));
+	$subtitle = elgg_echo('byline', [$owner_link]);
 }
 
 $summary = elgg_view('object/elements/summary', [
@@ -52,11 +52,11 @@ $summary = elgg_view('object/elements/summary', [
 ]);
 
 
-$image = elgg_view('framework/discovery/icon', array(
+$image = elgg_view('framework/discovery/icon', [
 	'entity' => $entity,
 	'size' => 'medium',
 	'img_class' => 'elgg-photo',
-));
+]);
 
 $content = elgg_view('output/longtext', [
 	'value' => get_discovery_description($entity),

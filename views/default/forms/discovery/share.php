@@ -23,24 +23,24 @@ if ($entity instanceof ElggEntity) {
 }
 
 if ($permalink) {
-	echo elgg_view_input('text', array(
+	echo elgg_view_input('text', [
 		'value' => $permalink,
 		'label' => $label,
-	));
+	]);
 	
 	if (is_embeddable($entity)) {
-		$response = elgg_trigger_plugin_hook('export:entity', 'oembed', array(
+		$response = elgg_trigger_plugin_hook('export:entity', 'oembed', [
 			'origin' => $permalink,
 			'entity' => $entity,
 			'maxwidth' => elgg_extract('maxwidth', $vars, 640),
 			'maxheight' => elgg_extract('maxheight', $vars, 480),
-		));
+		]);
 
 		if (!empty($response['html'])) {
-			echo elgg_view_input('text', array(
+			echo elgg_view_input('text', [
 				'value' => $response['html'],
 				'label' => elgg_echo('discovery:entity:embed_code'),
-			));
+			]);
 		}
 	}
 }

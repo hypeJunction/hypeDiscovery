@@ -11,7 +11,7 @@ if (!$entity instanceof \ElggEntity) {
 }
 
 $type = $entity->getType();
-$subtype = $entity->getSubtype() ? : 'default';
+$subtype = $entity->getSubtype() ?: 'default';
 
 $views = [
 	"$type/$subtype",
@@ -20,10 +20,10 @@ $views = [
 
 foreach ($views as $view) {
 	if (elgg_view_exists($view, 'oembed')) {
-		echo elgg_view($view, array(
+		echo elgg_view($view, [
 			'entity' => $entity,
 			'full_view' => true,
-		), false, false, 'oembed');
+		], false, false, 'oembed');
 	}
 }
 

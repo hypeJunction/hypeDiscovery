@@ -4,27 +4,27 @@ namespace hypeJunction\Discovery;
 
 $entity = elgg_extract('entity', $vars);
 
-echo elgg_view_input('select', array(
+echo elgg_view_input('select', [
 	'name' => 'params[bypass_access]',
 	'value' => $entity->bypass_access,
-	'options_values' => array(
+	'options_values' => [
 		false => elgg_echo('option:no'),
 		true => elgg_echo('option:yes')
-	),
+	],
 	'label' => elgg_echo('discovery:settings:bypass_access'),
 	'help' => elgg_echo('discovery:settings:bypass_access:help'),
-));
+]);
 
-echo elgg_view_input('select', array(
+echo elgg_view_input('select', [
 	'name' => 'params[nocrawl]',
 	'value' => $entity->nocrawl,
-	'options_values' => array(
+	'options_values' => [
 		false => elgg_echo('option:no'),
 		true => elgg_echo('option:yes')
-	),
+	],
 	'label' => elgg_echo('discovery:settings:nocrawl'),
 	'help' => elgg_echo('discovery:settings:nocrawl:help'),
-));
+]);
 
 $registered_entities = elgg_entity_types_with_capability('searchable');
 foreach ($registered_entities as $type => $subtypes) {
@@ -39,22 +39,22 @@ foreach ($registered_entities as $type => $subtypes) {
 	}
 }
 
-echo elgg_view_input('checkboxes', array(
+echo elgg_view_input('checkboxes', [
 	'name' => 'params[discovery_type_subtype_pairs]',
 	'value' => get_discoverable_type_subtype_pairs(),
 	'options' => $chbx_options,
 	'label' => elgg_echo('discovery:settings:discovery_type_subtype_pairs'),
 	'help' => elgg_echo('discovery:settings:discovery_type_subtype_pairs:help'),
-));
+]);
 
-echo elgg_view_input('checkboxes', array(
+echo elgg_view_input('checkboxes', [
 	'name' => 'params[embed_type_subtype_pairs]',
 	'value' => get_embeddable_type_subtype_pairs(),
 	'options' => $chbx_options,
 	'label' => elgg_echo('discovery:settings:embed_type_subtype_pairs'),
-));
+]);
 
-echo elgg_view_input('checkboxes', array(
+echo elgg_view_input('checkboxes', [
 	'name' => 'params[providers]',
 	'value' => get_discovery_providers(),
 	'options' => [
@@ -66,4 +66,4 @@ echo elgg_view_input('checkboxes', array(
 	],
 	'label' => elgg_echo('discovery:settings:providers'),
 	'help' => elgg_echo('discovery:settings:providers:help'),
-));
+]);
