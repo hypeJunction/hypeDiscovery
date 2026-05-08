@@ -29,7 +29,7 @@ if ($permalink) {
 	]);
 	
 	if (is_embeddable($entity)) {
-		$response = elgg_trigger_plugin_hook('export:entity', 'oembed', [
+		$response = elgg_trigger_event_results('export:entity', 'oembed', [
 			'origin' => $permalink,
 			'entity' => $entity,
 			'maxwidth' => elgg_extract('maxwidth', $vars, 640),

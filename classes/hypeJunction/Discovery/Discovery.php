@@ -171,7 +171,7 @@ class Discovery {
 		$subtype = $entity->getSubtype();
 
 		$image_url = get_discovery_image_url($entity);
-		if (file_exists($image_url)) {
+		if ($image_url && file_exists($image_url)) {
 			$image_size = getimagesize($image_url);
 			$image_width = $image_size[0];
 			$image_height = $image_size[1];
