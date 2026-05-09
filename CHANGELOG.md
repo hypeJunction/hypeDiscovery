@@ -1,3 +1,17 @@
+## [Unreleased] — Elgg 6.x migration
+
+### Breaking changes
+
+- Requires Elgg 6.x (`elgg/elgg: ^6.0`) and PHP 8.2+
+
+### Migration
+
+- AMD `define()/require()` JS module converted to ES module (`import/export`)
+- `elgg.register_error()` / `elgg.system_message()` in JS replaced with `elgg/system_messages` module
+- Docker stack upgraded: Elgg 5.x → 6.x, PHPUnit ~9.5 → ~10.5
+
+---
+
 ## [Unreleased] — Elgg 5.x migration
 
 ### Breaking changes

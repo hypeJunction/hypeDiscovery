@@ -10,7 +10,7 @@ use hypeJunction\Discovery\Upgrades\EncodeSettingsAsJson;
 return [
 	'plugin' => [
 		'name' => 'hypeDiscovery',
-		'version' => '5.0.0',
+		'version' => '6.0.0',
 		'activate_on_install' => false,
 	],
 	'bootstrap' => \hypeJunction\Discovery\Bootstrap::class,

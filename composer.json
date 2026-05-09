@@ -1,6 +1,6 @@
 {
 	"name": "hypejunction/hypediscovery",
-	"version": "5.0.0",
+	"version": "6.0.0",
 	"type": "elgg-plugin",
 	"description": "Enhanced social presence and discovery of Elgg content in the social eco-system.",
 	"homepage": "https://github.com/hypeJunction/hypeDiscovery",
@@ -16,7 +16,7 @@
 	],
 	"require": {
 		"php": ">=8.2",
-		"elgg/elgg": "^5.0",
+		"elgg/elgg": "^6.0",
 		"composer/installers": "^2.0",
 		"mrclay/elgg-url-sniffer": "~3.0"
 	},

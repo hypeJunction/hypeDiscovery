@@ -1,4 +1,4 @@
-# hypeDiscovery — Architecture (Elgg 5.x)
+# hypeDiscovery — Architecture (Elgg 6.x)
 
 ## Purpose
 
