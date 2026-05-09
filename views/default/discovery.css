@@ -1,3 +1,7 @@
+:root {
+  --discovery-max-image-width: 300px;
+}
+
 .elgg-module.discovery-module-popup {
   max-width: 200px;
 }
@@ -16,7 +20,7 @@
 }
 
 .elgg-form-discovery-edit img {
-	max-width: 300px;
-	margin: 0 auto;
-	display: block;
+  max-width: var(--discovery-max-image-width);
+  margin: 0 auto;
+  display: block;
 }
