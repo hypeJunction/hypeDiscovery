@@ -276,7 +276,7 @@ function get_user_hash($guid)
     } else {
         $hash = $user->discovery_permanent_hash;
         if (!$hash) {
-            $hash = md5($user->guid . time() . elgg_generate_password());
+            $hash = md5($user->guid . time() . generate_random_cleartext_password());
             $user->discovery_permanent_hash = $hash;
         }
     }
