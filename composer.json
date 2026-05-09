@@ -3,7 +3,7 @@
 	"version": "5.0.0",
 	"type": "elgg-plugin",
 	"description": "Enhanced social presence and discovery of Elgg content in the social eco-system.",
-	"homepage": "http://hypejunction.com",
+	"homepage": "https://github.com/hypeJunction/hypeDiscovery",
 	"keywords": [
 		"elgg", "plugin", "open graph", "twitter cards", "facebook", "oembed", "discovery"
 	],
@@ -11,7 +11,7 @@
 	"authors": [
 		{
 			"name": "Ismayil Khayredinov",
-			"email": "info@hypejunction.com"
+			"email": "ismayil.khayredinov@gmail.com"
 		}
 	],
 	"require": {
