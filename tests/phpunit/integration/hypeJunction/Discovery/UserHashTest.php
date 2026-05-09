@@ -18,7 +18,10 @@ class UserHashTest extends IntegrationTestCase {
 
 	public function down() {}
 
-	public function testGetUserHashAssignsPermanentHash(): void {
+	/**
+     * @return void
+     */
+    public function testGetUserHashAssignsPermanentHash(): void {
 		$user = $this->createUser();
 		$this->assertEmpty($user->discovery_permanent_hash);
 
@@ -31,18 +34,27 @@ class UserHashTest extends IntegrationTestCase {
 		$this->assertEquals($hash, $user2->discovery_permanent_hash);
 	}
 
-	public function testGetUserHashReturnsSameHashOnSubsequentCalls(): void {
+	/**
+     * @return void
+     */
+    public function testGetUserHashReturnsSameHashOnSubsequentCalls(): void {
 		$user = $this->createUser();
 		$h1 = get_user_hash($user->guid);
 		$h2 = get_user_hash($user->guid);
 		$this->assertEquals($h1, $h2);
 	}
 
-	public function testGetUserFromHashReturnsFalseForEmpty(): void {
+	/**
+     * @return void
+     */
+    public function testGetUserFromHashReturnsFalseForEmpty(): void {
 		$this->assertFalse(get_user_from_hash(''));
 	}
 
-	public function testGetUserFromHashResolvesKnownUser(): void {
+	/**
+     * @return void
+     */
+    public function testGetUserFromHashResolvesKnownUser(): void {
 		$user = $this->createUser();
 		$hash = get_user_hash($user->guid);
 

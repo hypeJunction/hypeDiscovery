@@ -18,7 +18,10 @@ class PermalinkTest extends IntegrationTestCase {
 
 	public function down() {}
 
-	public function testEntityPermalinkContainsPermalinkSegment(): void {
+	/**
+     * @return void
+     */
+    public function testEntityPermalinkContainsPermalinkSegment(): void {
 		$user = $this->createUser();
 		$entity = $this->createObject([
 			'subtype' => 'blog',
@@ -32,14 +35,20 @@ class PermalinkTest extends IntegrationTestCase {
 		$this->assertStringContainsString((string) $entity->guid, $url);
 	}
 
-	public function testEntityPermalinkContainsViewtype(): void {
+	/**
+     * @return void
+     */
+    public function testEntityPermalinkContainsViewtype(): void {
 		$user = $this->createUser();
 		$entity = $this->createObject(['subtype' => 'blog', 'owner_guid' => $user->guid]);
 		$url = get_entity_permalink($entity, 'oembed');
 		$this->assertStringContainsString('/oembed/', $url);
 	}
 
-	public function testPermalinkContainsUserHashParam(): void {
+	/**
+     * @return void
+     */
+    public function testPermalinkContainsUserHashParam(): void {
 		$user = $this->createUser();
 		$entity = $this->createObject(['subtype' => 'blog', 'owner_guid' => $user->guid]);
 		$url = get_entity_permalink($entity);
@@ -47,7 +56,10 @@ class PermalinkTest extends IntegrationTestCase {
 		$this->assertStringContainsString('uh=', $url);
 	}
 
-	public function testGetGuidFromUrlReturnsGuidForKnownEntity(): void {
+	/**
+     * @return void
+     */
+    public function testGetGuidFromUrlReturnsGuidForKnownEntity(): void {
 		$user = $this->createUser();
 		$entity = $this->createObject(['subtype' => 'blog', 'owner_guid' => $user->guid]);
 		$url = $entity->getURL();
@@ -57,7 +69,10 @@ class PermalinkTest extends IntegrationTestCase {
 		$this->assertTrue($guid === false || is_numeric($guid));
 	}
 
-	public function testGetEntityFromUrlFallsBackToSite(): void {
+	/**
+     * @return void
+     */
+    public function testGetEntityFromUrlFallsBackToSite(): void {
 		$site = elgg_get_site_entity();
 		$entity = get_entity_from_url('http://example.invalid/no/such/path');
 		$this->assertNotFalse($entity);

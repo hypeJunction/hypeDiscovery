@@ -20,9 +20,12 @@ use Elgg\IntegrationTestCase;
  */
 class SettingsSerializationSecurityTest extends IntegrationTestCase {
 
-	private $previous_providers;
-	private $previous_discoverable;
-	private $previous_embeddable;
+	/** @var mixed */
+    private $previous_providers;
+	/** @var mixed */
+    private $previous_discoverable;
+	/** @var mixed */
+    private $previous_embeddable;
 
 	public function up() {
 		$libFile = dirname(__DIR__, 5) . '/lib/functions.php';
@@ -46,34 +49,49 @@ class SettingsSerializationSecurityTest extends IntegrationTestCase {
 		}
 	}
 
-	public function testProvidersReturnsEmptyArrayWhenUnset(): void {
+	/**
+     * @return void
+     */
+    public function testProvidersReturnsEmptyArrayWhenUnset(): void {
 		$plugin = elgg_get_plugin_from_id('hypediscovery');
 		$plugin->setSetting('providers', '');
 		$this->assertSame([], get_discovery_providers());
 	}
 
-	public function testProvidersRoundTripsJsonEncoded(): void {
+	/**
+     * @return void
+     */
+    public function testProvidersRoundTripsJsonEncoded(): void {
 		$plugin = elgg_get_plugin_from_id('hypediscovery');
 		$providers = ['facebook', 'twitter', 'linkedin'];
 		$plugin->setSetting('providers', json_encode($providers));
 		$this->assertEquals($providers, get_discovery_providers());
 	}
 
-	public function testProvidersReadsLegacySerialized(): void {
+	/**
+     * @return void
+     */
+    public function testProvidersReadsLegacySerialized(): void {
 		$plugin = elgg_get_plugin_from_id('hypediscovery');
 		$providers = ['facebook', 'twitter', 'linkedin'];
 		$plugin->setSetting('providers', serialize($providers));
 		$this->assertEquals($providers, get_discovery_providers());
 	}
 
-	public function testDiscoverableTypePairsRoundTripsJsonEncoded(): void {
+	/**
+     * @return void
+     */
+    public function testDiscoverableTypePairsRoundTripsJsonEncoded(): void {
 		$plugin = elgg_get_plugin_from_id('hypediscovery');
 		$pairs = ['object::blog', 'object::file', 'user::default'];
 		$plugin->setSetting('discovery_type_subtype_pairs', json_encode($pairs));
 		$this->assertEquals($pairs, get_discoverable_type_subtype_pairs());
 	}
 
-	public function testEmbeddableTypePairsRoundTripsJsonEncoded(): void {
+	/**
+     * @return void
+     */
+    public function testEmbeddableTypePairsRoundTripsJsonEncoded(): void {
 		$plugin = elgg_get_plugin_from_id('hypediscovery');
 		$pairs = ['object::blog'];
 		$plugin->setSetting('embed_type_subtype_pairs', json_encode($pairs));
