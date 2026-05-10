@@ -1,6 +1,6 @@
 hypeDiscovery
 =============
-![Elgg 5.x](https://img.shields.io/badge/Elgg-5.x-orange.svg?style=flat-square)
+![Elgg 7.x](https://img.shields.io/badge/Elgg-7.x-orange.svg?style=flat-square)
 
 Enhanced social presence and discovery of Elgg content in the social eco-system.
 
@@ -47,3 +47,9 @@ To modify OpenGraph or other metatags, use ```'metatags', 'discovery'``` hook.
 ### Embeds
 
 To control the output of the embedded content, see the ```oembed``` viewtype views.
+
+## Compatibility
+
+| Plugin version | Elgg version |
+|---|---|
+| current | 7.x |
