@@ -2,7 +2,7 @@
 
 namespace hypeJunction\Discovery;
 
-elgg_load_css('oembed.css');
+elgg_load_external_file('css', 'oembed.css');
 
 $entity = elgg_extract('entity', $vars);
 
