@@ -1,52 +1,61 @@
 {
-	"name": "hypejunction/hypediscovery",
-	"version": "4.0.0",
-	"type": "elgg-plugin",
-	"description": "Enhanced social presence and discovery of Elgg content in the social eco-system.",
-	"homepage": "http://hypejunction.com",
-	"keywords": [
-		"elgg", "plugin", "open graph", "twitter cards", "facebook", "oembed", "discovery"
-	],
-	"license": "GPL-2.0-or-later",
-	"authors": [
-		{
-			"name": "Ismayil Khayredinov",
-			"email": "info@hypejunction.com"
-		}
-	],
-	"require": {
-		"php": ">=7.4",
-		"elgg/elgg": "^4.0",
-		"composer/installers": "^2.0",
-		"mrclay/elgg-url-sniffer": "~3.0"
-	},
-	"autoload": {
-		"psr-4": {
-			"hypeJunction\\Discovery\\": "classes/hypeJunction/Discovery/"
-		}
-	},
-	"extra": {
-		"elgg-plugin": {
-			"id": "hypediscovery"
-		}
-	},
-	"repositories": [
-		{
-			"type": "composer",
-			"url": "https://asset-packagist.org"
-		}
-	],
-	"config": {
-		"allow-plugins": {
-			"composer/installers": true
-		},
-		"audit": {
-			"abandoned": "ignore",
-			"ignore": {
-				"PKSA-sd3x-9jwt-jn4s": "ckeditor 4.x is bundled by Elgg core; advisory ignored at the plugin layer",
-				"PKSA-4d16-gn5t-2wt7": "ckeditor 4.x is bundled by Elgg core; advisory ignored at the plugin layer",
-				"PKSA-hw62-11cy-3pk5": "ckeditor 4.x is bundled by Elgg core; advisory ignored at the plugin layer"
-			}
-		}
-	}
+    "name": "hypejunction/hypediscovery",
+    "version": "4.0.0",
+    "type": "elgg-plugin",
+    "description": "Enhanced social presence and discovery of Elgg content in the social eco-system.",
+    "homepage": "http://hypejunction.com",
+    "keywords": [
+        "elgg",
+        "plugin",
+        "open graph",
+        "twitter cards",
+        "facebook",
+        "oembed",
+        "discovery"
+    ],
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Ismayil Khayredinov",
+            "email": "info@hypejunction.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "elgg/elgg": "^4.0",
+        "composer/installers": "^2.0",
+        "mrclay/elgg-url-sniffer": "~3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "hypeJunction\\Discovery\\": "classes/hypeJunction/Discovery/"
+        },
+        "files": [
+            "lib/functions.php"
+        ]
+    },
+    "extra": {
+        "elgg-plugin": {
+            "id": "hypediscovery"
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        },
+        "audit": {
+            "abandoned": "ignore",
+            "ignore": {
+                "PKSA-sd3x-9jwt-jn4s": "ckeditor 4.x is bundled by Elgg core; advisory ignored at the plugin layer",
+                "PKSA-4d16-gn5t-2wt7": "ckeditor 4.x is bundled by Elgg core; advisory ignored at the plugin layer",
+                "PKSA-hw62-11cy-3pk5": "ckeditor 4.x is bundled by Elgg core; advisory ignored at the plugin layer"
+            }
+        }
+    }
 }
