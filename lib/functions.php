@@ -241,7 +241,7 @@ function get_guid_from_url($url) {
 
 	$username = $path->getUsername();
 	if ($username) {
-		$user = get_user_by_username($username);
+		$user = \elgg_get_user_by_username($username);
 		if ($user) {
 			return $user->guid;
 		}
