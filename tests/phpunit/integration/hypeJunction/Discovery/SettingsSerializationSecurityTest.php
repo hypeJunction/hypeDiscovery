@@ -29,7 +29,7 @@ class SettingsSerializationSecurityTest extends IntegrationTestCase {
 		if (!function_exists('hypeJunction\\Discovery\\get_discovery_providers')) {
 			require_once $libFile;
 		}
-		$plugin = elgg_get_plugin_from_id('hypediscovery');
+		$plugin = \elgg_get_plugin_from_id('hypediscovery');
 		if ($plugin) {
 			$this->previous_providers = $plugin->getSetting('providers');
 			$this->previous_discoverable = $plugin->getSetting('discovery_type_subtype_pairs');
@@ -38,7 +38,7 @@ class SettingsSerializationSecurityTest extends IntegrationTestCase {
 	}
 
 	public function down() {
-		$plugin = elgg_get_plugin_from_id('hypediscovery');
+		$plugin = \elgg_get_plugin_from_id('hypediscovery');
 		if ($plugin) {
 			$plugin->setSetting('providers', (string) $this->previous_providers);
 			$plugin->setSetting('discovery_type_subtype_pairs', (string) $this->previous_discoverable);
@@ -47,34 +47,34 @@ class SettingsSerializationSecurityTest extends IntegrationTestCase {
 	}
 
 	public function testProvidersReturnsEmptyArrayWhenUnset(): void {
-		$plugin = elgg_get_plugin_from_id('hypediscovery');
+		$plugin = \elgg_get_plugin_from_id('hypediscovery');
 		$plugin->setSetting('providers', '');
 		$this->assertSame([], get_discovery_providers());
 	}
 
 	public function testProvidersRoundTripsJsonEncoded(): void {
-		$plugin = elgg_get_plugin_from_id('hypediscovery');
+		$plugin = \elgg_get_plugin_from_id('hypediscovery');
 		$providers = ['facebook', 'twitter', 'linkedin'];
 		$plugin->setSetting('providers', json_encode($providers));
 		$this->assertEquals($providers, get_discovery_providers());
 	}
 
 	public function testProvidersReadsLegacySerialized(): void {
-		$plugin = elgg_get_plugin_from_id('hypediscovery');
+		$plugin = \elgg_get_plugin_from_id('hypediscovery');
 		$providers = ['facebook', 'twitter', 'linkedin'];
 		$plugin->setSetting('providers', serialize($providers));
 		$this->assertEquals($providers, get_discovery_providers());
 	}
 
 	public function testDiscoverableTypePairsRoundTripsJsonEncoded(): void {
-		$plugin = elgg_get_plugin_from_id('hypediscovery');
+		$plugin = \elgg_get_plugin_from_id('hypediscovery');
 		$pairs = ['object::blog', 'object::file', 'user::default'];
 		$plugin->setSetting('discovery_type_subtype_pairs', json_encode($pairs));
 		$this->assertEquals($pairs, get_discoverable_type_subtype_pairs());
 	}
 
 	public function testEmbeddableTypePairsRoundTripsJsonEncoded(): void {
-		$plugin = elgg_get_plugin_from_id('hypediscovery');
+		$plugin = \elgg_get_plugin_from_id('hypediscovery');
 		$pairs = ['object::blog'];
 		$plugin->setSetting('embed_type_subtype_pairs', json_encode($pairs));
 		$this->assertEquals($pairs, get_embeddable_type_subtype_pairs());
@@ -97,7 +97,7 @@ class SettingsSerializationSecurityTest extends IntegrationTestCase {
 	 * must fall back to empty array.
 	 */
 	public function testEmptySettingsFallbackToEmptyArray(): void {
-		$plugin = elgg_get_plugin_from_id('hypediscovery');
+		$plugin = \elgg_get_plugin_from_id('hypediscovery');
 		$plugin->setSetting('providers', '');
 		$plugin->setSetting('discovery_type_subtype_pairs', '');
 		$plugin->setSetting('embed_type_subtype_pairs', '');

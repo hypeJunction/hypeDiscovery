@@ -4,10 +4,10 @@ namespace hypeJunction\Discovery;
 
 use ElggEntity;
 
-$entity = elgg_extract('entity', $vars);
-$share_url = elgg_extract('share_url', $vars);
+$entity = \elgg_extract('entity', $vars);
+$share_url = \elgg_extract('share_url', $vars);
 
-echo elgg_view_menu('discovery_share', [
+echo \elgg_view_menu('discovery_share', [
 	'entity' => $entity,
 	'share_url' => $share_url,
 	'class' => 'discovery-buttonbank elgg-menu-hz',
@@ -16,30 +16,30 @@ echo elgg_view_menu('discovery_share', [
 
 if ($entity instanceof ElggEntity) {
 	$permalink = get_entity_permalink($entity);
-	$label = elgg_echo('discovery:entity:permalink');
+	$label = \elgg_echo('discovery:entity:permalink');
 } else {
 	$permalink = $share_url;
-	$label = elgg_echo('discovery:share_url');
+	$label = \elgg_echo('discovery:share_url');
 }
 
 if ($permalink) {
-	echo elgg_view_input('text', [
+	echo \elgg_view_input('text', [
 		'value' => $permalink,
 		'label' => $label,
 	]);
 	
 	if (is_embeddable($entity)) {
-		$response = elgg_trigger_event_results('export:entity', 'oembed', [
+		$response = \elgg_trigger_event_results('export:entity', 'oembed', [
 			'origin' => $permalink,
 			'entity' => $entity,
-			'maxwidth' => elgg_extract('maxwidth', $vars, 640),
-			'maxheight' => elgg_extract('maxheight', $vars, 480),
+			'maxwidth' => \elgg_extract('maxwidth', $vars, 640),
+			'maxheight' => \elgg_extract('maxheight', $vars, 480),
 		]);
 
 		if (!empty($response['html'])) {
-			echo elgg_view_input('text', [
+			echo \elgg_view_input('text', [
 				'value' => $response['html'],
-				'label' => elgg_echo('discovery:entity:embed_code'),
+				'label' => \elgg_echo('discovery:entity:embed_code'),
 			]);
 		}
 	}

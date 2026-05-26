@@ -17,10 +17,10 @@ class Discovery {
 		$return = $event->getValue();
 		$params = $event->getParams();
 
-		$title = elgg_extract('title', $params);
+		$title = \elgg_extract('title', $params);
 
-		return elgg_call(ELGG_IGNORE_ACCESS, function () use ($return, $title) {
-			$url = elgg_get_current_url();
+		return \elgg_call(ELGG_IGNORE_ACCESS, function () use ($return, $title) {
+			$url = \elgg_get_current_url();
 			$entity = get_entity_from_url($url);
 
 			if (is_embeddable($entity)) {
@@ -31,7 +31,7 @@ class Discovery {
 					'title' => $title,
 				];
 
-				if (elgg_is_active_plugin('data_views')) {
+				if (\elgg_is_active_plugin('data_views')) {
 					$return['links']['xml+oembed'] = [
 						'rel' => 'alternate',
 						'type' => 'application/xml+oembed',
@@ -55,7 +55,7 @@ class Discovery {
 		$return = $event->getValue();
 		$params = $event->getParams();
 
-		$url = elgg_get_current_url();
+		$url = \elgg_get_current_url();
 		$metatags = get_discovery_metatags($url);
 
 		if (empty($metatags)) {
@@ -104,9 +104,9 @@ class Discovery {
 		$return = $event->getValue();
 		$params = $event->getParams();
 
-		$entity = elgg_extract('entity', $params);
-		$maxwidth = elgg_extract('maxwidth', $params);
-		$maxheight = elgg_extract('maxheight', $params);
+		$entity = \elgg_extract('entity', $params);
+		$maxwidth = \elgg_extract('maxwidth', $params);
+		$maxheight = \elgg_extract('maxheight', $params);
 		$height = $maxheight ?: 480;
 		$width = $maxwidth ?: 640;
 
@@ -120,7 +120,7 @@ class Discovery {
 			'type' => 'open_graph_image',
 		]);
 
-		$iframe_attrs = elgg_format_attributes([
+		$iframe_attrs = \elgg_format_attributes([
 			'src' => get_entity_permalink($entity, 'oembed'),
 			'frameborder' => 0,
 			'height' => $height,
@@ -146,10 +146,10 @@ class Discovery {
 		$return = $event->getValue();
 		$params = $event->getParams();
 
-		$entity = elgg_extract('entity', $params);
-		$url = elgg_extract('url', $params);
+		$entity = \elgg_extract('entity', $params);
+		$url = \elgg_extract('url', $params);
 
-		$site = elgg_get_site_entity();
+		$site = \elgg_get_site_entity();
 		$site_tags = [
 			'og:type' => 'website',
 			'og:site_name' => $site->og_site_name,

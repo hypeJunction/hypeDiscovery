@@ -2,7 +2,7 @@
 
 namespace hypeJunction\Discovery;
 
-$entity = elgg_extract('entity', $vars);
+$entity = \elgg_extract('entity', $vars);
 
 $maxwith = get_input('maxwidth');
 $maxheight = get_input('maxheight');

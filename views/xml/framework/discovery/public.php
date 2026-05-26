@@ -2,11 +2,11 @@
 
 namespace hypeJunction\Discovery;
 
-if (!elgg_is_active_plugin('data_views')) {
+if (!\elgg_is_active_plugin('data_views')) {
 	return;
 }
 
-$entity = elgg_extract('entity', $vars);
+$entity = \elgg_extract('entity', $vars);
 
 $maxwith = get_input('maxwidth');
 $maxheight = get_input('maxheight');

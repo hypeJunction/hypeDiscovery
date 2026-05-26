@@ -2,82 +2,82 @@
 
 namespace hypeJunction\Discovery;
 
-$entity = elgg_extract('entity', $vars);
+$entity = \elgg_extract('entity', $vars);
 
-echo elgg_format_element('div', [
+echo \elgg_format_element('div', [
 	'class' => 'elgg-text-help',
-], elgg_echo('discovery:og:help'));
+], \elgg_echo('discovery:og:help'));
 
 if (is_discoverable_type($entity)) {
-	echo elgg_view_input('select', [
+	echo \elgg_view_input('select', [
 		'name' => 'discoverable',
 		'value' => (isset($entity->discoverable)) ? (bool) $entity->discoverable : is_discoverable($entity),
 		'options_values' => [
-			0 => elgg_echo('option:no'),
-			1 => elgg_echo('option:yes'),
+			0 => \elgg_echo('option:no'),
+			1 => \elgg_echo('option:yes'),
 		],
-		'label' => elgg_echo('discovery:og:discoverable'),
-		'help' => elgg_echo('discovery:og:discoverable:help'),
+		'label' => \elgg_echo('discovery:og:discoverable'),
+		'help' => \elgg_echo('discovery:og:discoverable:help'),
 	]);
 }
 
 if (is_embeddable_type($entity)) {
-	echo elgg_view_input('select', [
+	echo \elgg_view_input('select', [
 		'name' => 'embeddable',
 		'value' => (isset($entity->discoverable)) ? (bool) $entity->embeddable : is_embeddable($entity),
 		'options_values' => [
-			0 => elgg_echo('option:no'),
-			1 => elgg_echo('option:yes'),
+			0 => \elgg_echo('option:no'),
+			1 => \elgg_echo('option:yes'),
 		],
-		'label' => elgg_echo('discovery:og:embeddable'),
-		'help' => elgg_echo('discovery:og:embeddable:help'),
+		'label' => \elgg_echo('discovery:og:embeddable'),
+		'help' => \elgg_echo('discovery:og:embeddable:help'),
 	]);
 }
 
-echo elgg_view_input('file', [
+echo \elgg_view_input('file', [
 	'name' => 'og_image',
 	'value' => $entity->hasIcon('large', 'open_graph_image'),
-	'label' => elgg_echo('discovery:og:image'),
-	'help' => elgg_echo('discovery:og:site_image:help'),
+	'label' => \elgg_echo('discovery:og:image'),
+	'help' => \elgg_echo('discovery:og:site_image:help'),
 ]);
 
 foreach (['open_graph_image', 'cover', 'icon'] as $type) {
 	if ($entity->hasIcon('large', $type)) {
-		echo elgg_view('output/img', [
+		echo \elgg_view('output/img', [
 			'src' => $entity->getIconURL('large', $type),
 			'class' => 'elgg-photo elgg-field',
 		]);
 	}
 }
 
-echo elgg_view_input('text', [
+echo \elgg_view_input('text', [
 	'name' => 'og_title',
 	'value' => $entity->og_title,
-	'label' => elgg_echo('discovery:og:title'),
-	'help' => elgg_echo('discovery:og:title:help'),
+	'label' => \elgg_echo('discovery:og:title'),
+	'help' => \elgg_echo('discovery:og:title:help'),
 ]);
 
-echo elgg_view_input('text', [
+echo \elgg_view_input('text', [
 	'name' => 'og_description',
 	'value' => $entity->og_description,
-	'label' => elgg_echo('discovery:og:description'),
-	'help' => elgg_echo('discovery:og:description:help'),
+	'label' => \elgg_echo('discovery:og:description'),
+	'help' => \elgg_echo('discovery:og:description:help'),
 ]);
 
-echo elgg_view_input('tags', [
+echo \elgg_view_input('tags', [
 	'name' => 'og_keywords',
 	'value' => $entity->og_keywords,
-	'label' => elgg_echo('discovery:og:keywords'),
-	'help' => elgg_echo('discovery:og:keywords:help'),
+	'label' => \elgg_echo('discovery:og:keywords'),
+	'help' => \elgg_echo('discovery:og:keywords:help'),
 ]);
 
-echo elgg_view_input('hidden', [
+echo \elgg_view_input('hidden', [
 	'name' => 'guid',
 	'value' => $entity->guid
 ]);
 
-echo elgg_view_input('submit', [
-	'value' => elgg_echo('save'),
+echo \elgg_view_input('submit', [
+	'value' => \elgg_echo('save'),
 	'field_class' => 'elgg-foot',
 ]);
 ?>

@@ -47,7 +47,7 @@ class HooksTest extends IntegrationTestCase {
 	}
 
 	public function testGraphExportHookReturnsSiteTags(): void {
-		$site = elgg_get_site_entity();
+		$site = \elgg_get_site_entity();
 		$return = Discovery::graphExport(
 			$this->makeEvent([], ['entity' => $site, 'url' => $site->getURL()])
 		);
@@ -58,13 +58,13 @@ class HooksTest extends IntegrationTestCase {
 
 	public function testEntityMenuRegisterHookRuns(): void {
 		$user = $this->createUser();
-		_elgg_services()->session_manager->setLoggedInUser($user);
+		\_elgg_services()->session_manager->setLoggedInUser($user);
 		try {
-			$entity = elgg_get_site_entity();
+			$entity = \elgg_get_site_entity();
 			$result = Menus::entityMenuSetup($this->makeEvent([], ['entity' => $entity]));
 			$this->assertIsArray($result);
 		} finally {
-			_elgg_services()->session_manager->removeLoggedInUser();
+			\_elgg_services()->session_manager->removeLoggedInUser();
 		}
 	}
 

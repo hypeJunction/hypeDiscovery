@@ -20,77 +20,77 @@ class BootstrapTest extends IntegrationTestCase {
 	public function down() {}
 
 	public function testPluginLoadable(): void {
-		$plugin = elgg_get_plugin_from_id('hypediscovery');
+		$plugin = \elgg_get_plugin_from_id('hypediscovery');
 		$this->assertNotNull($plugin, 'Plugin hypeDiscovery should be loadable');
 	}
 
 	public function testSettingsSaveActionRegistered(): void {
 		$this->assertTrue(
-			elgg_action_exists('hypediscovery/settings/save'),
+			\elgg_action_exists('hypediscovery/settings/save'),
 			'Action hypediscovery/settings/save should be registered'
 		);
 	}
 
 	public function testDiscoverySiteActionRegistered(): void {
 		$this->assertTrue(
-			elgg_action_exists('discovery/site'),
+			\elgg_action_exists('discovery/site'),
 			'Action discovery/site should be registered (admin)'
 		);
 	}
 
 	public function testDiscoveryShareActionRegistered(): void {
 		$this->assertTrue(
-			elgg_action_exists('discovery/share'),
+			\elgg_action_exists('discovery/share'),
 			'Action discovery/share should be registered (public)'
 		);
 	}
 
 	public function testDiscoveryEditActionRegistered(): void {
 		$this->assertTrue(
-			elgg_action_exists('discovery/edit'),
+			\elgg_action_exists('discovery/edit'),
 			'Action discovery/edit should be registered'
 		);
 	}
 
 	public function testSettingsViewExists(): void {
 		$this->assertTrue(
-			elgg_view_exists('plugins/hypediscovery/settings'),
+			\elgg_view_exists('plugins/hypediscovery/settings'),
 			'Plugin settings view should exist'
 		);
 	}
 
 	public function testPermalinkResourceViewExists(): void {
 		$this->assertTrue(
-			elgg_view_exists('resources/permalink'),
+			\elgg_view_exists('resources/permalink'),
 			'resources/permalink view should exist'
 		);
 	}
 
 	public function testFormsShareViewExists(): void {
-		$this->assertTrue(elgg_view_exists('forms/discovery/share'));
+		$this->assertTrue(\elgg_view_exists('forms/discovery/share'));
 	}
 
 	public function testFormsEditViewExists(): void {
-		$this->assertTrue(elgg_view_exists('forms/discovery/edit'));
+		$this->assertTrue(\elgg_view_exists('forms/discovery/edit'));
 	}
 
 	public function testFormsSiteViewExists(): void {
-		$this->assertTrue(elgg_view_exists('forms/discovery/site'));
+		$this->assertTrue(\elgg_view_exists('forms/discovery/site'));
 	}
 
 	public function testFrameworkPublicViewExists(): void {
-		$this->assertTrue(elgg_view_exists('framework/discovery/public'));
+		$this->assertTrue(\elgg_view_exists('framework/discovery/public'));
 	}
 
 	public function testFrameworkIconViewExists(): void {
-		$this->assertTrue(elgg_view_exists('framework/discovery/icon'));
+		$this->assertTrue(\elgg_view_exists('framework/discovery/icon'));
 	}
 
 	public function testOembedResourceViewExists(): void {
 		// oEmbed viewtype for resources/permalink
 		$this->assertTrue(
-			elgg_view_exists('resources/permalink', 'oembed')
-			|| elgg_view_exists('resources/permalink', 'json')
+			\elgg_view_exists('resources/permalink', 'oembed')
+			|| \elgg_view_exists('resources/permalink', 'json')
 		);
 	}
 

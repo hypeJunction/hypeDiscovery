@@ -58,7 +58,7 @@ class PermalinkTest extends IntegrationTestCase {
 	}
 
 	public function testGetEntityFromUrlFallsBackToSite(): void {
-		$site = elgg_get_site_entity();
+		$site = \elgg_get_site_entity();
 		$entity = get_entity_from_url('http://example.invalid/no/such/path');
 		$this->assertNotFalse($entity);
 		$this->assertEquals($site->guid, $entity->guid);

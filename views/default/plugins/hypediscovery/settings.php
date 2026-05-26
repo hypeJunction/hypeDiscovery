@@ -2,68 +2,68 @@
 
 namespace hypeJunction\Discovery;
 
-$entity = elgg_extract('entity', $vars);
+$entity = \elgg_extract('entity', $vars);
 
-echo elgg_view_input('select', [
+echo \elgg_view_input('select', [
 	'name' => 'params[bypass_access]',
 	'value' => $entity->bypass_access,
 	'options_values' => [
-		false => elgg_echo('option:no'),
-		true => elgg_echo('option:yes')
+		false => \elgg_echo('option:no'),
+		true => \elgg_echo('option:yes')
 	],
-	'label' => elgg_echo('discovery:settings:bypass_access'),
-	'help' => elgg_echo('discovery:settings:bypass_access:help'),
+	'label' => \elgg_echo('discovery:settings:bypass_access'),
+	'help' => \elgg_echo('discovery:settings:bypass_access:help'),
 ]);
 
-echo elgg_view_input('select', [
+echo \elgg_view_input('select', [
 	'name' => 'params[nocrawl]',
 	'value' => $entity->nocrawl,
 	'options_values' => [
-		false => elgg_echo('option:no'),
-		true => elgg_echo('option:yes')
+		false => \elgg_echo('option:no'),
+		true => \elgg_echo('option:yes')
 	],
-	'label' => elgg_echo('discovery:settings:nocrawl'),
-	'help' => elgg_echo('discovery:settings:nocrawl:help'),
+	'label' => \elgg_echo('discovery:settings:nocrawl'),
+	'help' => \elgg_echo('discovery:settings:nocrawl:help'),
 ]);
 
-$registered_entities = elgg_entity_types_with_capability('searchable');
+$registered_entities = \elgg_entity_types_with_capability('searchable');
 foreach ($registered_entities as $type => $subtypes) {
 	if (empty($subtypes)) {
-		$str = elgg_echo("item:$type");
+		$str = \elgg_echo("item:$type");
 		$chbx_options[$str] = "$type::default";
 	} else {
 		foreach ($subtypes as $subtype) {
-			$str = elgg_echo("item:$type:$subtype");
+			$str = \elgg_echo("item:$type:$subtype");
 			$chbx_options[$str] = "$type::$subtype";
 		}
 	}
 }
 
-echo elgg_view_input('checkboxes', [
+echo \elgg_view_input('checkboxes', [
 	'name' => 'params[discovery_type_subtype_pairs]',
 	'value' => get_discoverable_type_subtype_pairs(),
 	'options' => $chbx_options,
-	'label' => elgg_echo('discovery:settings:discovery_type_subtype_pairs'),
-	'help' => elgg_echo('discovery:settings:discovery_type_subtype_pairs:help'),
+	'label' => \elgg_echo('discovery:settings:discovery_type_subtype_pairs'),
+	'help' => \elgg_echo('discovery:settings:discovery_type_subtype_pairs:help'),
 ]);
 
-echo elgg_view_input('checkboxes', [
+echo \elgg_view_input('checkboxes', [
 	'name' => 'params[embed_type_subtype_pairs]',
 	'value' => get_embeddable_type_subtype_pairs(),
 	'options' => $chbx_options,
-	'label' => elgg_echo('discovery:settings:embed_type_subtype_pairs'),
+	'label' => \elgg_echo('discovery:settings:embed_type_subtype_pairs'),
 ]);
 
-echo elgg_view_input('checkboxes', [
+echo \elgg_view_input('checkboxes', [
 	'name' => 'params[providers]',
 	'value' => get_discovery_providers(),
 	'options' => [
-		elgg_echo('discovery:provider:facebook') => 'facebook',
-		elgg_echo('discovery:provider:twitter') => 'twitter',
-		elgg_echo('discovery:provider:linkedin') => 'linkedin',
-		elgg_echo('discovery:provider:pinterest') => 'pinterest',
-		elgg_echo('discovery:provider:googleplus') => 'googleplus',
+		\elgg_echo('discovery:provider:facebook') => 'facebook',
+		\elgg_echo('discovery:provider:twitter') => 'twitter',
+		\elgg_echo('discovery:provider:linkedin') => 'linkedin',
+		\elgg_echo('discovery:provider:pinterest') => 'pinterest',
+		\elgg_echo('discovery:provider:googleplus') => 'googleplus',
 	],
-	'label' => elgg_echo('discovery:settings:providers'),
-	'help' => elgg_echo('discovery:settings:providers:help'),
+	'label' => \elgg_echo('discovery:settings:providers'),
+	'help' => \elgg_echo('discovery:settings:providers:help'),
 ]);

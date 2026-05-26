@@ -7,7 +7,7 @@ $guid = get_input('guid');
 $referrer = get_input('referrer');
 $share_url = get_input('share_url');
 
-$ia = elgg_set_ignore_access(true);
+$ia = \elgg_set_ignore_access(true);
 
 $forward_url = REFERRER;
 
@@ -17,7 +17,7 @@ if ($guid) {
 		$error = true;
 	} else {
 		$forward_url = get_provider_url($provider, $entity, $referrer);
-		$forward_url = elgg_trigger_event_results('entity:share', $entity->getType(), [
+		$forward_url = \elgg_trigger_event_results('entity:share', $entity->getType(), [
 			'provider' => $provider,
 			'entity' => $entity,
 			'referrer' => $referrer,
@@ -25,17 +25,17 @@ if ($guid) {
 	}
 } else {
 	$forward_url = get_provider_url($provider, null, $referrer, $share_url);
-	$forward_url = elgg_trigger_event_results('share', 'url', [
+	$forward_url = \elgg_trigger_event_results('share', 'url', [
 		'provider' => $provider,
 		'referrer' => $referrer,
 		'share_url' => $share_url,
 	], $forward_url);
 }
 
-elgg_set_ignore_access($ia);
+\elgg_set_ignore_access($ia);
 
 if (!$forward_url || $error) {
-	elgg_register_error_message(elgg_echo('discovery:share:error:no_url'));
+	\elgg_register_error_message(\elgg_echo('discovery:share:error:no_url'));
 	forward(REFERER);
 }
 
