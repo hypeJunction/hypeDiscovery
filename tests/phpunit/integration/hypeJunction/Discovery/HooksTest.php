@@ -36,7 +36,7 @@ class HooksTest extends IntegrationTestCase {
 	}
 
 	public function testGraphExportHookReturnsSiteTags(): void {
-		$site = elgg_get_site_entity();
+		$site = \elgg_get_site_entity();
 		$return = Discovery::graphExport(
 			'metatags',
 			'discovery',
@@ -50,15 +50,15 @@ class HooksTest extends IntegrationTestCase {
 
 	public function testEntityMenuRegisterHookRuns(): void {
 		$user = $this->createUser();
-		elgg_get_session()->setLoggedInUser($user);
+		\elgg_get_session()->setLoggedInUser($user);
 		try {
 			// Trigger should not fatal; menu items may or may not be added
-			$result = elgg_trigger_plugin_hook('register', 'menu:entity', [
-				'entity' => elgg_get_site_entity(),
+			$result = \elgg_trigger_plugin_hook('register', 'menu:entity', [
+				'entity' => \elgg_get_site_entity(),
 			], []);
 			$this->assertIsArray($result);
 		} finally {
-			elgg_get_session()->removeLoggedInUser();
+			\elgg_get_session()->removeLoggedInUser();
 		}
 	}
 

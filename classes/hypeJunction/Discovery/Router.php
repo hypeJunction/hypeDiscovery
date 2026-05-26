@@ -27,10 +27,10 @@ class Router {
 			case 'image' :
 				// BC router
 				$size = array_shift($segments);
-				$ia = elgg_set_ignore_access(true);
+				$ia = \elgg_set_ignore_access(true);
 				$entity = get_entity($guid);
 				$url = $entity->getIconURL($size);
-				elgg_set_ignore_access($ia);
+				\elgg_set_ignore_access($ia);
 				forward($url);
 				return;
 
@@ -53,31 +53,31 @@ class Router {
 					$viewtype = 'default';
 				}
 
-				elgg_set_viewtype($viewtype);
+				\elgg_set_viewtype($viewtype);
 
-				if (!$guid || !elgg_entity_exists($guid)) {
+				if (!$guid || !\elgg_entity_exists($guid)) {
 					return false;
 				}
 
-				$ia = elgg_set_ignore_access();
+				$ia = \elgg_set_ignore_access();
 				$entity = get_entity($guid);
 
 				if (!has_access_to_entity($entity) && !is_discoverable($entity)) {
-					elgg_set_ignore_access($ia);
+					\elgg_set_ignore_access($ia);
 					return false;
 				}
 
-				elgg_register_plugin_hook_handler('head', 'page', function($hook, $type, $return) use ($entity) {
+				\elgg_register_plugin_hook_handler('head', 'page', function($hook, $type, $return) use ($entity) {
 					if (isset($return['links']['canonical'])) {
 						return;
 					}
 
-					if (elgg_is_active_plugin('hypeSeo')) {
+					if (\elgg_is_active_plugin('hypeSeo')) {
 						$svc = \hypeJunction\Seo\RewriteService::getInstance();
 						$data = $svc->getRewriteRulesFromGUID($entity->getURL());
 						if (isset($data['sef_path'])) {
 							$return['links']['canonical'] = [
-								'href' => elgg_normalize_url($data['sef_path']),
+								'href' => \elgg_normalize_url($data['sef_path']),
 								'rel' => 'canonical',
 							];
 							return $return;
@@ -94,26 +94,26 @@ class Router {
 
 				$forward_url = false;
 
-				$is_walled = elgg_get_config('walled_garden') && !elgg_is_logged_in();
+				$is_walled = \elgg_get_config('walled_garden') && !\elgg_is_logged_in();
 				if (has_access_to_entity($entity) && $viewtype == 'default' && !$is_walled) {
 					$forward_url = $entity->getURL();
 				}
 
-				$forward_url = elgg_trigger_plugin_hook('entity:referred', $entity->getType(), array(
+				$forward_url = \elgg_trigger_plugin_hook('entity:referred', $entity->getType(), array(
 					'entity' => $entity,
 					'user_hash' => $referrer_hash,
 					'referrer' => $_SERVER['HTTP_REFERER'],
 						), $forward_url);
 
 				if ($forward_url) {
-					elgg_set_ignore_access($ia);
+					\elgg_set_ignore_access($ia);
 					forward($forward_url);
 				}
 
-				if (elgg_get_plugin_setting('nocrawl', 'hypediscovery')) {
-					elgg_set_http_header('X-Robots-Tag: noindex', true);
+				if (\elgg_get_plugin_setting('nocrawl', 'hypediscovery')) {
+					\elgg_set_http_header('X-Robots-Tag: noindex', true);
 
-					elgg_register_plugin_hook_handler('head', 'page', function($hook, $type, $return) {
+					\elgg_register_plugin_hook_handler('head', 'page', function($hook, $type, $return) {
 						$return['metas'][] = [
 							'name' => 'robots',
 							'content' => 'noindex',
@@ -123,14 +123,14 @@ class Router {
 					});
 				}
 
-				echo elgg_view_resource('permalink', [
+				echo \elgg_view_resource('permalink', [
 					'viewtype' => $viewtype,
 					'user_hash' => $referrer_hash,
 					'guid' => $guid,
 					'entity' => $entity,
 				]);
 
-				elgg_set_ignore_access($ia);
+				\elgg_set_ignore_access($ia);
 				return true;
 		}
 
@@ -156,8 +156,8 @@ class Router {
 					return false;
 				}
 
-				$title = elgg_echo('discovery:entity:settings');
-				$content = elgg_view('framework/discovery/edit', array(
+				$title = \elgg_echo('discovery:entity:settings');
+				$content = \elgg_view('framework/discovery/edit', array(
 					'entity' => $entity
 				));
 				$sidebar = false;
@@ -183,8 +183,8 @@ class Router {
 					$entity->setVolatileData('discovery:share_url', $share_url);
 				}
 
-				$title = elgg_echo('discovery:entity:share');
-				$content = elgg_view('forms/discovery/share', array(
+				$title = \elgg_echo('discovery:entity:share');
+				$content = \elgg_view('forms/discovery/share', array(
 					'entity' => $entity,
 					'share_url' => $share_url,
 				));
@@ -195,16 +195,16 @@ class Router {
 		}
 
 		if ($content) {
-			if (elgg_is_xhr()) {
+			if (\elgg_is_xhr()) {
 				echo $content;
 			} else {
-				$layout = elgg_view_layout('default', array(
+				$layout = \elgg_view_layout('default', array(
 					'title' => $title,
 					'content' => $content,
 					'filter' => $filter,
 					'sidebar' => $sidebar,
 				));
-				echo elgg_view_page($title, $layout);
+				echo \elgg_view_page($title, $layout);
 			}
 			return true;
 		}
@@ -248,8 +248,8 @@ class Router {
 			return;
 		}
 
-		$identifier = elgg_extract('identifier', $params);
-		$segments = (array) elgg_extract('segments', $params, []);
+		$identifier = \elgg_extract('identifier', $params);
+		$segments = (array) \elgg_extract('segments', $params, []);
 
 		if ($identifier !== 'services') {
 			return;
@@ -277,16 +277,16 @@ class Router {
 		$maxwidth = get_input('maxwidth');
 		$maxheight = get_input('maxheight');
 
-		$ia = elgg_set_ignore_access(true);
+		$ia = \elgg_set_ignore_access(true);
 		$entity = get_entity_from_url(urldecode($url));
 		$permalink = get_entity_permalink($entity, "{$format}+oembed");
-		elgg_set_ignore_access($ia);
+		\elgg_set_ignore_access($ia);
 
 		if (!$permalink) {
 			forward('', '404');
 		}
 
-		$permalink = elgg_http_add_url_query_elements($permalink, [
+		$permalink = \elgg_http_add_url_query_elements($permalink, [
 			'maxwidth' => $maxwidth,
 			'maxheight' => $maxheight,
 		]);
@@ -310,7 +310,7 @@ class Router {
 			$params = $hook->getParams();
 		}
 
-		return elgg_call(ELGG_IGNORE_ACCESS, function () use ($return) {
+		return \elgg_call(ELGG_IGNORE_ACCESS, function () use ($return) {
 			$url = current_page_url();
 			$entity = get_entity_from_url($url);
 

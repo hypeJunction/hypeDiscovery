@@ -30,7 +30,7 @@ class EncodeSettingsAsJson implements Batch {
 
 	/** {@inheritdoc} */
 	public function shouldBeSkipped(): bool {
-		$plugin = elgg_get_plugin_from_id('hypediscovery');
+		$plugin = \elgg_get_plugin_from_id('hypediscovery');
 		if (!$plugin instanceof \ElggPlugin) {
 			return true;
 		}
@@ -58,7 +58,7 @@ class EncodeSettingsAsJson implements Batch {
 
 	/** {@inheritdoc} */
 	public function run(Result $result, $offset): Result {
-		$plugin = elgg_get_plugin_from_id('hypediscovery');
+		$plugin = \elgg_get_plugin_from_id('hypediscovery');
 		if (!$plugin instanceof \ElggPlugin) {
 			$result->addError('hypediscovery plugin entity not found');
 			$result->addFailures(count(self::ARRAY_SETTINGS));

@@ -31,7 +31,7 @@ function is_discoverable($entity)
         case ACCESS_PUBLIC:
             return true;
         case ACCESS_LOGGED_IN:
-            if (!elgg_get_plugin_setting('bypass_access', 'hypediscovery')) {
+            if (!\elgg_get_plugin_setting('bypass_access', 'hypediscovery')) {
                 return false;
             }
             return true;
@@ -110,8 +110,8 @@ function is_embeddable_type($entity = null, $type = '', $subtype = '')
  */
 function get_share_action_url($provider, $guid = 0, $referrer = '', $share_url = '')
 {
-    $base_url = elgg_normalize_url('action/discovery/share');
-    return elgg_http_add_url_query_elements($base_url, array('provider' => $provider, 'guid' => $guid, 'referrer' => $referrer, 'share_url' => $share_url));
+    $base_url = \elgg_normalize_url('action/discovery/share');
+    return \elgg_http_add_url_query_elements($base_url, array('provider' => $provider, 'guid' => $guid, 'referrer' => $referrer, 'share_url' => $share_url));
 }
 /**
  * Construct sharing endpoint URL for a provider
@@ -124,7 +124,7 @@ function get_share_action_url($provider, $guid = 0, $referrer = '', $share_url =
  */
 function get_provider_url($provider, $entity = null, $referrer = '', $share_url = '')
 {
-    $site = elgg_get_site_entity();
+    $site = \elgg_get_site_entity();
     if (!$entity && $share_url) {
         $title = '';
         $tags = '';
@@ -175,7 +175,7 @@ function get_provider_url($provider, $entity = null, $referrer = '', $share_url 
             break;
     }
     if ($base_url) {
-        return elgg_http_add_url_query_elements($base_url, $elements);
+        return \elgg_http_add_url_query_elements($base_url, $elements);
     }
     return $share_url;
 }
@@ -190,15 +190,15 @@ function get_entity_permalink($entity, $viewtype = 'default')
     if (!$entity instanceof ElggEntity) {
         return current_page_url();
     }
-    $user_guid = elgg_get_logged_in_user_guid();
+    $user_guid = \elgg_get_logged_in_user_guid();
     $user_hash = get_user_hash($user_guid);
     $url = $entity->getVolatileData('discovery:share_url');
-    if (!$url || elgg_get_config('walled_garden')) {
-        $title = elgg_get_friendly_title(get_discovery_title($entity));
+    if (!$url || \elgg_get_config('walled_garden')) {
+        $title = \elgg_get_friendly_title(get_discovery_title($entity));
         $segments = array('permalink', $viewtype, $entity->guid, $title);
-        $url = elgg_normalize_url(implode('/', $segments));
+        $url = \elgg_normalize_url(implode('/', $segments));
     }
-    return elgg_http_add_url_query_elements($url, ['uh' => $user_hash]);
+    return \elgg_http_add_url_query_elements($url, ['uh' => $user_hash]);
 }
 /**
  * Sniff a URL for a known entity GUID
@@ -208,7 +208,7 @@ function get_entity_permalink($entity, $viewtype = 'default')
  */
 function get_guid_from_url($url)
 {
-    $site_url = new SiteUrl(elgg_get_site_url());
+    $site_url = new SiteUrl(\elgg_get_site_url());
     $path = $site_url->getSitePath($url);
     if (!$path) {
         return false;
@@ -240,7 +240,7 @@ function get_entity_from_url($url)
 {
     $guid = get_guid_from_url($url);
     $entity = get_entity($guid);
-    return $entity ?: elgg_get_site_entity();
+    return $entity ?: \elgg_get_site_entity();
 }
 /**
  * Identify user by assigned hash
@@ -253,7 +253,7 @@ function get_user_from_hash($hash = '')
     if (!$hash) {
         return false;
     }
-    $users = elgg_get_entities(array('types' => 'user', 'metadata_names' => ['discovery_permanent_hash', 'discovery_temporary_hash'], 'metadata_values' => $hash, 'limit' => 1));
+    $users = \elgg_get_entities(array('types' => 'user', 'metadata_names' => ['discovery_permanent_hash', 'discovery_temporary_hash'], 'metadata_values' => $hash, 'limit' => 1));
     return $users ? $users[0] : false;
 }
 /**
@@ -267,7 +267,7 @@ function get_user_hash($guid)
     $hash = '';
     $user = get_entity($guid);
     if (!$user) {
-        $session = elgg_get_session();
+        $session = \elgg_get_session();
         if ($session->get('discovery_hash')) {
             $hash = $session->get('discovery_hash');
         } else if (get_input('uh')) {
@@ -277,7 +277,7 @@ function get_user_hash($guid)
     } else {
         $hash = $user->discovery_permanent_hash;
         if (!$hash) {
-            $hash = md5($user->guid . time() . elgg_generate_password());
+            $hash = md5($user->guid . time() . \elgg_generate_password());
             $user->discovery_permanent_hash = $hash;
         }
     }
@@ -306,7 +306,7 @@ function get_oembed_response($entity, $format = 'json', $maxwidth = 0, $maxheigh
         }
         $params = ['origin' => $url, 'entity' => $entity, 'maxwidth' => $maxwidth, 'maxheight' => $maxheight];
         $oembed = ['type' => 'link', 'version' => '1.0', 'title' => get_discovery_title($entity)];
-        return elgg_trigger_plugin_hook('export:entity', 'oembed', $params, $oembed);
+        return \elgg_trigger_plugin_hook('export:entity', 'oembed', $params, $oembed);
     });
     $response['format'] = $format;
     return $response;
@@ -321,7 +321,7 @@ function get_discovery_metatags($url)
 {
     $metatags = \elgg_call(ELGG_IGNORE_ACCESS, function () use ($url) {
         $entity = get_entity_from_url($url);
-        return elgg_trigger_plugin_hook('metatags', 'discovery', ['entity' => $entity, 'url' => $url], []);
+        return \elgg_trigger_plugin_hook('metatags', 'discovery', ['entity' => $entity, 'url' => $url], []);
     });
     return $metatags;
 }
@@ -334,7 +334,7 @@ function get_discovery_metatags($url)
 function get_discovery_title($entity)
 {
     if (!$entity instanceof ElggEntity || !is_discoverable($entity)) {
-        $entity = elgg_get_site_entity();
+        $entity = \elgg_get_site_entity();
     }
     if (!empty($entity->og_title)) {
         $title = $entity->og_title;
@@ -351,14 +351,14 @@ function get_discovery_title($entity)
 function get_discovery_description($entity)
 {
     if (!$entity instanceof ElggEntity || !is_discoverable($entity)) {
-        $entity = elgg_get_site_entity();
+        $entity = \elgg_get_site_entity();
     }
     if (!empty($entity->og_description)) {
         $description = $entity->og_description;
     } else if (!empty($entity->description)) {
         $description = $entity->description;
     }
-    return elgg_view('output/excerpt', ['text' => $description, 'num_chars' => elgg_get_plugin_setting('excerpt_description', 'hypediscovery', 250)], false, false, 'default');
+    return \elgg_view('output/excerpt', ['text' => $description, 'num_chars' => \elgg_get_plugin_setting('excerpt_description', 'hypediscovery', 250)], false, false, 'default');
 }
 /**
  * Get discoverable icon object
@@ -385,11 +385,11 @@ function get_discovery_icon($entity)
 function get_discovery_image_url($entity)
 {
     if (!$entity instanceof ElggEntity || !is_discoverable($entity)) {
-        $entity = elgg_get_site_entity();
+        $entity = \elgg_get_site_entity();
     }
     $icon = get_discovery_icon($entity);
     if ($icon) {
-        return elgg_get_inline_url($icon);
+        return \elgg_get_inline_url($icon);
     }
 }
 /**
@@ -401,7 +401,7 @@ function get_discovery_image_url($entity)
 function get_discovery_keywords($entity)
 {
     if (!$entity instanceof ElggEntity || !is_discoverable($entity)) {
-        $entity = elgg_get_site_entity();
+        $entity = \elgg_get_site_entity();
     }
     if (isset($entity->og_keywords)) {
         return $entity->og_keywords;
@@ -415,7 +415,7 @@ function get_discovery_keywords($entity)
  */
 function get_discovery_providers()
 {
-    return _decode_setting_array(elgg_get_plugin_setting('providers', 'hypediscovery'));
+    return _decode_setting_array(\elgg_get_plugin_setting('providers', 'hypediscovery'));
 }
 /**
  * Returns configured discoverable type/subtype pairs
@@ -423,7 +423,7 @@ function get_discovery_providers()
  */
 function get_discoverable_type_subtype_pairs()
 {
-    return _decode_setting_array(elgg_get_plugin_setting('discovery_type_subtype_pairs', 'hypediscovery'));
+    return _decode_setting_array(\elgg_get_plugin_setting('discovery_type_subtype_pairs', 'hypediscovery'));
 }
 /**
  * Returns configured embeddable type/subtype pairs
@@ -431,7 +431,7 @@ function get_discoverable_type_subtype_pairs()
  */
 function get_embeddable_type_subtype_pairs()
 {
-    return _decode_setting_array(elgg_get_plugin_setting('embed_type_subtype_pairs', 'hypediscovery'));
+    return _decode_setting_array(\elgg_get_plugin_setting('embed_type_subtype_pairs', 'hypediscovery'));
 }
 /**
  * Decode an array stored in a plugin setting. Prefers JSON, falls back to

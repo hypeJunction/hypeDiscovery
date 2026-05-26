@@ -21,7 +21,7 @@ class EntityEditTest extends IntegrationTestCase {
 		// save through the container. Wrap in elgg_call(ELGG_IGNORE_ACCESS)
 		// so the test stays focused on metadata persistence, not permission
 		// machinery (the latter is covered by testNonOwnerCannotEditEntity).
-		$entity = elgg_call(ELGG_IGNORE_ACCESS, function () use ($user) {
+		$entity = \elgg_call(ELGG_IGNORE_ACCESS, function () use ($user) {
 			$entity = new \ElggObject();
 			$entity->setSubtype('blog');
 			$entity->owner_guid = $user->guid;
@@ -38,7 +38,7 @@ class EntityEditTest extends IntegrationTestCase {
 			return $entity;
 		});
 
-		_elgg_services()->entityCache->delete($entity->guid);
+		\_elgg_services()->entityCache->delete($entity->guid);
 		$loaded = get_entity($entity->guid);
 
 		$this->assertEquals('Custom OG Title', $loaded->og_title);
