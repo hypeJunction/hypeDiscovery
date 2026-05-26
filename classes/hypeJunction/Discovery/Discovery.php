@@ -13,18 +13,14 @@ class Discovery {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function prepareAlternateLinks(\Elgg\Hook $hook) {
-		$type = $hook->getType();
-
-		$return = $hook->getValue();
-
+	public static function prepareAlternateLinks($hook, $type = null, $return = null, $params = null) {
 		if ($hook instanceof \Elgg\Hook) {
 			$type = $hook->getType();
 			$return = $hook->getValue();
-			$hook->getParams() = $hook->getParams();
+			$params = $hook->getParams();
 		}
 
-		$title = $hook->getParam('title');
+		$title = \elgg_extract('title', $params);
 
 		return \elgg_call(ELGG_IGNORE_ACCESS, function () use ($return, $title) {
 			$url = current_page_url();
@@ -61,15 +57,11 @@ class Discovery {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function prepareMetas(\Elgg\Hook $hook) {
-		$type = $hook->getType();
-
-		$return = $hook->getValue();
-
+	public static function prepareMetas($hook, $type = null, $return = null, $params = null) {
 		if ($hook instanceof \Elgg\Hook) {
 			$type = $hook->getType();
 			$return = $hook->getValue();
-			$hook->getParams() = $hook->getParams();
+			$params = $hook->getParams();
 		}
 
 		$url = current_page_url();
@@ -79,8 +71,8 @@ class Discovery {
 			return;
 		}
 
-		if (!isset($metatags['og:title']) && isset($hook->getParam('title'))) {
-			$metatags['og:title'] = $hook->getParam('title');
+		if (!isset($metatags['og:title']) && isset($params['title'])) {
+			$metatags['og:title'] = $params['title'];
 		}
 
 		if (!empty($metatags) && is_array($metatags)) {
@@ -119,20 +111,16 @@ class Discovery {
 	 * @param array  $params Hooks params
 	 * @return array
 	 */
-	public static function oEmbedExport(\Elgg\Hook $hook) {
-		$type = $hook->getType();
-
-		$return = $hook->getValue();
-
+	public static function oEmbedExport($hook, $type = null, $return = null, $params = null) {
 		if ($hook instanceof \Elgg\Hook) {
 			$type = $hook->getType();
 			$return = $hook->getValue();
-			$hook->getParams() = $hook->getParams();
+			$params = $hook->getParams();
 		}
 
-		$entity = $hook->getParam('entity');
-		$maxwidth = $hook->getParam('maxwidth');
-		$maxheight = $hook->getParam('maxheight');
+		$entity = \elgg_extract('entity', $params);
+		$maxwidth = \elgg_extract('maxwidth', $params);
+		$maxheight = \elgg_extract('maxheight', $params);
 		$height = $maxheight ? : 480;
 		$width = $maxwidth ? : 640;
 
@@ -171,19 +159,15 @@ class Discovery {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function graphExport(\Elgg\Hook $hook) {
-		$type = $hook->getType();
-
-		$return = $hook->getValue();
-
+	public static function graphExport($hook, $type = null, $return = null, $params = null) {
 		if ($hook instanceof \Elgg\Hook) {
 			$type = $hook->getType();
 			$return = $hook->getValue();
-			$hook->getParams() = $hook->getParams();
+			$params = $hook->getParams();
 		}
 
-		$entity = $hook->getParam('entity');
-		$url = $hook->getParam('url');
+		$entity = \elgg_extract('entity', $params);
+		$url = \elgg_extract('url', $params);
 
 		$site = \elgg_get_site_entity();
 		$site_tags = array(

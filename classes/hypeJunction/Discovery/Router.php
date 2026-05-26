@@ -237,23 +237,19 @@ class Router {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function servicesRoute(\Elgg\Hook $hook) {
-		$type = $hook->getType();
-
-		$return = $hook->getValue();
-
+	public static function servicesRoute($hook, $type = null, $return = null, $params = null) {
 		if ($hook instanceof \Elgg\Hook) {
 			$type = $hook->getType();
 			$return = $hook->getValue();
-			$hook->getParams() = $hook->getParams();
+			$params = $hook->getParams();
 		}
 
 		if (!is_array($return)) {
 			return;
 		}
 
-		$identifier = $hook->getParam('identifier');
-		$segments = (array) $hook->getParam('segments', []);
+		$identifier = \elgg_extract('identifier', $params);
+		$segments = (array) \elgg_extract('segments', $params, []);
 
 		if ($identifier !== 'services') {
 			return;
@@ -307,15 +303,11 @@ class Router {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function redirectErrorToPermalink(\Elgg\Hook $hook) {
-		$type = $hook->getType();
-
-		$return = $hook->getValue();
-
+	public static function redirectErrorToPermalink($hook, $type = null, $return = null, $params = null) {
 		if ($hook instanceof \Elgg\Hook) {
 			$type = $hook->getType();
 			$return = $hook->getValue();
-			$hook->getParams() = $hook->getParams();
+			$params = $hook->getParams();
 		}
 
 		return \elgg_call(ELGG_IGNORE_ACCESS, function () use ($return) {
