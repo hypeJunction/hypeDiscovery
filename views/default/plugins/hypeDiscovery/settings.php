@@ -26,7 +26,7 @@ echo elgg_view_input('select', array(
 	'help' => elgg_echo('discovery:settings:nocrawl:help'),
 ));
 
-$registered_entities = elgg_entity_types_with_capability('searchable');
+$registered_entities = (get_registered_entity_types() ?: array());
 foreach ($registered_entities as $type => $subtypes) {
 	if (empty($subtypes)) {
 		$str = elgg_echo("item:$type");
