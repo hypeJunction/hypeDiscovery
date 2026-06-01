@@ -35,7 +35,7 @@ if ($guid) {
 elgg_set_ignore_access($ia);
 
 if (!$forward_url || $error) {
-	elgg_register_error_message(elgg_echo('discovery:share:error:no_url'));
+	register_error(elgg_echo('discovery:share:error:no_url'));
 	forward(REFERER);
 }
 
