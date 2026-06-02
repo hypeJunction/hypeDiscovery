@@ -134,7 +134,7 @@ class Discovery {
 			'type' => 'open_graph_image',
 		]);
 
-		$iframe_attrs = \elgg_format_attributes(array(
+		$return['html'] = \elgg_format_element('iframe', array(
 			'src' => get_entity_permalink($entity, 'oembed'),
 			'frameborder' => 0,
 			'height' => $height,
@@ -142,8 +142,6 @@ class Discovery {
 			'scrolling' => 'auto',
 			'seamless' => true,
 		));
-
-		$return['html'] = "<iframe $iframe_attrs></iframe>";
 		$return['width'] = $width;
 		$return['height'] = $height;
 

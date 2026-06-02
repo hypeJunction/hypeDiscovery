@@ -9,7 +9,7 @@ echo \elgg_format_element('div', [
 ], \elgg_echo('discovery:og:help'));
 
 if (is_discoverable_type($entity)) {
-	echo \elgg_view_input('select', array(
+	echo \elgg_view('input/select', array(
 		'name' => 'discoverable',
 		'value' => (isset($entity->discoverable)) ? (bool) $entity->discoverable : is_discoverable($entity),
 		'options_values' => array(
@@ -22,7 +22,7 @@ if (is_discoverable_type($entity)) {
 }
 
 if (is_embeddable_type($entity)) {
-	echo \elgg_view_input('select', array(
+	echo \elgg_view('input/select', array(
 		'name' => 'embeddable',
 		'value' => (isset($entity->discoverable)) ? (bool) $entity->embeddable : is_embeddable($entity),
 		'options_values' => array(
@@ -34,7 +34,7 @@ if (is_embeddable_type($entity)) {
 	));
 }
 
-echo \elgg_view_input('file', array(
+echo \elgg_view('input/file', array(
 	'name' => 'og_image',
 	'value' => $entity->hasIcon('large', 'open_graph_image'),
 	'label' => \elgg_echo('discovery:og:image'),
@@ -50,33 +50,33 @@ foreach (['open_graph_image', 'cover', 'icon'] as $type) {
 	}
 }
 
-echo \elgg_view_input('text', array(
+echo \elgg_view('input/text', array(
 	'name' => 'og_title',
 	'value' => $entity->og_title,
 	'label' => \elgg_echo('discovery:og:title'),
 	'help' => \elgg_echo('discovery:og:title:help'),
 ));
 
-echo \elgg_view_input('text', array(
+echo \elgg_view('input/text', array(
 	'name' => 'og_description',
 	'value' => $entity->og_description,
 	'label' => \elgg_echo('discovery:og:description'),
 	'help' => \elgg_echo('discovery:og:description:help'),
 ));
 
-echo \elgg_view_input('tags', array(
+echo \elgg_view('input/tags', array(
 	'name' => 'og_keywords',
 	'value' => $entity->og_keywords,
 	'label' => \elgg_echo('discovery:og:keywords'),
 	'help' => \elgg_echo('discovery:og:keywords:help'),
 ));
 
-echo \elgg_view_input('hidden', array(
+echo \elgg_view('input/hidden', array(
 	'name' => 'guid',
 	'value' => $entity->guid
 ));
 
-echo \elgg_view_input('submit', array(
+echo \elgg_view('input/submit', array(
 	'value' => \elgg_echo('save'),
 	'field_class' => 'elgg-foot',
 ));

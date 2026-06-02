@@ -18,14 +18,20 @@ class HooksTest extends IntegrationTestCase {
 
 	public function down() {}
 
-	public function testPublicPagesHookAddsPermalinkAndShareAction(): void {
+	/**
+     * @return void
+     */
+    public function testPublicPagesHookAddsPermalinkAndShareAction(): void {
 		$return = Router::publicPages('public_pages', 'walled_garden', []);
 		$this->assertIsArray($return);
 		$this->assertContains('permalink/.*', $return);
 		$this->assertContains('action/discovery/share', $return);
 	}
 
-	public function testOpenGraphImageSizesHookReturnsSizes(): void {
+	/**
+     * @return void
+     */
+    public function testOpenGraphImageSizesHookReturnsSizes(): void {
 		$return = Icons::entityOpenGraphImageSizes('entity:open_graph_image:sizes', 'object', [], []);
 		$this->assertIsArray($return);
 		$this->assertArrayHasKey('large', $return);
@@ -35,7 +41,10 @@ class HooksTest extends IntegrationTestCase {
 		$this->assertEquals(1200, $return['large']['h']);
 	}
 
-	public function testGraphExportHookReturnsSiteTags(): void {
+	/**
+     * @return void
+     */
+    public function testGraphExportHookReturnsSiteTags(): void {
 		$site = \elgg_get_site_entity();
 		$return = Discovery::graphExport(
 			'metatags',
@@ -48,7 +57,10 @@ class HooksTest extends IntegrationTestCase {
 		$this->assertArrayHasKey('og:site_name', $return);
 	}
 
-	public function testEntityMenuRegisterHookRuns(): void {
+	/**
+     * @return void
+     */
+    public function testEntityMenuRegisterHookRuns(): void {
 		$user = $this->createUser();
 		\elgg_get_session()->setLoggedInUser($user);
 		try {
@@ -62,7 +74,10 @@ class HooksTest extends IntegrationTestCase {
 		}
 	}
 
-	public function testRedirectErrorToPermalinkReturnsOriginalForUnknownUrl(): void {
+	/**
+     * @return void
+     */
+    public function testRedirectErrorToPermalinkReturnsOriginalForUnknownUrl(): void {
 		$return = 'http://example.com/original';
 		$result = Router::redirectErrorToPermalink('forward', '404', $return, []);
 		$this->assertIsString($result);

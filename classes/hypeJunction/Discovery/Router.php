@@ -27,10 +27,10 @@ class Router {
 			case 'image' :
 				// BC router
 				$size = array_shift($segments);
-				$ia = \elgg_set_ignore_access(true);
-				$entity = get_entity($guid);
-				$url = $entity->getIconURL($size);
-				\elgg_set_ignore_access($ia);
+				$url = \elgg_call(ELGG_IGNORE_ACCESS, function () use ($guid, $size) {
+					$entity = get_entity($guid);
+					return $entity->getIconURL($size);
+				});
 				forward($url);
 				return;
 
@@ -59,11 +59,11 @@ class Router {
 					return false;
 				}
 
-				$ia = \elgg_set_ignore_access();
+				$ia = \elgg_get_session()->setIgnoreAccess(false);
 				$entity = get_entity($guid);
 
 				if (!has_access_to_entity($entity) && !is_discoverable($entity)) {
-					\elgg_set_ignore_access($ia);
+					\elgg_get_session()->setIgnoreAccess($ia);
 					return false;
 				}
 
@@ -106,7 +106,7 @@ class Router {
 						), $forward_url);
 
 				if ($forward_url) {
-					\elgg_set_ignore_access($ia);
+					\elgg_get_session()->setIgnoreAccess($ia);
 					forward($forward_url);
 				}
 
@@ -130,7 +130,7 @@ class Router {
 					'entity' => $entity,
 				]);
 
-				\elgg_set_ignore_access($ia);
+				\elgg_get_session()->setIgnoreAccess($ia);
 				return true;
 		}
 
@@ -277,10 +277,10 @@ class Router {
 		$maxwidth = get_input('maxwidth');
 		$maxheight = get_input('maxheight');
 
-		$ia = \elgg_set_ignore_access(true);
-		$entity = get_entity_from_url(urldecode($url));
-		$permalink = get_entity_permalink($entity, "{$format}+oembed");
-		\elgg_set_ignore_access($ia);
+		$permalink = \elgg_call(ELGG_IGNORE_ACCESS, function () use ($url, $format) {
+			$entity = get_entity_from_url(urldecode($url));
+			return get_entity_permalink($entity, "{$format}+oembed");
+		});
 
 		if (!$permalink) {
 			forward('', '404');

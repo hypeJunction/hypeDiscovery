@@ -19,74 +19,113 @@ class BootstrapTest extends IntegrationTestCase {
 
 	public function down() {}
 
-	public function testPluginLoadable(): void {
+	/**
+     * @return void
+     */
+    public function testPluginLoadable(): void {
 		$plugin = \elgg_get_plugin_from_id('hypediscovery');
 		$this->assertNotNull($plugin, 'Plugin hypeDiscovery should be loadable');
 	}
 
-	public function testSettingsSaveActionRegistered(): void {
+	/**
+     * @return void
+     */
+    public function testSettingsSaveActionRegistered(): void {
 		$this->assertTrue(
 			\elgg_action_exists('hypediscovery/settings/save'),
 			'Action hypediscovery/settings/save should be registered'
 		);
 	}
 
-	public function testDiscoverySiteActionRegistered(): void {
+	/**
+     * @return void
+     */
+    public function testDiscoverySiteActionRegistered(): void {
 		$this->assertTrue(
 			\elgg_action_exists('discovery/site'),
 			'Action discovery/site should be registered (admin)'
 		);
 	}
 
-	public function testDiscoveryShareActionRegistered(): void {
+	/**
+     * @return void
+     */
+    public function testDiscoveryShareActionRegistered(): void {
 		$this->assertTrue(
 			\elgg_action_exists('discovery/share'),
 			'Action discovery/share should be registered (public)'
 		);
 	}
 
-	public function testDiscoveryEditActionRegistered(): void {
+	/**
+     * @return void
+     */
+    public function testDiscoveryEditActionRegistered(): void {
 		$this->assertTrue(
 			\elgg_action_exists('discovery/edit'),
 			'Action discovery/edit should be registered'
 		);
 	}
 
-	public function testSettingsViewExists(): void {
+	/**
+     * @return void
+     */
+    public function testSettingsViewExists(): void {
 		$this->assertTrue(
 			\elgg_view_exists('plugins/hypediscovery/settings'),
 			'Plugin settings view should exist'
 		);
 	}
 
-	public function testPermalinkResourceViewExists(): void {
+	/**
+     * @return void
+     */
+    public function testPermalinkResourceViewExists(): void {
 		$this->assertTrue(
 			\elgg_view_exists('resources/permalink'),
 			'resources/permalink view should exist'
 		);
 	}
 
-	public function testFormsShareViewExists(): void {
+	/**
+     * @return void
+     */
+    public function testFormsShareViewExists(): void {
 		$this->assertTrue(\elgg_view_exists('forms/discovery/share'));
 	}
 
-	public function testFormsEditViewExists(): void {
+	/**
+     * @return void
+     */
+    public function testFormsEditViewExists(): void {
 		$this->assertTrue(\elgg_view_exists('forms/discovery/edit'));
 	}
 
-	public function testFormsSiteViewExists(): void {
+	/**
+     * @return void
+     */
+    public function testFormsSiteViewExists(): void {
 		$this->assertTrue(\elgg_view_exists('forms/discovery/site'));
 	}
 
-	public function testFrameworkPublicViewExists(): void {
+	/**
+     * @return void
+     */
+    public function testFrameworkPublicViewExists(): void {
 		$this->assertTrue(\elgg_view_exists('framework/discovery/public'));
 	}
 
-	public function testFrameworkIconViewExists(): void {
+	/**
+     * @return void
+     */
+    public function testFrameworkIconViewExists(): void {
 		$this->assertTrue(\elgg_view_exists('framework/discovery/icon'));
 	}
 
-	public function testOembedResourceViewExists(): void {
+	/**
+     * @return void
+     */
+    public function testOembedResourceViewExists(): void {
 		// oEmbed viewtype for resources/permalink
 		$this->assertTrue(
 			\elgg_view_exists('resources/permalink', 'oembed')
@@ -94,7 +133,10 @@ class BootstrapTest extends IntegrationTestCase {
 		);
 	}
 
-	public function testLibraryFunctionsLoaded(): void {
+	/**
+     * @return void
+     */
+    public function testLibraryFunctionsLoaded(): void {
 		$this->assertTrue(function_exists('hypeJunction\\Discovery\\is_discoverable'));
 		$this->assertTrue(function_exists('hypeJunction\\Discovery\\is_embeddable'));
 		$this->assertTrue(function_exists('hypeJunction\\Discovery\\get_entity_permalink'));
@@ -114,7 +156,10 @@ class BootstrapTest extends IntegrationTestCase {
 		$this->assertTrue(function_exists('hypeJunction\\Discovery\\get_discovery_metatags'));
 	}
 
-	public function testClassesAutoload(): void {
+	/**
+     * @return void
+     */
+    public function testClassesAutoload(): void {
 		$this->assertTrue(class_exists(Discovery::class));
 		$this->assertTrue(class_exists(Icons::class));
 		$this->assertTrue(class_exists(Menus::class));

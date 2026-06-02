@@ -23,7 +23,7 @@ if ($entity instanceof ElggEntity) {
 }
 
 if ($permalink) {
-	echo \elgg_view_input('text', array(
+	echo \elgg_view('input/text', array(
 		'value' => $permalink,
 		'label' => $label,
 	));
@@ -37,7 +37,7 @@ if ($permalink) {
 		));
 
 		if (!empty($response['html'])) {
-			echo \elgg_view_input('text', array(
+			echo \elgg_view('input/text', array(
 				'value' => $response['html'],
 				'label' => \elgg_echo('discovery:entity:embed_code'),
 			));

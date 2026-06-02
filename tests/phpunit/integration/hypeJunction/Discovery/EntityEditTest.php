@@ -14,7 +14,10 @@ class EntityEditTest extends IntegrationTestCase {
 	public function up() {}
 	public function down() {}
 
-	public function testOpenGraphMetadataPersists(): void {
+	/**
+     * @return void
+     */
+    public function testOpenGraphMetadataPersists(): void {
 		$user = $this->createUser();
 		// Elgg 4.x: ElggEntity::save() runs container_permissions_check
 		// against the logged-in user. Tests that don't set a session can't
@@ -50,7 +53,10 @@ class EntityEditTest extends IntegrationTestCase {
 		$entity->delete();
 	}
 
-	public function testNonOwnerCannotEditEntity(): void {
+	/**
+     * @return void
+     */
+    public function testNonOwnerCannotEditEntity(): void {
 		$owner = $this->createUser();
 		$other = $this->createUser();
 		$entity = $this->createObject(['subtype' => 'blog', 'owner_guid' => $owner->guid]);

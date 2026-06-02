@@ -21,14 +21,23 @@ use Elgg\DefaultPluginBootstrap;
  */
 class Bootstrap extends DefaultPluginBootstrap
 {
+    /**
+     * @return void
+     */
     public function load(): void
     {
     }
 
+    /**
+     * @return void
+     */
     public function boot(): void
     {
     }
 
+    /**
+     * @return void
+     */
     public function init(): void
     {
         \elgg_register_menu_item('page', [
@@ -47,22 +56,37 @@ class Bootstrap extends DefaultPluginBootstrap
         ]);
     }
 
+    /**
+     * @return void
+     */
     public function ready(): void
     {
     }
 
+    /**
+     * @return void
+     */
     public function shutdown(): void
     {
     }
 
+    /**
+     * @return void
+     */
     public function activate(): void
     {
     }
 
+    /**
+     * @return void
+     */
     public function deactivate(): void
     {
     }
 
+    /**
+     * @return void
+     */
     public function upgrade(): void
     {
     }

@@ -4,7 +4,7 @@ namespace hypeJunction\Discovery;
 
 $entity = \elgg_extract('entity', $vars);
 
-echo \elgg_view_input('select', array(
+echo \elgg_view('input/select', array(
 	'name' => 'params[bypass_access]',
 	'value' => $entity->bypass_access,
 	'options_values' => array(
@@ -15,7 +15,7 @@ echo \elgg_view_input('select', array(
 	'help' => \elgg_echo('discovery:settings:bypass_access:help'),
 ));
 
-echo \elgg_view_input('select', array(
+echo \elgg_view('input/select', array(
 	'name' => 'params[nocrawl]',
 	'value' => $entity->nocrawl,
 	'options_values' => array(
@@ -39,7 +39,7 @@ foreach ($registered_entities as $type => $subtypes) {
 	}
 }
 
-echo \elgg_view_input('checkboxes', array(
+echo \elgg_view('input/checkboxes', array(
 	'name' => 'params[discovery_type_subtype_pairs]',
 	'value' => get_discoverable_type_subtype_pairs(),
 	'options' => $chbx_options,
@@ -47,14 +47,14 @@ echo \elgg_view_input('checkboxes', array(
 	'help' => \elgg_echo('discovery:settings:discovery_type_subtype_pairs:help'),
 ));
 
-echo \elgg_view_input('checkboxes', array(
+echo \elgg_view('input/checkboxes', array(
 	'name' => 'params[embed_type_subtype_pairs]',
 	'value' => get_embeddable_type_subtype_pairs(),
 	'options' => $chbx_options,
 	'label' => \elgg_echo('discovery:settings:embed_type_subtype_pairs'),
 ));
 
-echo \elgg_view_input('checkboxes', array(
+echo \elgg_view('input/checkboxes', array(
 	'name' => 'params[providers]',
 	'value' => get_discovery_providers(),
 	'options' => [
