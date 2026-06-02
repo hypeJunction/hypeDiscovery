@@ -34,35 +34,55 @@ class DiscoverabilityTest extends IntegrationTestCase {
 		}
 	}
 
-	private $previous_discoverable;
-	private $previous_embeddable;
+	/** @var mixed */
+    private $previous_discoverable;
+	/** @var mixed */
+    private $previous_embeddable;
 
-	public function testSiteEntityAlwaysDiscoverable(): void {
+	/**
+     * @return void
+     */
+    public function testSiteEntityAlwaysDiscoverable(): void {
 		$site = \elgg_get_site_entity();
 		$this->assertTrue(is_discoverable($site));
 	}
 
-	public function testNonEntityNotDiscoverable(): void {
+	/**
+     * @return void
+     */
+    public function testNonEntityNotDiscoverable(): void {
 		$this->assertFalse(is_discoverable(null));
 		$this->assertFalse(is_discoverable('not an entity'));
 	}
 
-	public function testPublicEntityOfRegisteredTypeIsDiscoverable(): void {
+	/**
+     * @return void
+     */
+    public function testPublicEntityOfRegisteredTypeIsDiscoverable(): void {
 		$entity = $this->createObject(['subtype' => 'blog', 'access_id' => ACCESS_PUBLIC]);
 		$this->assertTrue(is_discoverable($entity));
 	}
 
-	public function testPrivateEntityIsNotDiscoverable(): void {
+	/**
+     * @return void
+     */
+    public function testPrivateEntityIsNotDiscoverable(): void {
 		$entity = $this->createObject(['subtype' => 'blog', 'access_id' => ACCESS_PRIVATE]);
 		$this->assertFalse(is_discoverable($entity));
 	}
 
-	public function testUnregisteredTypeNotDiscoverable(): void {
+	/**
+     * @return void
+     */
+    public function testUnregisteredTypeNotDiscoverable(): void {
 		$entity = $this->createObject(['subtype' => 'not_registered_subtype', 'access_id' => ACCESS_PUBLIC]);
 		$this->assertFalse(is_discoverable($entity));
 	}
 
-	public function testExplicitDiscoverableMetadataOverridesAccess(): void {
+	/**
+     * @return void
+     */
+    public function testExplicitDiscoverableMetadataOverridesAccess(): void {
 		$entity = $this->createObject(['subtype' => 'blog', 'access_id' => ACCESS_PUBLIC]);
 		$entity->discoverable = false;
 		$this->assertFalse(is_discoverable($entity));
@@ -71,19 +91,28 @@ class DiscoverabilityTest extends IntegrationTestCase {
 		$this->assertTrue(is_discoverable($entity));
 	}
 
-	public function testSiteIsNotEmbeddable(): void {
+	/**
+     * @return void
+     */
+    public function testSiteIsNotEmbeddable(): void {
 		$site = \elgg_get_site_entity();
 		$this->assertFalse(is_embeddable($site));
 	}
 
-	public function testEmbeddableRequiresFlag(): void {
+	/**
+     * @return void
+     */
+    public function testEmbeddableRequiresFlag(): void {
 		$entity = $this->createObject(['subtype' => 'blog', 'access_id' => ACCESS_PUBLIC]);
 		$this->assertFalse(is_embeddable($entity)); // no embeddable flag
 		$entity->embeddable = true;
 		$this->assertTrue(is_embeddable($entity));
 	}
 
-	public function testEmbeddableRequiresDiscoverable(): void {
+	/**
+     * @return void
+     */
+    public function testEmbeddableRequiresDiscoverable(): void {
 		$entity = $this->createObject(['subtype' => 'blog', 'access_id' => ACCESS_PRIVATE]);
 		$entity->embeddable = true;
 		// Not discoverable => not embeddable

@@ -9,7 +9,7 @@ echo \elgg_format_element('div', [
 ], \elgg_echo('discovery:og:help'));
 
 if (is_discoverable_type($entity)) {
-	echo \elgg_view_input('select', [
+	echo \elgg_view('input/select', [
 		'name' => 'discoverable',
 		'value' => (isset($entity->discoverable)) ? (bool) $entity->discoverable : is_discoverable($entity),
 		'options_values' => [
@@ -22,7 +22,7 @@ if (is_discoverable_type($entity)) {
 }
 
 if (is_embeddable_type($entity)) {
-	echo \elgg_view_input('select', [
+	echo \elgg_view('input/select', [
 		'name' => 'embeddable',
 		'value' => (isset($entity->discoverable)) ? (bool) $entity->embeddable : is_embeddable($entity),
 		'options_values' => [
@@ -34,7 +34,7 @@ if (is_embeddable_type($entity)) {
 	]);
 }
 
-echo \elgg_view_input('file', [
+echo \elgg_view('input/file', [
 	'name' => 'og_image',
 	'value' => $entity->hasIcon('large', 'open_graph_image'),
 	'label' => \elgg_echo('discovery:og:image'),
@@ -50,33 +50,33 @@ foreach (['open_graph_image', 'cover', 'icon'] as $type) {
 	}
 }
 
-echo \elgg_view_input('text', [
+echo \elgg_view('input/text', [
 	'name' => 'og_title',
 	'value' => $entity->og_title,
 	'label' => \elgg_echo('discovery:og:title'),
 	'help' => \elgg_echo('discovery:og:title:help'),
 ]);
 
-echo \elgg_view_input('text', [
+echo \elgg_view('input/text', [
 	'name' => 'og_description',
 	'value' => $entity->og_description,
 	'label' => \elgg_echo('discovery:og:description'),
 	'help' => \elgg_echo('discovery:og:description:help'),
 ]);
 
-echo \elgg_view_input('tags', [
+echo \elgg_view('input/tags', [
 	'name' => 'og_keywords',
 	'value' => $entity->og_keywords,
 	'label' => \elgg_echo('discovery:og:keywords'),
 	'help' => \elgg_echo('discovery:og:keywords:help'),
 ]);
 
-echo \elgg_view_input('hidden', [
+echo \elgg_view('input/hidden', [
 	'name' => 'guid',
 	'value' => $entity->guid
 ]);
 
-echo \elgg_view_input('submit', [
+echo \elgg_view('input/submit', [
 	'value' => \elgg_echo('save'),
 	'field_class' => 'elgg-foot',
 ]);

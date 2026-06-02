@@ -2,12 +2,12 @@
 
 namespace hypeJunction\Discovery;
 
-\elgg_unregister_css('font-awesome');
-\elgg_unregister_css('elgg');
-\elgg_unregister_css('lightbox');
-//elgg_unregister_js('jquery');
-\elgg_unregister_js('jquery-ui');
-\elgg_unregister_plugin_hook_handler('output:before', 'page', '_elgg_views_send_header_x_frame_options');
+\elgg_unrequire_css('font-awesome');
+\elgg_unrequire_css('elgg');
+\elgg_unrequire_css('lightbox');
+//elgg_unrequire_js('jquery');
+\elgg_unrequire_js('jquery-ui');
+\elgg_unregister_event_handler('output:before', 'page', \Elgg\Page\SetXFrameOptionsHeaderHandler::class);
 
 $entity = \elgg_extract('entity', $vars);
 if (!$entity) {

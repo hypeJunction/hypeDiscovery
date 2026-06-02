@@ -19,7 +19,12 @@ class HooksTest extends IntegrationTestCase {
 
 	public function down() {}
 
-	private function makeEvent($value, array $params = []): Event {
+	/**
+     * @param mixed $value
+     * @param array $params
+     * @return Event
+     */
+    private function makeEvent($value, array $params = []): Event {
 		$event = $this->getMockBuilder(Event::class)->disableOriginalConstructor()->getMock();
 		$event->method('getValue')->willReturn($value);
 		$event->method('getParams')->willReturn($params);
@@ -29,14 +34,20 @@ class HooksTest extends IntegrationTestCase {
 		return $event;
 	}
 
-	public function testPublicPagesHookAddsPermalinkAndShareAction(): void {
+	/**
+     * @return void
+     */
+    public function testPublicPagesHookAddsPermalinkAndShareAction(): void {
 		$return = Router::publicPages($this->makeEvent([]));
 		$this->assertIsArray($return);
 		$this->assertContains('permalink/.*', $return);
 		$this->assertContains('action/discovery/share', $return);
 	}
 
-	public function testOpenGraphImageSizesHookReturnsSizes(): void {
+	/**
+     * @return void
+     */
+    public function testOpenGraphImageSizesHookReturnsSizes(): void {
 		$return = Icons::entityOpenGraphImageSizes($this->makeEvent([]));
 		$this->assertIsArray($return);
 		$this->assertArrayHasKey('large', $return);
@@ -46,7 +57,10 @@ class HooksTest extends IntegrationTestCase {
 		$this->assertEquals(1200, $return['large']['h']);
 	}
 
-	public function testGraphExportHookReturnsSiteTags(): void {
+	/**
+     * @return void
+     */
+    public function testGraphExportHookReturnsSiteTags(): void {
 		$site = \elgg_get_site_entity();
 		$return = Discovery::graphExport(
 			$this->makeEvent([], ['entity' => $site, 'url' => $site->getURL()])
@@ -56,7 +70,10 @@ class HooksTest extends IntegrationTestCase {
 		$this->assertArrayHasKey('og:site_name', $return);
 	}
 
-	public function testEntityMenuRegisterHookRuns(): void {
+	/**
+     * @return void
+     */
+    public function testEntityMenuRegisterHookRuns(): void {
 		$user = $this->createUser();
 		\_elgg_services()->session_manager->setLoggedInUser($user);
 		try {
@@ -68,7 +85,10 @@ class HooksTest extends IntegrationTestCase {
 		}
 	}
 
-	public function testRedirectErrorToPermalinkReturnsOriginalForUnknownUrl(): void {
+	/**
+     * @return void
+     */
+    public function testRedirectErrorToPermalinkReturnsOriginalForUnknownUrl(): void {
 		$return = 'http://example.com/original';
 		$result = Router::redirectErrorToPermalink($this->makeEvent($return, []));
 		$this->assertIsString($result);

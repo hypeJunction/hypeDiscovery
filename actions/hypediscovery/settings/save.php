@@ -5,7 +5,7 @@ $plugin = elgg_get_plugin_from_id('hypediscovery');
 
 if (!($plugin instanceof ElggPlugin)) {
 	elgg_register_error_message(elgg_echo('plugins:settings:save:fail', ['hypediscovery']));
-	forward(REFERER);
+	forward(REFERRER);
 }
 
 $plugin_name = $plugin->getManifest()->getName();
@@ -20,10 +20,10 @@ foreach ($params as $k => $v) {
 	$result = $plugin->setSetting($k, $v);
 	if (!$result) {
 		elgg_register_error_message(elgg_echo('plugins:settings:save:fail', [$plugin_name]));
-		forward(REFERER);
+		forward(REFERRER);
 		exit;
 	}
 }
 
 elgg_register_success_message(elgg_echo('plugins:settings:save:ok', [$plugin_name]));
-forward(REFERER);
+forward(REFERRER);
