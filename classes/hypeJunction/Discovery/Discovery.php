@@ -120,6 +120,7 @@ class Discovery {
 			'type' => 'open_graph_image',
 		]);
 
+		// TODO(6.x): elgg_format_attributes removed — replace with \Elgg\Views\HtmlFormatter::formatAttributes (e.g. elgg()->html_formatter->formatAttributes(...))
 		$iframe_attrs = elgg_format_attributes([
 			'src' => get_entity_permalink($entity, 'oembed'),
 			'frameborder' => 0,

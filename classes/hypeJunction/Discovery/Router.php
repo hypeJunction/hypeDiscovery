@@ -30,11 +30,11 @@ class Router {
 			case 'image':
 				// BC router
 				$size = array_shift($segments);
-				$ia = elgg_set_ignore_access(true);
-				$entity = get_entity($guid);
-				$url = $entity->getIconURL($size);
-				elgg_set_ignore_access($ia);
-				forward($url);
+				$url = elgg_call(ELGG_IGNORE_ACCESS, function () use ($guid, $size) {
+					$entity = get_entity($guid);
+					return $entity->getIconURL($size);
+				});
+				elgg_redirect_response($url);
 				return;
 
 			default:
@@ -61,6 +61,7 @@ class Router {
 					return false;
 				}
 
+				// TODO(6.x): wrap in elgg_call(ELGG_IGNORE_ACCESS) — block has multiple early returns, a mid-block redirect, and a no-arg elgg_set_ignore_access() read; cannot bracket safely
 				$ia = elgg_set_ignore_access();
 				$entity = get_entity($guid);
 
@@ -110,7 +111,7 @@ class Router {
 
 				if ($forward_url) {
 					elgg_set_ignore_access($ia);
-					forward($forward_url);
+					elgg_redirect_response($forward_url);
 				}
 
 				if (elgg_get_plugin_setting('nocrawl', 'hypediscovery')) {
@@ -272,12 +273,13 @@ class Router {
 		$maxwidth = get_input('maxwidth');
 		$maxheight = get_input('maxheight');
 
-		$ia = elgg_set_ignore_access(true);
-		$entity = get_entity_from_url(urldecode($url));
-		$permalink = get_entity_permalink($entity, "{$format}+oembed");
-		elgg_set_ignore_access($ia);
+		$permalink = elgg_call(ELGG_IGNORE_ACCESS, function () use ($url, $format) {
+			$entity = get_entity_from_url(urldecode($url));
+			return get_entity_permalink($entity, "{$format}+oembed");
+		});
 
 		if (!$permalink) {
+			// TODO(6.x): forward('', '404') is an error-page forward, not a plain redirect; map to elgg_error_response() or throw an appropriate HTTP exception
 			forward('', '404');
 		}
 
@@ -286,7 +288,7 @@ class Router {
 			'maxheight' => $maxheight,
 		]);
 
-		forward($permalink);
+		elgg_redirect_response($permalink);
 	}
 
 	/**

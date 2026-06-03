@@ -9,7 +9,7 @@ $entity = get_entity($guid);
 
 if (!$entity instanceof \ElggEntity || !$entity->canEdit()) {
 	elgg_register_error_message(elgg_echo('actionnotauthorized'));
-	forward(REFERRER);
+	elgg_redirect_response(REFERRER);
 }
 
 $entity->og_title = htmlentities(get_input('og_title', ''), ENT_QUOTES, 'UTF-8');
