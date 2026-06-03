@@ -279,8 +279,7 @@ class Router {
 		});
 
 		if (!$permalink) {
-			// TODO(6.x): forward('', '404') is an error-page forward, not a plain redirect; map to elgg_error_response() or throw an appropriate HTTP exception
-			forward('', '404');
+			throw new \Elgg\Exceptions\Http\PageNotFoundException();
 		}
 
 		$permalink = elgg_http_add_url_query_elements($permalink, [
