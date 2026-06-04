@@ -61,12 +61,10 @@ class Router {
 					return false;
 				}
 
-				// TODO(6.x): wrap in elgg_call(ELGG_IGNORE_ACCESS) — block has multiple early returns, a mid-block redirect, and a no-arg elgg_set_ignore_access() read; cannot bracket safely
-				$ia = elgg_set_ignore_access();
+				return elgg_call(ELGG_IGNORE_ACCESS, function () use ($guid, $viewtype, $referrer_hash) {
 				$entity = get_entity($guid);
 
 				if (!has_access_to_entity($entity) && !is_discoverable($entity)) {
-					elgg_set_ignore_access($ia);
 					return false;
 				}
 
@@ -110,7 +108,6 @@ class Router {
 				], $forward_url);
 
 				if ($forward_url) {
-					elgg_set_ignore_access($ia);
 					elgg_redirect_response($forward_url);
 				}
 
@@ -135,8 +132,8 @@ class Router {
 					'entity' => $entity,
 				]);
 
-				elgg_set_ignore_access($ia);
 				return true;
+				});
 		}
 
 		return false;
