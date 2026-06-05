@@ -120,7 +120,7 @@ class Discovery {
 			'type' => 'open_graph_image',
 		]);
 
-		$iframe_attrs = elgg_format_attributes([
+		$iframe_attrs = _elgg_services()->html_formatter->formatAttributes([
 			'src' => get_entity_permalink($entity, 'oembed'),
 			'frameborder' => 0,
 			'height' => $height,
