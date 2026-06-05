@@ -2,7 +2,7 @@
 
 namespace hypeJunction\Discovery\Upgrades;
 
-use Elgg\Upgrade\Batch;
+use Elgg\Upgrade\AsynchronousUpgrade;
 use Elgg\Upgrade\Result;
 
 /**
@@ -14,7 +14,7 @@ use Elgg\Upgrade\Result;
  * whichever format is stored, and re-saves as JSON so the runtime fallback can be
  * removed in a future release.
  */
-class EncodeSettingsAsJson implements Batch {
+class EncodeSettingsAsJson extends AsynchronousUpgrade {
 
 	/** @var string[] Settings that store serialized/JSON arrays */
 	private const ARRAY_SETTINGS = [
