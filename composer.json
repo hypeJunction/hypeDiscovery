@@ -37,12 +37,6 @@
             "id": "hypediscovery"
         }
     },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://asset-packagist.org"
-        }
-    ],
     "config": {
         "allow-plugins": {
             "composer/installers": true
