@@ -5,7 +5,7 @@ namespace hypeJunction\Discovery;
 elgg_make_sticky_form('discovery/edit');
 
 $guid = get_input('guid');
-$entity = get_entity($guid);
+$entity = $guid ? get_entity((int) $guid) : null;
 
 if (!$entity instanceof \ElggEntity || !$entity->canEdit()) {
 	return elgg_error_response(elgg_echo('actionnotauthorized'), REFERRER, ELGG_HTTP_FORBIDDEN);

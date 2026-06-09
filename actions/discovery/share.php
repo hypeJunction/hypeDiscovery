@@ -12,7 +12,7 @@ $result = elgg_call(ELGG_IGNORE_ACCESS, function () use ($provider, $guid, $refe
 	$forward_url = REFERRER;
 
 	if ($guid) {
-		$entity = get_entity($guid);
+		$entity = get_entity((int) $guid);
 		if (!is_discoverable($entity)) {
 			$error = true;
 		} else {

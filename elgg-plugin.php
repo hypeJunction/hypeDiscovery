@@ -7,8 +7,6 @@ use hypeJunction\Discovery\Menus;
 use hypeJunction\Discovery\Router;
 use hypeJunction\Discovery\Upgrades\EncodeSettingsAsJson;
 
-require_once __DIR__ . '/lib/functions.php';
-
 return [
 	'plugin' => [
 		'name' => 'hypeDiscovery',

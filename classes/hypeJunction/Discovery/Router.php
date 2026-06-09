@@ -63,7 +63,7 @@ class Router {
 				return elgg_call(ELGG_IGNORE_ACCESS, function () use ($guid, $viewtype, $referrer_hash) {
 					$entity = get_entity($guid);
 
-					if (!has_access_to_entity($entity) && !is_discoverable($entity)) {
+					if (!elgg_has_access_to_entity($entity->guid) && !is_discoverable($entity)) {
 						return false;
 					}
 
@@ -96,7 +96,7 @@ class Router {
 					$forward_url = false;
 
 					$is_walled = elgg_get_config('walled_garden') && !elgg_is_logged_in();
-					if (has_access_to_entity($entity) && $viewtype == 'default' && !$is_walled) {
+					if (elgg_has_access_to_entity($entity->guid) && $viewtype == 'default' && !$is_walled) {
 						$forward_url = $entity->getURL();
 					}
 
@@ -149,8 +149,8 @@ class Router {
 
 		switch ($segments[0]) {
 			case 'edit':
-				$guid = $segments[1];
-				$entity = get_entity($guid);
+				$guid = $segments[1] ?? null;
+				$entity = $guid ? get_entity((int) $guid) : null;
 
 				if (!$entity instanceof \ElggEntity || !$entity->canEdit() || !is_discoverable_type($entity)) {
 					return false;
@@ -168,9 +168,9 @@ class Router {
 				$entity = null;
 				$share_url = get_input('share_url');
 
-				$guid = $segments[1];
+				$guid = $segments[1] ?? null;
 				if ($guid) {
-					$entity = get_entity($guid);
+					$entity = get_entity((int) $guid);
 					if (!$entity) {
 						return false;
 					}
