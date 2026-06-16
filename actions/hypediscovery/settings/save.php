@@ -7,7 +7,7 @@ if (!($plugin instanceof ElggPlugin)) {
 	return elgg_error_response(elgg_echo('plugins:settings:save:fail', ['hypediscovery']), REFERRER, ELGG_HTTP_BAD_REQUEST);
 }
 
-$plugin_name = $plugin->getManifest()->getName();
+$plugin_name = $plugin->getDisplayName();
 
 $result = false;
 
