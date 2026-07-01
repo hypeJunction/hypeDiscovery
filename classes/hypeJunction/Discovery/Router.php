@@ -302,7 +302,10 @@ class Router {
 		$url = current_page_url();
 		$entity = get_entity_from_url($url);
 
-		if (is_discoverable($entity)) {
+		// Only hijack the error->permalink for a real, discoverable CONTENT entity.
+		// A garbage/unknown URL resolves to the site entity (guid 1); redirecting it
+		// to the site permalink turned genuine 404s into 302/empty-200s.
+		if ($entity instanceof \ElggEntity && !$entity instanceof \ElggSite && is_discoverable($entity)) {
 			$return = get_entity_permalink($entity);
 		}
 
