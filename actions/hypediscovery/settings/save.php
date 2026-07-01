@@ -4,11 +4,10 @@ $params = get_input('params', [], false); // don't filter the results so that ht
 $plugin = elgg_get_plugin_from_id('hypediscovery');
 
 if (!($plugin instanceof ElggPlugin)) {
-	elgg_register_error_message(elgg_echo('plugins:settings:save:fail', ['hypediscovery']));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('plugins:settings:save:fail', ['hypediscovery']), REFERRER, ELGG_HTTP_BAD_REQUEST);
 }
 
-$plugin_name = $plugin->getManifest()->getName();
+$plugin_name = $plugin->getDisplayName();
 
 $result = false;
 
@@ -19,11 +18,8 @@ foreach ($params as $k => $v) {
 
 	$result = $plugin->setSetting($k, $v);
 	if (!$result) {
-		elgg_register_error_message(elgg_echo('plugins:settings:save:fail', [$plugin_name]));
-		forward(REFERER);
-		exit;
+		return elgg_error_response(elgg_echo('plugins:settings:save:fail', [$plugin_name]), REFERRER, ELGG_HTTP_BAD_REQUEST);
 	}
 }
 
-elgg_register_success_message(elgg_echo('plugins:settings:save:ok', [$plugin_name]));
-forward(REFERER);
+return elgg_ok_response('', elgg_echo('plugins:settings:save:ok', [$plugin_name]), REFERRER);

@@ -80,7 +80,5 @@ echo elgg_view_input('submit', [
 	'value' => elgg_echo('save'),
 	'field_class' => 'elgg-foot',
 ]);
-?>
-<script>
-	require(['forms/discovery/edit']);
-</script>
+
+elgg_import_esm('forms/discovery/edit');

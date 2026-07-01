@@ -149,7 +149,7 @@ function get_provider_url($provider, $entity = null, $referrer = '', $share_url 
 			$permalink = $referrer ? $referrer : $url;
 			$guid = get_guid_from_url($permalink);
 			if ($guid) {
-				$entity = get_entity($guid);
+				$entity = get_entity((int) $guid);
 			}
 		}
 
@@ -241,7 +241,7 @@ function get_guid_from_url($url) {
 
 	$username = $path->getUsername();
 	if ($username) {
-		$user = get_user_by_username($username);
+		$user = \elgg_get_user_by_username($username);
 		if ($user) {
 			return $user->guid;
 		}
@@ -263,7 +263,7 @@ function get_guid_from_url($url) {
  */
 function get_entity_from_url($url) {
 	$guid = get_guid_from_url($url);
-	$entity = get_entity($guid);
+	$entity = $guid ? get_entity((int) $guid) : null;
 	return $entity ?: elgg_get_site_entity();
 }
 
@@ -290,7 +290,7 @@ function get_user_from_hash($hash = '') {
  */
 function get_user_hash($guid) {
 	$hash = '';
-	$user = get_entity($guid);
+	$user = $guid ? get_entity((int) $guid) : null;
 	if (!$user) {
 		$session = elgg_get_session();
 		if ($session->get('discovery_hash')) {

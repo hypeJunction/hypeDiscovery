@@ -14,7 +14,7 @@ use Elgg\Upgrade\Result;
  * whichever format is stored, and re-saves as JSON so the runtime fallback can be
  * removed in a future release.
  */
-class EncodeSettingsAsJson implements Batch {
+class EncodeSettingsAsJson extends Batch {
 
 	/** @var string[] Settings that store serialized/JSON arrays */
 	private const ARRAY_SETTINGS = [

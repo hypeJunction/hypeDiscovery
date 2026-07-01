@@ -30,12 +30,11 @@ class Router {
 			case 'image':
 				// BC router
 				$size = array_shift($segments);
-				$ia = elgg_set_ignore_access(true);
-				$entity = get_entity($guid);
-				$url = $entity->getIconURL($size);
-				elgg_set_ignore_access($ia);
-				forward($url);
-				return;
+				$url = elgg_call(ELGG_IGNORE_ACCESS, function () use ($guid, $size) {
+					$entity = get_entity($guid);
+					return $entity->getIconURL($size);
+				});
+				return elgg_redirect_response($url);
 
 			default:
 				switch ($viewtype) {
@@ -61,81 +60,79 @@ class Router {
 					return false;
 				}
 
-				$ia = elgg_set_ignore_access();
-				$entity = get_entity($guid);
+				return elgg_call(ELGG_IGNORE_ACCESS, function () use ($guid, $viewtype, $referrer_hash) {
+					$entity = get_entity($guid);
 
-				if (!has_access_to_entity($entity) && !is_discoverable($entity)) {
-					elgg_set_ignore_access($ia);
-					return false;
-				}
-
-				elgg_register_event_handler('head', 'page', function(\Elgg\Event $event) use ($entity) {
-					$return = $event->getValue();
-					if (isset($return['links']['canonical'])) {
-						return;
+					if (!elgg_has_access_to_entity($entity->guid) && !is_discoverable($entity)) {
+						return false;
 					}
 
-					if (elgg_is_active_plugin('hypeSeo')) {
-						$svc = \hypeJunction\Seo\RewriteService::getInstance();
-						$data = $svc->getRewriteRulesFromGUID($entity->getURL());
-						if (isset($data['sef_path'])) {
-							$return['links']['canonical'] = [
-								'href' => elgg_normalize_url($data['sef_path']),
-								'rel' => 'canonical',
-							];
-							return $return;
-						}
-					}
-
-					$return['links']['canonical'] = [
-						'href' => $entity->getURL(),
-						'rel' => 'canonical',
-					];
-
-					return $return;
-				});
-
-				$forward_url = false;
-
-				$is_walled = elgg_get_config('walled_garden') && !elgg_is_logged_in();
-				if (has_access_to_entity($entity) && $viewtype == 'default' && !$is_walled) {
-					$forward_url = $entity->getURL();
-				}
-
-				$forward_url = elgg_trigger_event_results('entity:referred', $entity->getType(), [
-					'entity' => $entity,
-					'user_hash' => $referrer_hash,
-					'referrer' => $_SERVER['HTTP_REFERER'],
-				], $forward_url);
-
-				if ($forward_url) {
-					elgg_set_ignore_access($ia);
-					forward($forward_url);
-				}
-
-				if (elgg_get_plugin_setting('nocrawl', 'hypediscovery')) {
-					elgg_set_http_header('X-Robots-Tag: noindex', true);
-
-					elgg_register_event_handler('head', 'page', function(\Elgg\Event $event) {
+					elgg_register_event_handler('head', 'page', function(\Elgg\Event $event) use ($entity) {
 						$return = $event->getValue();
-						$return['metas'][] = [
-							'name' => 'robots',
-							'content' => 'noindex',
+						if (isset($return['links']['canonical'])) {
+							return;
+						}
+
+						if (elgg_is_active_plugin('hypeSeo')) {
+							$svc = \hypeJunction\Seo\RewriteService::getInstance();
+							$data = $svc->getRewriteRulesFromGUID($entity->getURL());
+							if (isset($data['sef_path'])) {
+								$return['links']['canonical'] = [
+									'href' => elgg_normalize_url($data['sef_path']),
+									'rel' => 'canonical',
+								];
+								return $return;
+							}
+						}
+
+						$return['links']['canonical'] = [
+							'href' => $entity->getURL(),
+							'rel' => 'canonical',
 						];
 
 						return $return;
 					});
-				}
 
-				echo elgg_view_resource('permalink', [
-					'viewtype' => $viewtype,
-					'user_hash' => $referrer_hash,
-					'guid' => $guid,
-					'entity' => $entity,
-				]);
+					$forward_url = false;
 
-				elgg_set_ignore_access($ia);
-				return true;
+					$is_walled = elgg_get_config('walled_garden') && !elgg_is_logged_in();
+					if (elgg_has_access_to_entity($entity->guid) && $viewtype == 'default' && !$is_walled) {
+						$forward_url = $entity->getURL();
+					}
+
+					$forward_url = elgg_trigger_event_results('entity:referred', $entity->getType(), [
+						'entity' => $entity,
+						'user_hash' => $referrer_hash,
+						'referrer' => $_SERVER['HTTP_REFERER'],
+					], $forward_url);
+
+					if ($forward_url) {
+						return elgg_redirect_response($forward_url);
+					}
+
+					if (elgg_get_plugin_setting('nocrawl', 'hypediscovery')) {
+						elgg_set_http_header('X-Robots-Tag: noindex', true);
+
+						elgg_register_event_handler('head', 'page', function(\Elgg\Event $event) {
+							$return = $event->getValue();
+							$return['metas'][] = [
+								'name' => 'robots',
+								'content' => 'noindex',
+							];
+
+							return $return;
+						});
+					}
+
+					echo elgg_view_resource('permalink', [
+						'viewtype' => $viewtype,
+						'user_hash' => $referrer_hash,
+						'guid' => $guid,
+						'entity' => $entity,
+					]);
+
+					return true;
+				});
 		}
 
 		return false;
@@ -152,8 +149,8 @@ class Router {
 
 		switch ($segments[0]) {
 			case 'edit':
-				$guid = $segments[1];
-				$entity = get_entity($guid);
+				$guid = $segments[1] ?? null;
+				$entity = $guid ? get_entity((int) $guid) : null;
 
 				if (!$entity instanceof \ElggEntity || !$entity->canEdit() || !is_discoverable_type($entity)) {
 					return false;
@@ -171,9 +168,9 @@ class Router {
 				$entity = null;
 				$share_url = get_input('share_url');
 
-				$guid = $segments[1];
+				$guid = $segments[1] ?? null;
 				if ($guid) {
-					$entity = get_entity($guid);
+					$entity = get_entity((int) $guid);
 					if (!$entity) {
 						return false;
 					}
@@ -181,7 +178,7 @@ class Router {
 					if (!$share_url) {
 						$share_url = $entity->getURL();
 					}
-					
+
 					$entity->setVolatileData('discovery:share_url', $share_url);
 				}
 
@@ -272,13 +269,13 @@ class Router {
 		$maxwidth = get_input('maxwidth');
 		$maxheight = get_input('maxheight');
 
-		$ia = elgg_set_ignore_access(true);
-		$entity = get_entity_from_url(urldecode($url));
-		$permalink = get_entity_permalink($entity, "{$format}+oembed");
-		elgg_set_ignore_access($ia);
+		$permalink = elgg_call(ELGG_IGNORE_ACCESS, function () use ($url, $format) {
+			$entity = get_entity_from_url(urldecode($url));
+			return get_entity_permalink($entity, "{$format}+oembed");
+		});
 
 		if (!$permalink) {
-			forward('', '404');
+			throw new \Elgg\Exceptions\Http\PageNotFoundException();
 		}
 
 		$permalink = elgg_http_add_url_query_elements($permalink, [
@@ -286,7 +283,7 @@ class Router {
 			'maxheight' => $maxheight,
 		]);
 
-		forward($permalink);
+		return elgg_redirect_response($permalink);
 	}
 
 	/**

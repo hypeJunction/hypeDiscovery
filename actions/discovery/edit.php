@@ -5,11 +5,10 @@ namespace hypeJunction\Discovery;
 elgg_make_sticky_form('discovery/edit');
 
 $guid = get_input('guid');
-$entity = get_entity($guid);
+$entity = $guid ? get_entity((int) $guid) : null;
 
 if (!$entity instanceof \ElggEntity || !$entity->canEdit()) {
-	elgg_register_error_message(elgg_echo('actionnotauthorized'));
-	forward(REFERRER);
+	return elgg_error_response(elgg_echo('actionnotauthorized'), REFERRER, ELGG_HTTP_FORBIDDEN);
 }
 
 $entity->og_title = htmlentities(get_input('og_title', ''), ENT_QUOTES, 'UTF-8');
