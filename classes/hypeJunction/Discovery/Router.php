@@ -300,7 +300,7 @@ class Router {
 			$url = elgg_get_current_url();
 			$entity = get_entity_from_url($url);
 
-			if (is_discoverable($entity)) {
+			if ($entity instanceof \ElggEntity && !$entity instanceof \ElggSite && is_discoverable($entity)) {
 				return get_entity_permalink($entity);
 			}
 
