@@ -147,6 +147,11 @@ class Router {
 	 */
 	public static function opengraphHandler($segments, $handler) {
 
+		// Unmatched segments must fall through to `return false` below; without this
+		// the `if ($content)` guard reads an undefined variable (a warning on the
+		// live site, a fatal under the strict test runner).
+		$content = null;
+
 		switch ($segments[0]) {
 			case 'edit':
 				$guid = $segments[1] ?? null;
